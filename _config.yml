@@ -19,9 +19,9 @@ locale                   : "en-US"
 rtl                      : # true, false (default) # turns direction of the page into right to left for RTL languages
 title                    : "Blog"
 title_separator          : "-"
-subtitle                 : # site tagline that appears below site title in masthead
-future                   : true 
+future                   : true
 published                : true
+subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Baek Gahyun"
 description              : "just a blog"
 url                      : "https://gahbaek.github.io"
@@ -156,7 +156,7 @@ footer:
     - label: "Instagram"
       icon: "ghb0724"
       # url:
-  since: "2013"
+  since: "2025"
 
 
 # Reading Files
