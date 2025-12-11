@@ -9,9 +9,30 @@ search: false
 @import "minimal-mistakes"; // main partials
 
 /* ===== 여기부터 커스텀 스타일 ===== */
+/* ===== 커스텀 레이아웃 수정 시작 ===== */
 
-.layout--single .page__content {
+/* 페이지 전체를 가운데로 보내고, 오른쪽 사이드바용 여백 제거 */
+.page {
+  float: none !important;        /* 오른쪽으로 붙는 거 방지 */
+  width: 100% !important;        /* 사이드바만큼 줄어든 폭 제거 */
+  padding-right: 0 !important;   /* 오른쪽 여백 제거 */
+  max-width: 1100px;             /* 전체 페이지 최대 폭 (원하면 숫자 조절해도 됨) */
   margin-left: auto;
   margin-right: auto;
-  max-width: 500px;  
 }
+
+/* 안쪽 컨텐츠 래퍼도 가운데 정렬 */
+.page__inner-wrap {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 글 읽는 영역을 조금 더 좁게 가운데 정렬하고 싶으면 */
+.layout--single .page__content {
+  max-width: 900px;              /* 글 폭, 너무 좁으면 1000~1100으로 바꿔봐 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== 커스텀 레이아웃 수정 끝 ===== */
+
