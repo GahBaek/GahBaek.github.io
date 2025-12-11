@@ -1,7 +1,7 @@
 ---
-title: "Category"
-layout: single
+title: "Categories"
+layout: categories
 permalink: /categories/
-author_profile: true   # 혹은 false, 취향대로
+author_profile: true
 ---
 
