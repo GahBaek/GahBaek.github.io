@@ -20,6 +20,8 @@ rtl                      : # true, false (default) # turns direction of the page
 title                    : "Blog"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
+future                   : true 
+published                : true
 name                     : "Baek Gahyun"
 description              : "just a blog"
 url                      : "https://gahbaek.github.io"
@@ -117,10 +119,10 @@ author:
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I RAISE TWO CATS"
   location         : "Somewhere"
-  email            :
+  email            : "gusqorrk@gmail.com"
   links:
     - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
+      icon: "gusqorrk@gmail.com"
       # url: "mailto:your.name@email.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
