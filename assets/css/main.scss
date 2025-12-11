@@ -7,3 +7,12 @@ search: false
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+/* ===== 여기부터 커스텀 스타일 ===== */
+
+/* single 레이아웃에서 본문을 더 가운데로 */
+.layout--single .page__content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 900px;  // 폭 너무 좁/넓으면 숫자 조절해도 돼
+}
