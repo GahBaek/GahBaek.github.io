@@ -2,3 +2,15 @@
 layout: home
 author_profile: true
 ---
+
+<h2>Categories</h2>
+<ul>
+  {% assign cats = site.categories | sort %}
+  {% for cat in cats %}
+    <li>
+      <a href="{{ '/categories/' | relative_url }}#{{ cat[0] | slugify }}">
+        {{ cat[0] }} ({{ cat[1].size }})
+      </a>
+    </li>
+  {% endfor %}
+</ul>
