@@ -1,7 +1,7 @@
 ---
 layout: posts
 title: "ReLU, weights (lec 9-10)"
-categories: ["DeepLearning"]
+categories: ["모두를 위한 머신러닝/딥러닝"]
 ---
 
 ### Backpropagation
