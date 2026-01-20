@@ -1,7 +1,7 @@
 ---
 layout: posts
 title: "overfitting (lec 10)"
-categories: ["DeepLearning"]
+categories: ["모두를 위한 머신러닝/딥러닝"]
 ---
 
 ### Neural Network dropout and model ensemble
