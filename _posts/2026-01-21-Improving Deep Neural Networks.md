@@ -1,6 +1,6 @@
 ---
 layout: posts
-title: "title"
+title: "Improving Deep Neural Networks"
 categories: ["Andrew.Ng"]
 ---
 
