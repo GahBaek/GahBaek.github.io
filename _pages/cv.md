@@ -4,7 +4,7 @@ permalink: /CV/
 layout: single
 ---
 
-[Download PDF]({{ "/assets/files/cv.pdf" | relative_url }})
+[Download PDF]({{ "/assets/files/Baek Gahyun_CV.pdf" | relative_url }})
 
 <iframe
   src="{{ '/assets/files/cv.pdf' | relative_url }}"
