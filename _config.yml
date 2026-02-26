@@ -119,8 +119,8 @@ analytics:
 author:
   name             : "Baek Gahyun"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I RAISE TWO CATS"
-  location         : "Suwon_Korea_Asia"
+  bio              : "AI for Security"
+  location         : "Suwon_Korea"
   email            : "gusqorrk@gmail.com"
   links:
     - label: "Email"
@@ -156,7 +156,7 @@ footer:
      # icon: "fab fa-fw fa-bitbucket"
       # url:
     - label: "Instagram"
-      icon: "ghb0724"
+      icon: "jiaxuanii_"
       # url:
   since: "2025"
 
