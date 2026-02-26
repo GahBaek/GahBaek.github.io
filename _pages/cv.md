@@ -2,17 +2,13 @@
 title: "CV"
 permalink: /CV/
 layout: single
-author_profile: true
 ---
 
-## Education
-- B.S. in ...
+[Download PDF]({{ "/assets/files/cv.pdf" | relative_url }})
 
-## Experience
-- ...
-
-## Publications
-- ...
-
-## Skills
-- ...
+<iframe
+  src="{{ '/assets/files/cv.pdf' | relative_url }}"
+  width="100%"
+  height="900px"
+  style="border: none;"
+></iframe>
