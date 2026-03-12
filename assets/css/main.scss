@@ -1,38 +1,78 @@
----
-# Only the main Sass file needs front matter (the dashes are enough)
-search: false
----
-
-@charset "utf-8";
-
-@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
-@import "minimal-mistakes"; // main partials
-
-/* ===== 여기부터 커스텀 스타일 ===== */
-/* ===== 커스텀 레이아웃 수정 시작 ===== */
-
-/* 페이지 전체를 가운데로 보내고, 오른쪽 사이드바용 여백 제거 */
-.page {
-  float: none !important;        /* 오른쪽으로 붙는 거 방지 */
-  width: 100% !important;        /* 사이드바만큼 줄어든 폭 제거 */
-  padding-right: 0 !important;   /* 오른쪽 여백 제거 */
-  max-width: 1100px;             /* 전체 페이지 최대 폭 (원하면 숫자 조절해도 됨) */
-  margin-left: auto;
-  margin-right: auto;
+/* 공통 여백 */
+.page__content {
+  line-height: 1.75;
 }
 
-/* 안쪽 컨텐츠 래퍼도 가운데 정렬 */
-.page__inner-wrap {
-  margin-left: auto;
-  margin-right: auto;
+/* 홈 섹션 카드 */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 3rem;
 }
 
-/* 글 읽는 영역을 조금 더 좁게 가운데 정렬하고 싶으면 */
-.layout--single .page__content {
-  max-width: 900px;              /* 글 폭, 너무 좁으면 1000~1100으로 바꿔봐 */
-  margin-left: auto;
-  margin-right: auto;
+.feature-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
-/* ===== 커스텀 레이아웃 수정 끝 ===== */
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+}
 
+.feature-card h3 {
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
+/* 카테고리 pill */
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .65rem 1rem;
+  border-radius: 999px;
+  text-decoration: none !important;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  transition: all .2s ease;
+}
+
+.category-pill:hover {
+  transform: translateY(-2px);
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.category-pill span {
+  font-size: .85rem;
+  opacity: .7;
+}
+
+/* 제목 더 또렷하게 */
+.page__title,
+.archive__item-title {
+  letter-spacing: -0.02em;
+}
+
+/* 글 카드 */
+.archive__item {
+  padding: 1rem 1.1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+}
