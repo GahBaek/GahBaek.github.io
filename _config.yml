@@ -118,7 +118,7 @@ analytics:
 # Site Author
 author:
   name             : "Baek Gahyun"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/file/IMG_2533.JPEG"
   bio              : "AI for Security"
   location         : "Suwon_Korea"
   email            : "gusqorrk@gmail.com"
