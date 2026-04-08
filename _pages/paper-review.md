@@ -1,6 +1,6 @@
 ---
 title: "Paper Review"
-layout: archive
+layout: posts
 permalink: /paper-review/
 author_profile: true
 ---
