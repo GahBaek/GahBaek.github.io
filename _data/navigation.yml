@@ -6,12 +6,15 @@ main:
   - title: "About"
     url: /about/
 
-  - title: "Projects"
-    url: /projects/
+  #- title: "Projects"
+  #  url: /projects/
 
   - title: "Categories"
     url: /categories/
 
+  - title: "Paper Review"
+    url: /paper-review/
+    
   - title: "CV"
     url: /CV/
   # - title: "Quick-Start Guide"
