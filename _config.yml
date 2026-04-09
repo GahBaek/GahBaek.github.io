@@ -239,7 +239,7 @@ paginate_path: /page:num/
 # See https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-GENERATOR.md#site-configuration
 #   for configuration details
 pagination:
-  Set enabled to true to use paginate v2
+  # Set enabled to true to use paginate v2
   enabled: true
   debug: false
   collection: 'posts'
