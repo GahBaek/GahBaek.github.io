@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CV · Your Name</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ── CV-SPECIFIC STYLES ── */
+    .cv-section { margin-bottom: 2rem; }
+    .cv-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem; font-weight: 400;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--line); padding-bottom: .5rem;
+    }
+    .cv-row {
+      display: flex; gap: 1.5rem;
+      padding: .7rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: .88rem;
+    }
+    .cv-row:last-child { border-bottom: none; }
+    .cv-year {
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      color: var(--muted); min-width: 90px; padding-top: .15rem;
+    }
+    .cv-detail h4 { font-weight: 500; margin-bottom: .2rem; }
+    .cv-detail p  { color: var(--muted); font-size: .82rem; line-height: 1.5; }
+
+    .btn-download {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--ink); color: var(--bg);
+      border-radius: 6px; padding: .55rem 1.2rem;
+      font-size: .8rem; font-weight: 500; text-decoration: none;
+      transition: background .2s;
+      margin-bottom: 2rem;
+    }
+    .btn-download:hover { background: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">YourName</a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="papers.html">Papers</a></li>
+    <li><a href="posts.html">Posts</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <h1 class="page-title">Curriculum Vitae</h1>
+
+  <a class="btn-download" href="../cv.pdf" download>
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Download PDF
+  </a>
+
+  <div class="cv-section">
+    <h2>Education</h2>
+    <div class="cv-row">
+      <div class="cv-year">2023 – now</div>
+      <div class="cv-detail">
+        <h4>Ph.D. in [Field]</h4>
+        <p>University Name, Seoul, Korea</p>
+      </div>
+    </div>
+    <div class="cv-row">
+      <div class="cv-year">2019 – 2023</div>
+      <div class="cv-detail">
+        <h4>B.S. in [Field]</h4>
+        <p>University Name · GPA 4.0 / 4.5</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <h2>Research Experience</h2>
+    <div class="cv-row">
+      <div class="cv-year">2023 – now</div>
+      <div class="cv-detail">
+        <h4>Graduate Research Assistant</h4>
+        <p>Lab Name · Advisor: Prof. Name<br>Research focus: ...</p>
+      </div>
+    </div>
+    <div class="cv-row">
+      <div class="cv-year">2022</div>
+      <div class="cv-detail">
+        <h4>Research Intern</h4>
+        <p>Company / Institute Name</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <h2>Publications</h2>
+    <div class="cv-row">
+      <div class="cv-year">2024</div>
+      <div class="cv-detail">
+        <h4>Paper Title Here</h4>
+        <p>Conference / Journal Name · <em>Your Name</em>, Co-author</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <h2>Skills</h2>
+    <div class="cv-row">
+      <div class="cv-year">Coding</div>
+      <div class="cv-detail"><p>Python, C++, MATLAB</p></div>
+    </div>
+    <div class="cv-row">
+      <div class="cv-year">Frameworks</div>
+      <div class="cv-detail"><p>PyTorch, HuggingFace, scikit-learn</p></div>
+    </div>
+    <div class="cv-row">
+      <div class="cv-year">Languages</div>
+      <div class="cv-detail"><p>Korean (native) · English (fluent)</p></div>
+    </div>
+  </div>
+</main>
+
+<script src="../js/nav.js"></script>
+</body>
+</html>
