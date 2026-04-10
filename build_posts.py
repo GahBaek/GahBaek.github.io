@@ -52,6 +52,15 @@ PAPERS_TAG_MAP = {
     "fuzzing":     "Security",
     "taint":       "Security",
 }
+
+BLOG_TAG_MAP = {
+    "life":     "Life",
+    "research": "Research",
+    "review":   "Review",
+    "travel":   "Travel",
+    "essay":    "Essay",
+    "opinion":  "Opinion",
+}
 # ────────────────────────────────────────────────────────────────────────
 
 
@@ -278,7 +287,7 @@ def render_index(page_title, page_sub, cards_html, self_href, nav_active):
     <li><a href="../index.html">Home</a></li>
     <li><a href="papers.html"{' class="active"' if nav_active == 'papers' else ''}>Papers</a></li>
     <li><a href="posts.html"{' class="active"' if nav_active == 'posts' else ''}>Posts</a></li>
-    <li><a href="blog.html">Blog</a></li>
+    <li><a href="blog.html"{' class="active"' if nav_active == 'blog' else ''}>Blog</a></li>
     <li><a href="cv.html">CV</a></li>
   </ul>
 </nav>
@@ -379,6 +388,18 @@ def main():
         tag_map    = PAPERS_TAG_MAP,
         tag_default= "Paper",
         back_label = "Papers",
+    )
+    print("── Building Blog ────────────────────────────────")  # ← ADD FROM HERE
+    build_section(
+        src_dir    = "blog_content",
+        out_dir    = "pages/blog",
+        index_path = "pages/blog.html",
+        page_title = "Blog",
+        page_sub   = "Personal essays, thoughts, and reflections.",
+        nav_active = "blog",
+        tag_map    = BLOG_TAG_MAP,
+        tag_default= "Essay",
+        back_label = "Blog",
     )
 
     print("Done! Run:  git add . && git commit -m 'update' && git push")
