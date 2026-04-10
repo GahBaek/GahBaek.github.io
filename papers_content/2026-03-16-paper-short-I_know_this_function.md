@@ -4,5 +4,5 @@ layout: single
 categories:
   - paper-review
 ---
-[Download the slides]({{ '/assets/files/0316_weekly_meeting.pptx' | relative_url }})
-[View PDF]({{ '/assets/files/0316_weekly_meeting.pdf' | relative_url }})
+[Download the slides](../../assets/files/0316_weekly_meeting.pptx)
+[View PDF](../../assets/files/0316_weekly_meeting.pdf)
