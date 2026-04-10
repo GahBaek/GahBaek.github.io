@@ -364,6 +364,7 @@ def main():
         tag_default= "Note",
         back_label = "Posts",
     )
+    raw = re.sub(r"\{\{\s*'(/[^']+)'\s*\|\s*relative_url\s*\}\}", r"../../\1", raw)
 
     print("── Building Paper Reviews ──────────────────────")
     build_section(
