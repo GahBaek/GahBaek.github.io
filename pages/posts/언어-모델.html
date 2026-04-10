@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>언어 모델 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>언어 모델</h1>
+    <div class="post-meta">
+      <span>2025·12</span>
+      <span class="post-tag">NLP</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>언어 모델</h2>
+
+<h3>언어 모델 (Language Model)</h3>
+
+<p>언어 모델은 단어 시퀀스에 확률을 할당하는 일을 하는 모델이다. 언어 모델은 가장 자연스러운 단어 시퀀스를 찾아내는 모델이다. 단어 시퀀스에 확률을 할당하게 하기 위해서 가장 보편적으로 사용하는 방법은 언어 모델이 이전 단어들이 주어졌을 때 다음 단어를 예측하도록 하는 것이다.</p>
+
+<p>다른 유형의 언어 모델로는 주어진 양쪽의 단어들로부터 가운데 비어있는 단어를 예측하는 언어 모델이 있다. </p>
+
+<ul>
+<li>Language Modeling</li>
+</ul>
+<p>    - 주어진 단어들로부터 아직 모르는 단어를 예측하는 작업을 말한다. 즉, 언어 모델이 이전 단어들로부터 다음 단어를 예측하는 일이 언어 모델링이다.</p>
+<ul>
+<li>통계적 언어 모델 (Statistical Language Model, SLM)</li>
+</ul>
+<p>    - 조건부 확률의 연쇄 법칙</p>
+<p>        - P(A, B, C, D) = P(aP)P(B|A)P(C|A, B)P(D|A, B, C)</p>
+<p>    - 문장에 대한 확률</p>
+<p>        - 문장  'An adorable little boy is spreading smiles’ 의 확률 P 를 식으로 표현하면</p>
+<p>        <img width="880" height="88" alt="image" src="https://github.com/user-attachments/assets/edc8f298-7a95-4493-bb39-d1222084afaf" /></p>
+
+
+<p>        문장의 확률을 구하기 위해서 각 단어에 대한 예측 확률들을 곱한다.</p>
+
+<p>    - 카운트 기반의 접근</p>
+<p>        - An adorable little boy 다음에 is 가 나올 확률 P(is | An adorable little boy)</p>
+<p>        - $P(\text{is} | \text{An adorable little boy}) = \frac{\text{count}(\text{An adorable little boy is})}{\text{count}(\text{An adorable little boy})}$</p>
+<p>    - 카운트 기반 접근의 한계 = Sparsity Problem</p>
+<p>        - 기계 훈련에 필요한 데이터가 매우 방대하다.</p>
+<ul>
+<li>N-gram 언어 모델 (N-gram Language Model)</li>
+</ul>
+<p>    - 여전히 카운트 기반 통계적 접근을 사용하고 있으므로 <strong><code>SLM</code></strong>의  일종이다.</p>
+<p>    - 이전에 등장한 모든 단어를 고려하는 것이 아니라 일부 단어만 고려하는 접근 방법을 사용한다. 일부 단어를 몇 개를 보느냐를 결정하는 데 이것이 n-gram 에서의 n 이 가지는 의미이다.</p>
+<p>    1. 코퍼스에서 카운트하지 못하는 경우의 감소</p>
+<p>        1. P(is | An adorable little boy) ≈ P(is|boy)</p>
+<p>        2. 이렇게 하면 갖고 있는 코퍼스에서 해당 단어의 시퀀스를 카운트할 확률이 높아진다.</p>
+<p>    2. N-gram</p>
+<p>        1. 임의의 개수를 정하기 위한 기준을 위해 사용하는 것이 n-gram 이다.</p>
+<p>        2. n-gram 은 n개의 연속적인 단어 나열을 의미한다.</p>
+
+<p>            > An adorable little boy is spreading smiles</p>
+<p>            > </p>
+<p>            - <strong><code>uni</strong>grams</code>: an, adorable, little, boy, is, spreading, smiles</p>
+<p>            - <strong><code>bi</strong>grams</code>: an adorable, adorable little, little boy, boy is, is spreading, spreading smiles</p>
+<p>            - <strong><code>tri</strong>grams</code>: an adorable little, adorable little boy, little boy is, boy is spreading, is spreading smiles</p>
+<p>            - <strong><code>4-</strong>grams</code>: an adorable little boy, adorable little boy is, little boy is spreading, boy is spreading smiles</p>
+<p>        3. n-gram 을 통한 언어 모델에서는 다음에 나올 단어의 예측은 오직 n-1 개의 단어에만 의존한다.</p>
+<p>            - n=4라고 한 4-gram을 이용한 언어 모델을 사용한다고 합시다. 이 경우, spreading 다음에 올 단어를 예측하는 것은 n-1에 해당되는 앞의 3개의 단어만을 고려합니다.</p>
+
+<p>              <img width="333" height="73" alt="image" src="https://github.com/user-attachments/assets/05be9b85-e633-43ac-94f4-689eafd51eed" /></p>
+
+<p>    3. N-gram Language Model 의 한계</p>
+
+<p>        → n-gram 은 앞의 단어 몇 개만 보다보니 의도하고 싶은대로 문장을 끝맺음하지 못하는 경우가 생긴다.</p>
+
+<p>        1. 희소 문제</p>
+<p>        2. n을 선택하는 것은 trade-off 문제</p>
+<p>            1. 임의의 개수인 n을 1보다는 2로 선택하는 것은 거의 대부분의 경우에서 언어 모델의 성능을 높일 수 있다.</p>
+<p>            2. n을 크게 선택하면 실제 훈련 코퍼스에서 해당 n-gram을 카운트 할 수 있는 확률은 적어지므로 희소 문제는 점점 심각해진다. 또한, n이 커질수록 모델 사이즈가 커진다는 문제점도 있다.</p>
+<p>            3. n을 작게 선택하면 훈련 코퍼스에서 카운트는 잘 되겠지만 근사의 정확도는 현실의 확률분포와 멀어진다.</p>
+<p>            4. 이런 trade-off 때문에 정확도를 높이려면 n은 최대 5를 넘게 잡아서는 안된다고 권장되고 있다.</p>
+<p>        3. 적용 분야에 맞는 코퍼스의 수집</p>
+<ul>
+<li>한국어에서의 언어 모델</li>
+</ul>
+<p>    - 한국어에서는 어순이 중요하지 않다.</p>
+<ul>
+<li>Perplexity (PPL)</li>
+</ul>
+<p>    - 언어 모델을 평가하기 위한 평가 지표</p>
+<p>        - PPL의 수치가 <strong><code>낮을수록</code></strong> 언어 모델의 <strong><code>성능이 좋다</code></strong>는 것을 의미한다.</p>
+<p>    - PPL 은 문장의 길이로 정규화된 문장 확률의 역수이다. 문장 W 의 길이가 N이라고 하였을 때 PPL 은 다음과 같다.</p>
+
+<p>        <img width="609" height="88" alt="image" src="https://github.com/user-attachments/assets/067fc177-364c-4d5f-92a2-25349b68bbcf" /></p>
+
+
+<p>        여기에 chain rule 을 적용하면 다음과 같다.</p>
+
+<p>        <img width="682" height="96" alt="image" src="https://github.com/user-attachments/assets/80d665cb-fc91-4fcb-8e0b-1e8d0b159977" /></p>
+
+
+<p>    - 분기 계수 (Branching factor)</p>
+<p>        - PPL은 선택할 수 있는 가능한 경우의 수를 의미하는 분기 계수이다. PPL은 언어 모델이 특정 시점에서 평균적으로 몇개의 선택지를 가지고 고민하고 있는지를 의미한다.</p>
+<p>        - 단, PPL 값이 낮다는 것은 테스트 데이터 상에서 높은 정확도를 보인다는 것이지, 사람이 직접 느끼기에 좋은 언어 모델이라는 것을 반드시 의미하진 않는다. 또한, 도메인에 알맞은 동일한 테스트 데이터를 사용해야 신뢰도가 높다.</p>
+<p>            - 이유</p>
+
+<p>                Perplexity 점수가 절대적인 지능 지수가 아니기 때문이다.</p>
+
+<ul>
+<li>조건부 확률</li>
+</ul>
+
+
+<p>    |  | 남학생 | 여학생 | 계 |</p>
+<p>    | --- | --- | --- | --- |</p>
+<p>    | 중학생 | 100 | 60 | 160 |</p>
+<p>    | 고등학생 | 80 | 120 | 200 |</p>
+<p>    | 계 | 180 | 180 | 360 |</p>
+
+<p>    A = 학생이 남학생인 사건</p>
+
+<p>    B = 학생이 여학생인 사건</p>
+
+<p>    C = 학생이 중학생인 사건</p>
+
+<p>    D = 학생이 고등학생인 사건</p>
+
+<p>    - 학생을 뽑았을 때, 남학생일 확률</p>
+
+<p>    P(A) = 180 / 360 = 0.5</p>
+
+<p>    - 학생을 뽑았을 때, 고등학생이면서 남학생일 확률</p>
+
+<p>    P(A ∩ D) = 80 / 360</p>
+
+<p>    $P(B|A) = P(A∩B) / P(A)$ </p>
+
+<p>    일반적으로, <strong>P( A | B ) ≠ P ( B | A )</strong> 이다.</p>
+
+<p>    <strong>A 와 B가 동시에 일어날 확률을 구하려면, A 가 일어날 확률과 A 가 일어났을 때 B가 일어날 확률을 곱하면 된다.</strong></p>
+
+<p>    $P(A, B, C, D) = P(aP)P(B|A)P(C|A, B)P(D|A, B, C)$</p>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

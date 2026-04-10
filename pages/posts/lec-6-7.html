@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>(lec 6 7) · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>(lec 6 7)</h1>
+    <div class="post-meta">
+      <span>2025·12</span>
+      <span class="post-tag">ML</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<p><strong>Softmax Regression (Multinomial Logistic Regression)</strong></p>
+
+<p>→ 여러 개의 sigmoid 를 사용해서 구현할 수도 있다.</p>
+
+<p><img width="1280" height="401" alt="image" src="https://github.com/user-attachments/assets/13cb1fb6-83ea-4fb7-9e14-2865d857d1f0" /></p>
+
+<p><strong>Softmax</strong></p>
+
+<p>output: 확률적인 값</p>
+
+<p>1. output 이 0과 1 사이여야 한다.</p>
+<p>2. 전체 output 합이 1이 된다.</p>
+
+<p>선택해야 하는 선택지의 총 개수를 k 라고 할 때, k차원의 벡터를 입력받아 각 클래스에 대한 확률을 추정한다.</p>
+<p><img width="325" height="80" alt="image" src="https://github.com/user-attachments/assets/d5f6b32c-8e2a-46f1-97e4-04a01aae5ae0" /></p>
+
+<p><strong>Cost Function</strong></p>
+
+<p><img width="625" height="308" alt="image" src="https://github.com/user-attachments/assets/79ea4e4d-9b90-4a16-a22d-e271864dad95" /></p>
+
+<p><img width="509" height="200" alt="image" src="https://github.com/user-attachments/assets/c626594d-1014-4413-94bd-445d0acfb04d" /></p>
+
+<p>✅하나의 샘플 데이터는 4개의 독립 변수 x를 가지는 데 이는 모델이 4차원 벡터를 입력으로 받음을 의미한다. 그런데 소프트맥스 함수의 입력으로 사용되는 벡터는 벡터의 차원이 분류하고자 하는 클래스의 개수가 되어야 하므로 어떤 가중치 연산을 통해 3차원 벡터로 변환되어야 한다.</p>
+
+<p><img width="248" height="97" alt="image" src="https://github.com/user-attachments/assets/ddf89f36-6feb-417d-b74d-b6c04222b078" /></p>
+
+<p>→ 소프트맥스 함수의 입력 벡터 z 의 차원수만큼 결과값이 나오도록 가중치 곱을 진행한다.</p>
+
+<p><img width="403" height="100" alt="image" src="https://github.com/user-attachments/assets/e30adb71-2269-4623-af80-9b45ce1ce656" /></p>
+
+<p>✅예측값과 실제 값을 비교할 수 있는 표현 방법이 필요하다.</p>
+
+<p>softmax 회귀에서는 실제값을 one-hot vector 로 표현한다.</p>
+
+<p>오차로부터 가중치를 업데이트 한다.</p>
+
+<p><img width="450" height="117" alt="image" src="https://github.com/user-attachments/assets/3dd3fbb5-bf59-4d87-9049-2c3a993e7a3a" /></p>
+
+<ul>
+<li>one-hot vector 의 무작위성</li>
+</ul>
+
+<p>    <img width="311" height="61" alt="image" src="https://github.com/user-attachments/assets/007ab1b5-9e83-49ea-833e-6c17cde9b99c" /></p>
+
+<p>    <code>`</code>python</p>
+<p>    <strong>{Banana :1, Tomato :2, Apple :3, Strawberry :4, ... Watermelon :10}</strong> </p>
+<p>    <code>`</code></p>
+
+<p>    라 했을 때, 이 정수 인코딩은 Banana 가 Watermelon 보다는 Tomato 에 더 가깝다는 의미를 담고 있다. 이는 사용자가 부여하고자 했던 정보가 아니다. </p>
+
+<p>    원-핫 인코딩을 통해 얻은 one-hot vector 들은 모든 쌍에 대해서 유클리드 거리를 구해도 전부 유클리드 거리가 동일하다. </p>
+
+<p>    하지만, 때로는 단어의 유사성을 구할 수 없다는 단점으로 언급되기도 한다.</p>
+
+
+<p><img width="325" height="155" alt="image" src="https://github.com/user-attachments/assets/ce1eb551-c921-45cc-9067-5d5a1aea84ab" /></p>
+
+<p><strong>Tip</strong></p>
+
+<p><strong>learning rate</strong></p>
+
+<p>너무 크면<strong>:</strong> overshooting - 발산</p>
+
+<p>너무 작으면: stops at local minimum</p>
+
+<p><strong>Data(x) preprocessing</strong></p>
+
+<p><img width="375" height="134" alt="image" src="https://github.com/user-attachments/assets/3b9e32eb-9b94-4318-916c-4a1126aa3c66" /></p>
+
+<p>zero-centered data: 0 주위로 값이 위치하도록</p>
+
+<p>normalized data: 특정 범위 이내로 값이 분포할 수 있도록</p>
+
+<ul>
+<li>같은 learning rate 를 쓰면</li>
+</ul>
+<p>    - 큰 scale 쪽은 업데이트가 과하게 커져 발산/진동</p>
+<p>    - 작은 scale 쪽은 업데이터가 너무 작아 학습이 안됨 (너무 느림)</p>
+
+<p><strong>Standardization</strong></p>
+
+<p><img width="670" height="260" alt="image" src="https://github.com/user-attachments/assets/0759fd62-15f8-4924-b0f5-c09ecba7ffc4" /></p>
+
+<p><strong>overfitting</strong></p>
+
+<p>: training data 에 너무 딱 맞을 때.</p>
+
+<p><img width="825" height="444" alt="image" src="https://github.com/user-attachments/assets/0fa1ce66-af9c-4f64-921f-94b1d7929e09" /></p>
+
+<p>model2 → data 에만 맞춰져 있는 모델이다.  = overfitting</p>
+
+<p>solutions for overfitting</p>
+
+<ul>
+<li>training  data 가 많을 수록</li>
+<li>feature 의 개수를 줄인다.</li>
+<li>Regularization</li>
+</ul>
+
+<p><strong>Regularization</strong></p>
+
+<p>: weight 을 너무 큰 값을 가지지 말자</p>
+
+<p><img width="539" height="244" alt="image" src="https://github.com/user-attachments/assets/887963e7-df10-4b6a-acbe-75ef01dae15e" /></p>
+
+<p><strong>regularization strength</strong></p>
+
+<p><strong>l2reg: 0.001 * tf.reduce_sum(tf.square(W))</strong></p>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

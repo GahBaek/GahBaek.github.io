@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>데이터전처리 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>데이터전처리</h1>
+    <div class="post-meta">
+      <span>2025·12</span>
+      <span class="post-tag">ML</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>데이터 전처리</h2>
+<h2>텍스트 전처리</h2>
+
+<h3>토큰화</h3>
+
+<pre><code class="language-python">
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import urllib.request
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.preprocessing.text import Tokenizer  # type: ignore[reportMissingImports]
+from tensorflow.keras.preprocessing.sequence import pad_sequences # type: ignore[reportMissingImports]
+from nltk.tokenize import word_tokenize
+from nltk.tokenize import WordPunctTokenizer
+from tensorflow.keras.preprocessing.text import text_to_word_sequence # type: ignore[reportMissingImports]
+import nltk
+from nltk.tokenize import word_tokenize
+import nltk
+
+sentence = "Don't be fooled by the dark sounding name, Mr. Jone's Orphanage is as cheery as cheery goes for a pastry shop."
+print('단어 토큰화1 :', word_tokenize(sentence))
+print('단어 토큰화2 :',WordPunctTokenizer().tokenize("Don't be fooled by the dark sounding name, Mr. Jone's Orphanage is as cheery as cheery goes for a pastry shop."))
+print('단어 토큰화3 :',text_to_word_sequence("Don't be fooled by the dark sounding name, Mr. Jone's Orphanage is as cheery as cheery goes for a pastry shop."))
+</code></pre>
+
+<pre><code class="language-python">
+단어 토큰화1 : ['Do', "n't", 'be', 'fooled', 'by', 'the', 'dark', 'sounding', 'name', ',', 'Mr.', 'Jone', "'s", 'Orphanage', 'is', 'as', 'cheery', 'as', 'cheery', 'goes', 'for', 'a', 'pastry', 'shop', '.']
+단어 토큰화2 : ['Don', "'", 't', 'be', 'fooled', 'by', 'the', 'dark', 'sounding', 'name', ',', 'Mr', '.', 'Jone', "'", 's', 'Orphanage', 'is', 'as', 'cheery', 'as', 'cheery', 'goes', 'for', 'a', 'pastry', 'shop', '.']
+단어 토큰화3 : ["don't", 'be', 'fooled', 'by', 'the', 'dark', 'sounding', 'name', 'mr', "jone's", 'orphanage', 'is', 'as', 'cheery', 'as', 'cheery', 'goes', 'for', 'a', 'pastry', 'shop']
+</code></pre>
+
+<ul>
+<li>구두점이나 특수 문자를 단순 제외해서는 안된다.</li>
+<li>줄임말과 단어 내에 띄어쓰기가 있는경우</li>
+</ul>
+
+<h3>정제와 정규화</h3>
+
+<ul>
+<li>정제</li>
+</ul>
+<p>    - 갖고 있는 코퍼스로부터 노이즈 데이터를 제거한다.</p>
+<ul>
+<li>정규화</li>
+</ul>
+<p>    - 표현 방법이 다른 단어들을 통합시켜서 같은 단어로 만들어준다.</p>
+<p>1. 규칙에 기반한 표기가 다른 단어들의 통합</p>
+<p>    1. 어간 추출</p>
+<p>    2. 표제어 추출</p>
+<p>2. 대, 소문자 통합</p>
+<p>    1. 소문자 변환</p>
+<p>        - 하지만, 무작정 통합되어서는 안된다. (US 와 us 는 다르기 때문이다.)</p>
+<p>3. 불필요한 단어의 제거</p>
+<p>    1. 등장 빈도가 적은 단어</p>
+<p>    2. 길이가 짧은 단어</p>
+<p>        1. 영어권에서는 단어의 길이가 짧은 단어를 삭제하면 크게 의미를 갖지 못하는 단어를 줄이는 효과가 있다.</p>
+<p>4. 정규 표현식</p>
+<p>    1. HTML 문서의 경우 태그</p>
+<p>    2. 뉴스 기사를 크롤링한다면 시간 등</p>
+<p>    3. 규칙에 기반하여 한번에 제거하는 방식으로 정규 표현식은 매우 유용하다.</p>
+
+<h3>어간 추출과 표제어 추출</h3>
+
+<ul>
+<li>표제어 추출</li>
+</ul>
+<p>    - 어간: 단어의 의미를 담고 있는 단어의 핵심 부분</p>
+<p>    - 접사: 단어에 추가적인 의미를 주는 부분</p>
+
+<p>    ⇒ 형태학적 파싱은 이 두 가지 구성 요소를 분리하는 작업을 말한다.</p>
+
+<p>    - Steaming (어간 추출)</p>
+
+<p>        am → am</p>
+
+<p>        the going → the go</p>
+
+<p>        having → hav</p>
+
+<p>    - Lemmatization (표제어 추출)</p>
+
+<p>        am → be</p>
+
+<p>        the going → the going</p>
+
+<p>        having → have</p>
+
+
+<h3>불용어 (Stopword)</h3>
+
+<p>갖고 있는 데이터에서 유의미한 단어 토큰만을 선별하기 위해서 큰 의미가 없는 단어 토큰을 제거하는 작업이 필요하다. 자주 등장하지만 분석을 하는 것에 있어서는 큰 도움이 되지 않는 단어들.</p>
+
+<pre><code class="language-python">
+example = "Family is not an important thing. It's everything."
+stop_words = set(stopwords.words('english')) 
+
+word_tokens = word_tokenize(example)
+
+result = []
+for word in word_tokens: 
+    if word not in stop_words: 
+        result.append(word) 
+
+print('불용어 제거 전 :',word_tokens) 
+print('불용어 제거 후 :',result)
+</code></pre>
+
+<h3>정수 인코딩</h3>
+
+<h3>패딩</h3>
+
+<p>자연어 처리 과정에서 각 문장의 길이는 서로 다를 수 있다. 하지만 기계는 길이가 전부 동일한 문서들에 대해서는 하나의 행렬로 보고 한꺼번에 묶어서 처리할 수 있다. 쉽게 말해 병렬 연산을 위해서 여러 문장의 길이를 임의로 동일하게 맞춰주는 작업이 필요할 때가 있다. 이러한 작업은 Numpy 로 패딩하는 방법과 Keras 전처리 도구로 패딩하는 방법이 있다.</p>
+
+<p>가장 길이가 긴 문장의 길이를 K 라고 할 때</p>
+
+<p>K 를 기준으로 패딩을 하게 된다면 문장의 길이가 K 보다 짧다면 해당 문장의 뒤에는 숫자 0이 붙어서 모든 문장의 길이가 전부 K가 된다. </p>
+
+<p>기계는 이것들을 하나의 행렬로 보고 <strong><code>병렬 처리</code></strong>를 할 수 있다.</p>
+
+<p>이와 같이 데이터에 특정 값을 채워서 데이터의 크기를 조정하는 것을 패딩이라고 한다. </p>
+
+<p>Numpy 로 패딩을 할 경우 0 이 뒤에 채워진다. 반면에 Keras 의 경우 기본적으로 문서의 앞을 0으로 채운다.</p>
+
+<p>길이가 K 보다 짧은 문서는 0으로 패딩되고 기존에 K 보다 길었다면 데이터가 손실된다.</p>
+
+<h3>원-핫 인코딩</h3>
+
+<p>컴퓨터 또는 기계는 문자보다 숫자를 더 잘 처리할 수 있다. 이를 위해 자연어 처리에서는 문자를 숫자로 바꾸는 여러 가지 기법이 있다.</p>
+
+<p>원-핫 인코딩은 그 많은 기법 중에서 단어를 표현하는 가장 기본적인 표현 방법이다.</p>
+
+<ul>
+<li>one-hot encoding</li>
+</ul>
+<p>    - 단어 집합의 크기를 벡터의 차원으로 하고, 표현하고 싶은 단어의 인덱스에 1의 값을 부여하고, 다른 인덱스에는 0을 부여하는 단어의 벡터 표현 방식이다.</p>
+<p>    - 과정은 다음과 같다.</p>
+<p>        - 정수 인코딩을 수행한다.</p>
+<p>        - 표현하고 싶은 단어의 고유한 정수를 인덱스로 간주하고 해당 위치에 1을 부여하고 다른 단어의 인덱스의 위치에는 0을 부여한다.</p>
+<p>    - 장점</p>
+<p>        - 단순하고 직관적</p>
+<p>        - 순서 정보를 넣지 않는다.</p>
+<p>    - 단점</p>
+<p>        - <strong>차원이 너무 커진다.</strong> (고차원 + 희소 벡터)</p>
+<p>        - 단어 사이의 유<strong>사도 정보가 없다.</strong></p>
+
+<p>        ⇒ 최근에는 임베딩을 더 사용한다.</p>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

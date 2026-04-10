@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>모두를 위한 머신러닝 (lec1 3) · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>모두를 위한 머신러닝 (lec1 3)</h1>
+    <div class="post-meta">
+      <span>2025·12</span>
+      <span class="post-tag">ML</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h3>머신 러닝이란,</h3>
+
+<p><strong>Supervised / Unsupervised learning</strong></p>
+
+<ul>
+<li>Supervised Learning: labeled dataset 으로 학습하는 것</li>
+<li>Unsupervised Learning: 데이터의 구조를 학습한다. 라벨이 지정되지 않는 데이터를 학습한다.</li>
+</ul>
+
+<p><strong>Types of supervised learning</strong></p>
+
+<ul>
+<li>Regression (1~100)</li>
+<li>Binary Classification (P/NP)</li>
+<li>Multi-label Classification (A, B, C … F)</li>
+</ul>
+
+<h3>Linear Regression</h3>
+
+<p><strong>Cost Function</strong></p>
+
+<p>$H(x) - y$</p>
+
+<p>→ 음수가 될 수 있어 좋지 않다.</p>
+
+<p>$(H(x) - y)^2$</p>
+
+<p>모든 데이터에 대한 평균</p>
+
+<p><img width="387" height="120" alt="image" src="https://github.com/user-attachments/assets/6cf70230-ff93-49a8-895f-6899249287eb" /></p>
+
+
+<p><img width="1029" height="402" alt="image" src="https://github.com/user-attachments/assets/1663b908-c1f1-4c7d-9b9d-28ce45b82964" /></p>
+
+
+<h3>Linear Regression Cost 함수 최소화</h3>
+
+<p><strong>Gradient Descent algorithm</strong></p>
+
+<ul>
+<li>minimize cost function</li>
+<li>Gradient descent is used many minimization problems</li>
+<li>For a given cost function, cost(W, b), it will find W, b to minimize cost</li>
+<li>It can be appliued to more general function (w1, w2 …)</li>
+</ul>
+
+<p><img width="607" height="170" alt="image" src="https://github.com/user-attachments/assets/4b1fe924-46f7-47d6-a818-4b5afdc4e119" /></p>
+
+
+<p><strong>Convex Function</strong></p>
+
+<p>: 어느 점에서 시작하던 간에 하나의 값으로 수렴하는 것을 보장한다.</p>
+
+<p>cost function 설계시 모양이 convex function 인지 반드시 확인해야한다.  </p>
+<p><img width="300" height="209" alt="image" src="https://github.com/user-attachments/assets/a249e749-b38e-4984-bbc6-2713ed8b8975" /></p>
+
+<pre><code class="language-python">
+import tensorflow as tf
+
+# 1. placeholder 대신 그냥 변수에 값을 담습니다. (Tensor 객체 생성)
+a = tf.constant(3.0)
+b = tf.constant(4.5)
+
+# 2. Session을 열 필요 없이, 바로 더하면 됩니다.
+result = a + b
+
+# 3. 결과 확인
+print(result) 
+# 결과: tf.Tensor(7.5, shape=(), dtype=float32)
+
+print("순수 값만 보기:", result.numpy()) 
+# 결과: 7.5
+</code></pre>
+
+<h3>Linear Regression</h3>
+
+<ul>
+<li>Keras 는 Python 으로 만든 스크립트된 **신경망 라이브러리**이다.</li>
+<li>Tensorflow 는 **심층 신경망**에서 실행을 위해 특별히 설계되었다.</li>
+<li>PyTorch는 **자연어 처리**에 사용되는 기계어 학습이다.</li>
+</ul>
+
+<pre><code class="language-python">
+import tensorflow as tf
+
+x_train = [1.0, 2.0, 3.0]
+y_train = [1.0, 2.0, 3.0]
+
+W = tf.Variable(tf.random.normal([1]), name='weight')
+b = tf.Variable(tf.random.normal([1]), name='bias')
+
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.01)
+
+print("--- 학습 시작 ---")
+for step in range(1001): # 1000번 반복
+    with tf.GradientTape() as tape:
+        hypothesis = x_train * W + b
+        # 오차 제곱한 뒤 평균 내기.
+        cost = tf.reduce_mean(tf.square(hypothesis - y_train))
+
+    # tape 을 이용해 Gradient (기울기) 를 구한다.
+    grads = tape.gradient(cost, [W, b])
+    
+    # optimizer 를 이용해 W 와 b를 업데이트한다.
+    optimizer.apply_gradients(zip(grads, [W, b]))
+
+    if step % 100 == 0:
+        print(f"Step: {step}, Cost: {cost.numpy():.4f}, Weight: {W.numpy()[0]:.4f}, bias: {b.numpy()[0]:.4f}")
+
+print("--- 학습 완료 ---")
+</code></pre>
+
+<pre><code class="language-python">
+--- 학습 시작 ---
+Step: 0, Cost: 1.4103, Weight: 0.1888, bias: 0.7840
+Step: 100, Cost: 0.0814, Weight: 0.6694, bias: 0.7514
+Step: 200, Cost: 0.0503, Weight: 0.7401, bias: 0.5907
+Step: 300, Cost: 0.0311, Weight: 0.7957, bias: 0.4643
+Step: 400, Cost: 0.0192, Weight: 0.8394, bias: 0.3650
+Step: 500, Cost: 0.0119, Weight: 0.8738, bias: 0.2869
+Step: 600, Cost: 0.0073, Weight: 0.9008, bias: 0.2256
+Step: 700, Cost: 0.0045, Weight: 0.9220, bias: 0.1773
+Step: 800, Cost: 0.0028, Weight: 0.9387, bias: 0.1394
+Step: 900, Cost: 0.0017, Weight: 0.9518, bias: 0.1096
+Step: 1000, Cost: 0.0011, Weight: 0.9621, bias: 0.0861
+--- 학습 완료 ---
+</code></pre>
+
+<pre><code class="language-python">
+# testing
+
+# 1. 테스트할 새로운 데이터 준비 (학습 때 안 쓴 숫자들)
+x_test = [4.0, 5.0, 6.0, 7.0]
+
+# 2. 예측하기 (모델 식에 대입: H(x) = Wx + b)
+# W와 b는 이미 위에서 학습을 통해 업데이트된 상태입니다.
+y_predict = x_test * W + b
+
+# 3. 결과 출력
+print("--- 테스트 결과 ---")
+print("입력값(x):", x_test)
+print("예측값(y):", y_predict.numpy())
+</code></pre>
+
+<pre><code class="language-python">
+--- 테스트 결과 ---
+입력값(x): [4.0, 5.0, 6.0, 7.0]
+예측값(y): [4.102872  5.110242  6.1176114 7.124981 ]
+</code></pre>
+
+<pre><code class="language-python">
+import tensorflow as tf
+
+x_data = [1., 2., 3.]
+y_data = [1., 2., 3.]
+
+W = tf.Variable(tf.random.normal(()), name='weight')
+
+learning_rate = 0.1
+
+print("--- 학습 시작 ---")
+
+for step in range(21):
+    hypothesis = W * x_data 
+    
+    cost = tf.reduce_mean(tf.square(hypothesis - y_data))
+
+    # (3) 미분(Gradient) 직접 계산
+    # 공식: mean((W * X - Y) * X)
+    gradient = tf.reduce_mean((W * x_data - y_data) * x_data)
+
+    # (4) W 업데이트 (Descent)
+    # W = W - learning_rate * gradient
+    W.assign_sub(learning_rate * gradient)
+
+    # 결과 출력
+    print(f"Step: {step}, Cost: {cost.numpy():.4f}, Weight: {W.numpy():.4f}")
+
+print("--- 학습 완료 ---")
+</code></pre>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

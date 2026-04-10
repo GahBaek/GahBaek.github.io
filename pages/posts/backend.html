@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>backend · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag {
+      background: var(--tag); border-radius: 4px;
+      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    }
+    .post-body { line-height: 1.8; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
+    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .3rem; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem;
+      margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code {
+      background: var(--tag); border-radius: 3px;
+      padding: .1rem .35rem; font-size: .85em;
+    }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <a class="back-link" href="../posts.html">
+    ← Back to Posts
+  </a>
+
+  <div class="post-header">
+    <h1>backend</h1>
+    <div class="post-meta">
+      <span>2026·02</span>
+      <span class="post-tag">Note</span>
+    </div>
+  </div>
+
+  <hr class="post-divider">
+
+  <div class="post-body">
+<h2>Back End</h2>
+
+<p><img width="1674" height="432" alt="image" src="https://github.com/user-attachments/assets/addee128-ea87-47b5-86e0-6695689ee15d" /></p>
+
+<h3>IR → Machine code</h3>
+
+<p>: Back End 는 Front End 가 만든 IR 을 받아서 특정 CPU/ISA 용 기계어로 바꾸는 부분이다.</p>
+
+<p><strong>(1) Instruction Selection</strong></p>
+
+<ul>
+<li>IR 을 연산을 target machine 의 실제 명령어 조합으로 바꿔준다</li>
+</ul>
+
+<p><strong>(2) Instruction Scheduling</strong></p>
+
+<ul>
+<li>선택된 명령어들을 어떤 순서로 실행하면 가장 빠를지 재배열</li>
+</ul>
+
+<p><strong>(3) Register Allocation</strong></p>
+
+<ul>
+<li>프로그램의 변수/임시값은 많지만 CPU register 값은 적기 떄문에 부족하면 일부 값을 memory(stack) 에 저장했다가 다시 가져오는데 이걸 spill 이라고 한다.</li>
+<li>spill 을 최소화 하여 성능을 최대한 좋게 하기</li>
+</ul>
+
+<p>Back End 의 Responsibility</p>
+
+<ul>
+<li>Translate IT into target machine code</li>
+</ul>
+<p>    - IR 을 target architecture 용 코드로 변환한다</p>
+<ul>
+<li>Choose instructions to implement each IR operation</li>
+</ul>
+<p>    - IR 연산을 어떤 기계 명령들로 구현할지 선택한다.</p>
+<ul>
+<li>Decide which values to keep in registers</li>
+</ul>
+<p>    - 어떤 값들을 레지스터에 둘지 결정한다.</p>
+<ul>
+<li>Find optimal order of instruction execution</li>
+</ul>
+<p>    - 실행 순서를 최적화한다.</p>
+<ul>
+<li>Ensure conformance with system interfaces</li>
+</ul>
+  </div>
+</main>
+
+<script src="../../js/nav.js"></script>
+</body>
+</html>
