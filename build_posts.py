@@ -269,8 +269,43 @@ def render_card(date_str, tag, title, href):
     </a>"""
 
 
-def render_index(page_title, page_sub, cards_html, self_href, nav_active):
-    return f"""<!DOCTYPE html>
+def render_index(page_title, page_sub, all_cards, index_path, nav_active, out_dir, section_slug, per_page=10):
+    total = len(all_cards)
+    total_pages = max(1, -(-total // per_page))  # ceiling division
+
+    for page_num in range(1, total_pages + 1):
+        start = (page_num - 1) * per_page
+        chunk = all_cards[start:start + per_page]
+        cards_html = "\n".join(c for _, c in chunk)
+
+        # pagination controls
+        prev_link = ""
+        next_link = ""
+        if page_num > 1:
+            prev_href = index_path.split("/")[-1] if page_num == 2 else f"{section_slug}-page{page_num-1}.html"
+            prev_link = f'<a class="page-btn" href="{prev_href}">← Prev</a>'
+        if page_num < total_pages:
+            next_href = f"{section_slug}-page{page_num+1}.html"
+            next_link = f'<a class="page-btn" href="{next_href}">Next →</a>'
+
+        # page number buttons
+        page_btns = ""
+        for i in range(1, total_pages + 1):
+            if i == 1:
+                href = index_path.split("/")[-1]
+            else:
+                href = f"{section_slug}-page{i}.html"
+            active_cls = ' active' if i == page_num else ''
+            page_btns += f'<a class="page-num{active_cls}" href="{href}">{i}</a>'
+
+        pagination = f"""
+  <div class="pagination">
+    {prev_link}
+    <div class="page-nums">{page_btns}</div>
+    {next_link}
+  </div>""" if total_pages > 1 else ""
+
+        html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -279,6 +314,21 @@ def render_index(page_title, page_sub, cards_html, self_href, nav_active):
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .pagination {{
+      display: flex; align-items: center; justify-content: center;
+      gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
+    }}
+    .page-btn, .page-num {{
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      padding: .35rem .8rem; border-radius: 6px;
+      border: 1px solid var(--line); text-decoration: none;
+      color: var(--muted); background: var(--card);
+      transition: all .15s;
+    }}
+    .page-btn:hover, .page-num:hover {{ border-color: var(--ink); color: var(--ink); }}
+    .page-num.active {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
+  </style>
 </head>
 <body>
 <nav>
@@ -296,13 +346,23 @@ def render_index(page_title, page_sub, cards_html, self_href, nav_active):
   <p class="page-sub">{page_sub}</p>
   <div class="card-list">
 {cards_html}
-  </div>
+  </div>{pagination}
 </main>
 <script src="../js/nav.js"></script>
 </body>
 </html>
 """
+        # page 1 → posts.html, page 2+ → posts-page2.html etc.
+        if page_num == 1:
+            fname = index_path
+        else:
+            base_dir = os.path.dirname(index_path)
+            fname = os.path.join(base_dir, f"{section_slug}-page{page_num}.html")
 
+        with open(fname, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    print(f"  ✓  {index_path}  ({total} entries, {total_pages} page(s))\n")
 
 # ── BUILDER ─────────────────────────────────────────────────────────────
 
@@ -353,14 +413,11 @@ def build_section(src_dir, out_dir, index_path,
 
         card_href = f"{section_slug}/{slug}.html"
         cards.append((sort_key, render_card(date_str, tag, title, card_href)))
-
     cards.sort(key=lambda x: x[0], reverse=True)
-    cards_html = "\n".join(c for _, c in cards)
+    render_index(page_title, page_sub, cards, index_path, nav_active,
+                 out_dir, section_slug, per_page=10)
 
-    with open(index_path, "w", encoding="utf-8") as f:
-        f.write(render_index(page_title, page_sub, cards_html, index_path, nav_active))
 
-    print(f"  ✓  {index_path}  ({len(cards)} entries)\n")
 
 
 def main():
