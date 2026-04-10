@@ -15,41 +15,39 @@
       margin-bottom: .6rem;
     }
     .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
-    .post-tag {
-      background: var(--tag); border-radius: 4px;
-      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
     }
-    .post-body { line-height: 1.8; font-size: .95rem; }
-    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
-    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
-    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
-    .post-body li { margin-bottom: .3rem; }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
     .post-body pre {
       background: #1a1814; color: #f7f5f0;
       border-radius: 6px; padding: 1.2rem;
-      overflow-x: auto; font-size: .82rem;
-      margin: 1.2rem 0;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
     }
     .post-body code { font-family: 'DM Mono', monospace; }
-    .post-body p code {
-      background: var(--tag); border-radius: 3px;
-      padding: .1rem .35rem; font-size: .85em;
-    }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
     .post-body a { color: var(--accent); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
     .back-link {
       display: inline-flex; align-items: center; gap: .4rem;
       font-size: .8rem; color: var(--muted); text-decoration: none;
-      margin-bottom: 2rem;
-      transition: color .2s;
+      margin-bottom: 2rem; transition: color .2s;
     }
     .back-link:hover { color: var(--ink); }
     hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-  </style>
+</style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
   <ul class="nav-links">
@@ -60,12 +58,8 @@
     <li><a href="../cv.html">CV</a></li>
   </ul>
 </nav>
-
 <main class="page">
-  <a class="back-link" href="../posts.html">
-    ← Back to Posts
-  </a>
-
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
   <div class="post-header">
     <h1>pwn</h1>
     <div class="post-meta">
@@ -73,9 +67,7 @@
       <span class="post-tag">Note</span>
     </div>
   </div>
-
   <hr class="post-divider">
-
   <div class="post-body">
 <h2>PWNTOOL</h2>
 
@@ -84,12 +76,12 @@
 <h3>주요 기능</h3>
 
 <ul>
-<li>**`process`**</li>
+<li><strong><code>process</code></strong></li>
 </ul>
 <p>    - 로컬 바이너리를 대상으로 exploit 을 할 때 사용</p>
 <p>    - test로 사용</p>
 <ul>
-<li>**`remote`**</li>
+<li><strong><code>remote</code></strong></li>
 </ul>
 <p>    - 원격 서버를 대상으로 exploit을 할 때 사용</p>
 <p>    - 실제 실행 시 사용</p>
@@ -97,42 +89,42 @@
 <p>send</p>
 
 <ul>
-<li>**`p.send(data)`**</li>
+<li><strong><code>p.send(data)</code></strong></li>
 </ul>
 <p>    - 데이터 입력</p>
 <ul>
-<li>**`p.sendline(data)`**</li>
+<li><strong><code>p.sendline(data)</code></strong></li>
 </ul>
 <p>    - 데이터에 ‘\n’ 추가해서 입력</p>
 <ul>
-<li>**`p.sendafter('output', data)`**</li>
+<li><strong><code>p.sendafter('output', data)</code></strong></li>
 </ul>
 <p>    - output 내용이 출력되면 data 입력</p>
 <ul>
-<li>**`p.sendlineafter('output', data)`**</li>
+<li><strong><code>p.sendlineafter('output', data)</code></strong></li>
 </ul>
 <p>    - output 내용이 출력된다면 data + ‘\n’을 입력</p>
 
 <p>recv</p>
 
 <ul>
-<li>**`p.recv(n)`**</li>
+<li><strong><code>p.recv(n)</code></strong></li>
 </ul>
 <p>    - n byte 만큼 데이터를 받는다. n byte 보다 짧은 데이터를 받아도 오류가 나지 않는다.</p>
 <ul>
-<li>**`p.recvn(n)`**</li>
+<li><strong><code>p.recvn(n)</code></strong></li>
 </ul>
 <p>    - n byte 만큼 데이터를 받는다. n byte 보다 짧은 데이터를 받으면 오류가 발생한다.</p>
 <ul>
-<li>**`p.recvline()`**</li>
+<li><strong><code>p.recvline()</code></strong></li>
 </ul>
 <p>    - 데이터를 개행 문자를 만날 때까지 받는다.</p>
 <ul>
-<li>**`p.recvuntil(data)`**</li>
+<li><strong><code>p.recvuntil(data)</code></strong></li>
 </ul>
 <p>    - data가 출력 될 때까지 데이터를 받는다.</p>
 <ul>
-<li>**`p.recvall()`**</li>
+<li><strong><code>p.recvall()</code></strong></li>
 </ul>
 <p>    - 프로세스가 종료될 때까지 데이터를 받는다.</p>
 <ul>
@@ -141,33 +133,32 @@
 <p>    - ex) data = recv(1024)</p>
 
 <ul>
-<li>**`interactive()`**</li>
+<li><strong><code>interactive()</code></strong></li>
 </ul>
 <p>    - shell 을 획득했거나, exploit 의 특정 상황에서 직접 입력을 주면서 출력을 확인하고 싶을 때 사용하는 함수</p>
 <p>    - 호출하면 터미널로 프로세스에 데이터를 입력할 수 있다. (stdin, stdout 에서 process 로바꿔준다.)</p>
 
 <ul>
-<li>**`ELF`**</li>
+<li><strong><code>ELF</code></strong></li>
 </ul>
 <p>    - exploit 에 사용되는 각종 정보가 삽입되어 있다.</p>
 <ul>
-<li>**`context.log`**</li>
+<li><strong><code>context.log</code></strong></li>
 </ul>
 <p>    - debug 의 편의를 돕기 위한 로깅 기능이다.</p>
 <p>    - log level 을 context.log_level 변수로 조절할 수 있다.</p>
 <p>    - error / debug / info</p>
 <ul>
-<li>**`shellcraft`**</li>
+<li><strong><code>shellcraft</code></strong></li>
 </ul>
 <p>    - shell code 를 쉽게 꺼내 쓸 수 있게 해준다.</p>
 <ul>
-<li>**`asm`**</li>
+<li><strong><code>asm</code></strong></li>
 </ul>
 <p>    - assemble 기능을 실행시켜준다.</p>
 <p>    - 아키텍처 정보를 미리 지정해야한다.</p>
   </div>
 </main>
-
 <script src="../../js/nav.js"></script>
 </body>
 </html>

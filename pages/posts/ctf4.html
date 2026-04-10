@@ -15,41 +15,39 @@
       margin-bottom: .6rem;
     }
     .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
-    .post-tag {
-      background: var(--tag); border-radius: 4px;
-      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
     }
-    .post-body { line-height: 1.8; font-size: .95rem; }
-    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
-    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
-    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
-    .post-body li { margin-bottom: .3rem; }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
     .post-body pre {
       background: #1a1814; color: #f7f5f0;
       border-radius: 6px; padding: 1.2rem;
-      overflow-x: auto; font-size: .82rem;
-      margin: 1.2rem 0;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
     }
     .post-body code { font-family: 'DM Mono', monospace; }
-    .post-body p code {
-      background: var(--tag); border-radius: 3px;
-      padding: .1rem .35rem; font-size: .85em;
-    }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
     .post-body a { color: var(--accent); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
     .back-link {
       display: inline-flex; align-items: center; gap: .4rem;
       font-size: .8rem; color: var(--muted); text-decoration: none;
-      margin-bottom: 2rem;
-      transition: color .2s;
+      margin-bottom: 2rem; transition: color .2s;
     }
     .back-link:hover { color: var(--ink); }
     hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-  </style>
+</style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
   <ul class="nav-links">
@@ -60,12 +58,8 @@
     <li><a href="../cv.html">CV</a></li>
   </ul>
 </nav>
-
 <main class="page">
-  <a class="back-link" href="../posts.html">
-    ← Back to Posts
-  </a>
-
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
   <div class="post-header">
     <h1>ctf4</h1>
     <div class="post-meta">
@@ -73,13 +67,11 @@
       <span class="post-tag">CTF</span>
     </div>
   </div>
-
   <hr class="post-divider">
-
   <div class="post-body">
 <h2>문제</h2>
 
-<h3>**Description**</h3>
+<h3><strong>Description</strong></h3>
 
 <p>이 문제는 서버에서 작동하고 있는 서비스(out_of_bound)의 바이너리와 소스 코드가 주어집니다.</p>
 
@@ -160,8 +152,8 @@ $2 = 0x4c
 
 <p>76 / 4 (byte) = 19</p>
 
-<p>> 만약 프로그램이 <code>scanf</code>가 아니라 <code>read(0, &idx, 4);</code> 처럼 변수에 원시 바이트를 직접 꽂아 넣는 함수를 썼다면, 그때는 <code>p32(19)</code>를 사용하는 게 맞다</p>
-<p>> </p>
+<blockquote><p>만약 프로그램이 <code>scanf</code>가 아니라 <code>read(0, &idx, 4);</code> 처럼 변수에 원시 바이트를 직접 꽂아 넣는 함수를 썼다면, 그때는 <code>p32(19)</code>를 사용하는 게 맞다</p></blockquote>
+<blockquote><p></p></blockquote>
 
 <pre><code class="language-python">
 ┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0312]
@@ -182,7 +174,6 @@ p.interactive()
 </code></pre>
   </div>
 </main>
-
 <script src="../../js/nav.js"></script>
 </body>
 </html>

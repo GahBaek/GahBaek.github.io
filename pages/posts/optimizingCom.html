@@ -15,41 +15,39 @@
       margin-bottom: .6rem;
     }
     .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
-    .post-tag {
-      background: var(--tag); border-radius: 4px;
-      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
     }
-    .post-body { line-height: 1.8; font-size: .95rem; }
-    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
-    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
-    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
-    .post-body li { margin-bottom: .3rem; }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
     .post-body pre {
       background: #1a1814; color: #f7f5f0;
       border-radius: 6px; padding: 1.2rem;
-      overflow-x: auto; font-size: .82rem;
-      margin: 1.2rem 0;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
     }
     .post-body code { font-family: 'DM Mono', monospace; }
-    .post-body p code {
-      background: var(--tag); border-radius: 3px;
-      padding: .1rem .35rem; font-size: .85em;
-    }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
     .post-body a { color: var(--accent); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
     .back-link {
       display: inline-flex; align-items: center; gap: .4rem;
       font-size: .8rem; color: var(--muted); text-decoration: none;
-      margin-bottom: 2rem;
-      transition: color .2s;
+      margin-bottom: 2rem; transition: color .2s;
     }
     .back-link:hover { color: var(--ink); }
     hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-  </style>
+</style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
   <ul class="nav-links">
@@ -60,12 +58,8 @@
     <li><a href="../cv.html">CV</a></li>
   </ul>
 </nav>
-
 <main class="page">
-  <a class="back-link" href="../posts.html">
-    ← Back to Posts
-  </a>
-
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
   <div class="post-header">
     <h1>optimizingCom</h1>
     <div class="post-meta">
@@ -73,13 +67,11 @@
       <span class="post-tag">Note</span>
     </div>
   </div>
-
   <hr class="post-divider">
-
   <div class="post-body">
 <h3>Optimizing Compiler</h3>
 
-<p>!<a href="attachment:4548da00-aa5b-48f6-a1e7-3d8c74635bc2:image.png">image.png</a></p>
+<p><img src="attachment:4548da00-aa5b-48f6-a1e7-3d8c74635bc2:image.png" alt="image.png" style="max-width:100%;border-radius:6px;margin:1rem 0;"></p>
 
 <p><strong>Middle End</strong></p>
 
@@ -98,7 +90,7 @@
 
 <h3>Scanner in Front End</h3>
 
-<p>!<a href="attachment:dcef8418-7d9e-4ea3-aff8-9ac1cf98a40f:image.png">image.png</a></p>
+<p><img src="attachment:dcef8418-7d9e-4ea3-aff8-9ac1cf98a40f:image.png" alt="image.png" style="max-width:100%;border-radius:6px;margin:1rem 0;"></p>
 
 <p><strong>Scanner</strong></p>
 
@@ -110,7 +102,7 @@
 
 <p><strong>Scanner Generator</strong></p>
 
-<p>!<a href="attachment:9128db29-b076-4931-bca2-d74d90ad9bdd:image.png">image.png</a></p>
+<p><img src="attachment:9128db29-b076-4931-bca2-d74d90ad9bdd:image.png" alt="image.png" style="max-width:100%;border-radius:6px;margin:1rem 0;"></p>
 
 <p>: “Scanner 를 손으로 짜기 싫다 → 자동으로 만들자”</p>
 
@@ -144,8 +136,8 @@
 
 <p>Scanner 가 없다면</p>
 
-<p>> 한 글자씩 읽기, 공백/주석 skip, 키워드 vs 식별자 구분, 숫자/문자 literal 처리 등등을 구현해야한다.</p>
-<p>> </p>
+<blockquote><p>한 글자씩 읽기, 공백/주석 skip, 키워드 vs 식별자 구분, 숫자/문자 literal 처리 등등을 구현해야한다.</p></blockquote>
+<blockquote><p></p></blockquote>
 
 <p>따라서 규칙만 적으면 자동으로 코드를 만들어주는 generator 를 사용하는 것이다.</p>
 
@@ -183,22 +175,27 @@
 
 <p>그래서 정규식을 상태들을 가진 기계로 바꿔서, 입력을 한 글자씩 넣으며 상태를 이동시키는 방식으로 처리한다.</p>
 
-<p>1. <strong>정규 표현식 → NFA (Non-deterministic Finite Automation)</strong></p>
+<ol>
+<li><strong>정규 표현식 → NFA (Non-deterministic Finite Automation)</strong></li>
+</ol>
 
 <p>NFA: 갈림길이 있는 state 기계</p>
 
-<p>1. <strong>NFA → DFA (Deterministic Finite Automation)</strong></p>
+<ol>
+<li><strong>NFA → DFA (Deterministic Finite Automation)</strong></li>
+</ol>
 
 <p>DFA: 갈림길이 없는 state 기계 (lexer 가 선호)</p>
 
 <p>⇒ 실제로 스캐너는 source code 를 엄청 길게 읽어야 하므로 매 글자마다 갈림길들을 동시에 추적하면 비싸다. DFA 는 갈림길이 없어서 매 글자를 O(1) 로 빠르게 처리가 가능하다.</p>
 
-<p>1. <strong>NFA 에서 DFA 로 갈림길을 없애는 핵심 아이디어</strong></p>
+<ol>
+<li><strong>NFA 에서 DFA 로 갈림길을 없애는 핵심 아이디어</strong></li>
+</ol>
 
 <p>NFA 의 여러 상태를 동시에 있을 수 있다는 상황을 DFA 에서는 그 여러 상태의 집합을 하나의 상태로 합쳐서 표현한다.</p>
   </div>
 </main>
-
 <script src="../../js/nav.js"></script>
 </body>
 </html>

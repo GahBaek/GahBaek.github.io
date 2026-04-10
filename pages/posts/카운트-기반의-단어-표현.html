@@ -15,41 +15,39 @@
       margin-bottom: .6rem;
     }
     .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
-    .post-tag {
-      background: var(--tag); border-radius: 4px;
-      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
     }
-    .post-body { line-height: 1.8; font-size: .95rem; }
-    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
-    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
-    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
-    .post-body li { margin-bottom: .3rem; }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
     .post-body pre {
       background: #1a1814; color: #f7f5f0;
       border-radius: 6px; padding: 1.2rem;
-      overflow-x: auto; font-size: .82rem;
-      margin: 1.2rem 0;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
     }
     .post-body code { font-family: 'DM Mono', monospace; }
-    .post-body p code {
-      background: var(--tag); border-radius: 3px;
-      padding: .1rem .35rem; font-size: .85em;
-    }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
     .post-body a { color: var(--accent); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
     .back-link {
       display: inline-flex; align-items: center; gap: .4rem;
       font-size: .8rem; color: var(--muted); text-decoration: none;
-      margin-bottom: 2rem;
-      transition: color .2s;
+      margin-bottom: 2rem; transition: color .2s;
     }
     .back-link:hover { color: var(--ink); }
     hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-  </style>
+</style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
   <ul class="nav-links">
@@ -60,12 +58,8 @@
     <li><a href="../cv.html">CV</a></li>
   </ul>
 </nav>
-
 <main class="page">
-  <a class="back-link" href="../posts.html">
-    ← Back to Posts
-  </a>
-
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
   <div class="post-header">
     <h1>카운트 기반의 단어 표현</h1>
     <div class="post-meta">
@@ -73,9 +67,7 @@
       <span class="post-tag">NLP</span>
     </div>
   </div>
-
   <hr class="post-divider">
-
   <div class="post-body">
 <h3>카운트 기반의 단어 표현</h3>
 
@@ -182,7 +174,7 @@
 <p>            - 이 때문에 전처리를 통해 단어 집합의 크기를 줄이는 일은 BoW 표현을 사용하는 모델에서 중요할 수 있다.</p>
 <p>        - 단순 빈도 수 기반 접근</p>
 <ul>
-<li>**TF-IDF (단어 빈도-역 문서 빈도)**</li>
+<li><strong>TF-IDF (단어 빈도-역 문서 빈도)</strong></li>
 </ul>
 <p>    - 단어의 빈도와 역 문서 빈도를 사용하여 DTM 내의 각 단어들마다 중요한 정도를 가중치로 주는 방법이다.</p>
 <p>    - 우선 DTM 을 만든 후, TF-IDF 가중치를 부여한다.</p>
@@ -190,9 +182,9 @@
 <p>    - <strong>df(t)</strong>: 특정 단어 t가 등장한 <strong>문서의 수</strong></p>
 <p>    - <strong>idf(t)</strong>: df(t)에 반비례하는 수</p>
 
-<p>        !<a href="attachment:5bcc4fd2-e57a-4a16-a5dd-43a16a9af0ea:image.png">image.png</a></p>
+<p>        <img src="attachment:5bcc4fd2-e57a-4a16-a5dd-43a16a9af0ea:image.png" alt="image.png" style="max-width:100%;border-radius:6px;margin:1rem 0;"></p>
 
-<p>        !<a href="attachment:900fa1d9-7bd6-4def-9781-04e00b62f825:image.png">image.png</a></p>
+<p>        <img src="attachment:900fa1d9-7bd6-4def-9781-04e00b62f825:image.png" alt="image.png" style="max-width:100%;border-radius:6px;margin:1rem 0;"></p>
 
 <p>        - log 사용 이유</p>
 
@@ -276,7 +268,6 @@
 <p>    - 실제 TF-IDF 구현을 제공하고 있는 많은 머신 러닝 패키지들은 패키지마다 식이 상이하다. 이유는 만약 전체 문서의 수 n이 4인데 df(t) 의 값이 3인 경우에는 log 항의 분자와 분모의 값이 같아지게 된다. IDF 의 값이 0이라면 더 이상 가중치의 역할을 수행하지 못한다.</p>
   </div>
 </main>
-
 <script src="../../js/nav.js"></script>
 </body>
 </html>

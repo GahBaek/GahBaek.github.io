@@ -15,41 +15,39 @@
       margin-bottom: .6rem;
     }
     .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
-    .post-tag {
-      background: var(--tag); border-radius: 4px;
-      padding: .1rem .5rem; font-size: .72rem; color: var(--muted);
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
     }
-    .post-body { line-height: 1.8; font-size: .95rem; }
-    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; margin: 2rem 0 .8rem; }
-    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-    .post-body p  { margin-bottom: 1rem; color: var(--ink); }
-    .post-body ul { margin: .5rem 0 1rem 1.5rem; }
-    .post-body li { margin-bottom: .3rem; }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
     .post-body pre {
       background: #1a1814; color: #f7f5f0;
       border-radius: 6px; padding: 1.2rem;
-      overflow-x: auto; font-size: .82rem;
-      margin: 1.2rem 0;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
     }
     .post-body code { font-family: 'DM Mono', monospace; }
-    .post-body p code {
-      background: var(--tag); border-radius: 3px;
-      padding: .1rem .35rem; font-size: .85em;
-    }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
     .post-body a { color: var(--accent); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
     .back-link {
       display: inline-flex; align-items: center; gap: .4rem;
       font-size: .8rem; color: var(--muted); text-decoration: none;
-      margin-bottom: 2rem;
-      transition: color .2s;
+      margin-bottom: 2rem; transition: color .2s;
     }
     .back-link:hover { color: var(--ink); }
     hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
-  </style>
+</style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
   <ul class="nav-links">
@@ -60,12 +58,8 @@
     <li><a href="../cv.html">CV</a></li>
   </ul>
 </nav>
-
 <main class="page">
-  <a class="back-link" href="../posts.html">
-    ← Back to Posts
-  </a>
-
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
   <div class="post-header">
     <h1>Improving Deep Neural Networks</h1>
     <div class="post-meta">
@@ -73,9 +67,7 @@
       <span class="post-tag">DL</span>
     </div>
   </div>
-
   <hr class="post-divider">
-
   <div class="post-body">
 <p><strong>Regularization</strong></p>
 
@@ -179,7 +171,7 @@
 
 <p>⇒ L2 regularization을 사용하는 게 낫다.</p>
 
-<p>---</p>
+<hr>
 
 <p><strong>Normalization</strong></p>
 
@@ -191,8 +183,10 @@
 
 <p>훈련을 빠르게 하는 방법 중 input 을 정규화하는 것도 있다.</p>
 
-<p>1. 평균을 빼는 것. 즉 0으로 만드는 것.</p>
-<p>2. 분산을 정규화하기 → test set 를 정규화할 때도 같은 u, 감마를 사용해야한다.</p>
+<ol>
+<li>평균을 빼는 것. 즉 0으로 만드는 것.</li>
+<li>분산을 정규화하기 → test set 를 정규화할 때도 같은 u, 감마를 사용해야한다.</li>
+</ol>
 
 <p><strong>why normalize inputs ?</strong></p>
 
@@ -391,10 +385,12 @@
 
 <p><strong>Hyperparameter</strong></p>
 
-<p>1. $\alpha$ : need to be turn</p>
-<p>2. $\beta_{1}$ (momentum) : 0.9 (dw)</p>
-<p>3. $\beta_{2}$ (RMSprop) : 0.999(dw^2)</p>
-<p>4. $\epsilon$ : $10^{-8}$</p>
+<ol>
+<li>$\alpha$ : need to be turn</li>
+<li>$\beta_{1}$ (momentum) : 0.9 (dw)</li>
+<li>$\beta_{2}$ (RMSprop) : 0.999(dw^2)</li>
+<li>$\epsilon$ : $10^{-8}$</li>
+</ol>
 
 <h2>Learning Rate Decay</h2>
 
@@ -489,8 +485,8 @@ tf.nn.batch_normalization() # 으로 구현 가능하다.
 <p>BatchNorm 은 보통 mini-batch 에 적용된다. 각 mini-batch 마다 BN 이 따로 계산된다.</p>
 
 <ul>
-<li>**$W,b,γ,β$** 는 미니배치가 바뀌어도 같은 값(공유)인데</li>
-<li>BN에서 쓰는 **$μ,\sigma^2$** 는 **현재 미니배치 데이터로 계산**되기 때문에</li>
+<li><strong>$W,b,γ,β$</strong> 는 미니배치가 바뀌어도 같은 값(공유)인데</li>
+<li>BN에서 쓰는 <strong>$μ,\sigma^2$</strong> 는 <strong>현재 미니배치 데이터로 계산</strong>되기 때문에</li>
 </ul>
 <p>    - 1번 미니배치 통계 $(\mu_{\{1\}}, \sigma^2_{\{1\}})$</p>
 <p>    - 2번 미니배치 통계 $(\mu_{\{2\}}, \sigma^2_{\{2\}})$</p>
@@ -530,7 +526,7 @@ tf.nn.batch_normalization() # 으로 구현 가능하다.
 
 <ul>
 <li>3번째 층이 받는 입력은 보통 A[2]A^{[2]}A[2] 또는 Z[3]Z^{[3]}Z[3]로 이어지는데,</li>
-<li>학습 중에 앞 층 파라미터가 계속 바뀌니까 **3번째 층이 보는 입력 분포가 계속 변함**</li>
+<li>학습 중에 앞 층 파라미터가 계속 바뀌니까 <strong>3번째 층이 보는 입력 분포가 계속 변함</strong></li>
 </ul>
 
 <p>    → internal covariate shift”</p>
@@ -546,7 +542,7 @@ tf.nn.batch_normalization() # 으로 구현 가능하다.
 
 <p>(dropout + )큰 미니배치를 사용하면 잡음이 줄고 일반화 효과도 줄어든다.</p>
 
-<p>---</p>
+<hr>
 
 <p>요즘 BatchNorm 을 보는 시각</p>
 
@@ -610,7 +606,7 @@ tf.nn.batch_normalization() # 으로 구현 가능하다.
 
 <p><strong>$dz^{L}$ $= \hat y - y$</strong></p>
 
-<p>---</p>
+<hr>
 
 <h2>Exercise 1</h2>
 
@@ -985,7 +981,6 @@ else:
 </code></pre>
   </div>
 </main>
-
 <script src="../../js/nav.js"></script>
 </body>
 </html>
