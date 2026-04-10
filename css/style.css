@@ -115,17 +115,15 @@ hr.divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
 
 .avatar {
   width: 110px; height: 110px; border-radius: 50%;
-  background: linear-gradient(135deg, #c0392b22, #1a181422);
   border: 2px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'DM Serif Display', serif;
-  font-size: 2.8rem; color: var(--muted);
   flex-shrink: 0;
-  overflow: hidden;        /* ← ADD */
+  overflow: hidden;
 }
 
-.avatar img {              /* ← ADD this whole block */
-  width: 100%;
-  height: 100%;
+.avatar img {
+  width: 110px;
+  height: 110px;
   object-fit: cover;
+  object-position: center top;  /* focuses on face rather than body */
+  display: block;
 }
