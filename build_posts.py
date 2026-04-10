@@ -327,6 +327,9 @@ def build_section(src_dir, out_dir, index_path,
         # strip Jekyll front matter
         raw = re.sub(r"^---[\s\S]+?---\n?", "", raw).strip()
 
+        # fix Jekyll {{ '/assets/...' | relative_url }} → plain path
+        raw = re.sub(r"\{\{\s*'(/[^']+)'\s*\|\s*relative_url\s*\}\}", r"../../\1", raw)
+
         date_str, title, slug, sort_key = parse_filename(fname)
         tag = guess_tag(fname, tag_map, tag_default)
 
@@ -364,7 +367,6 @@ def main():
         tag_default= "Note",
         back_label = "Posts",
     )
-    raw = re.sub(r"\{\{\s*'(/[^']+)'\s*\|\s*relative_url\s*\}\}", r"../../\1", raw)
 
     print("── Building Paper Reviews ──────────────────────")
     build_section(
