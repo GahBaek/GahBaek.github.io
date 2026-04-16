@@ -32,7 +32,25 @@
     }
     .category-section.collapsed .category-arrow { transform: rotate(-90deg); }
     .category-section.collapsed .card-list { display: none; }
-    .card-list { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: .5rem; }
+    .card-list {
+      border: 1px solid var(--line); border-radius: 8px;
+      overflow: hidden; margin-bottom: .5rem;
+    }
+    .cat-pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: .5rem; margin-top: .75rem; flex-wrap: wrap;
+    }
+    .cat-page-btn, .cat-page-num {
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      padding: .28rem .7rem; border-radius: 6px;
+      border: 1px solid var(--line); text-decoration: none;
+      color: var(--muted); background: var(--card);
+      cursor: pointer; transition: all .15s;
+    }
+    .cat-page-btn:hover, .cat-page-num:hover { border-color: var(--ink); color: var(--ink); }
+    .cat-page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .card-page { display: none; }
+    .card-page.active { display: block; }
 </style>
 </head>
 <body>
@@ -56,6 +74,7 @@
       <span class="category-arrow">▾</span>
     </div>
     <div class="card-list">
+      <div class="card-page active" data-page="1">
     <a class="card" href="posts/pwn.html" data-tag="CTF">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
@@ -101,6 +120,8 @@
         <h3>ctf5</h3>
       </div>
     </a>
+      </div>
+      <div class="card-page" data-page="2">
     <a class="card" href="posts/ctf4.html" data-tag="CTF">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
@@ -137,6 +158,12 @@
         <h3>ctf2</h3>
       </div>
     </a>
+      </div>
+    </div>
+    <div class="cat-pagination">
+      <button class="cat-page-btn cat-prev" data-page="1" style="visibility:hidden">←</button>
+      <button class="cat-page-num active" data-page="1">1</button><button class="cat-page-num" data-page="2">2</button>
+      <button class="cat-page-btn cat-next" data-page="2" style="visibility:visible">→</button>
     </div>
   </div>
   <div class="category-section">
@@ -146,6 +173,7 @@
       <span class="category-arrow">▾</span>
     </div>
     <div class="card-list">
+      <div class="card-page active" data-page="1">
     <a class="card" href="posts/optimizingCom.html" data-tag="Compiler">
       <div class="card-meta">
         <div class="card-date">2026·02</div>
@@ -173,6 +201,7 @@
         <h3>backend</h3>
       </div>
     </a>
+      </div>
     </div>
   </div>
   <div class="category-section">
@@ -182,6 +211,7 @@
       <span class="category-arrow">▾</span>
     </div>
     <div class="card-list">
+      <div class="card-page active" data-page="1">
     <a class="card" href="posts/Improving-Deep-Neural-Networks.html" data-tag="DL">
       <div class="card-meta">
         <div class="card-date">2026·01</div>
@@ -227,6 +257,7 @@
         <h3>ReLU, weights (lec 9 10)</h3>
       </div>
     </a>
+      </div>
     </div>
   </div>
   <div class="category-section">
@@ -236,6 +267,7 @@
       <span class="category-arrow">▾</span>
     </div>
     <div class="card-list">
+      <div class="card-page active" data-page="1">
     <a class="card" href="posts/lec-8-92.html" data-tag="ML">
       <div class="card-meta">
         <div class="card-date">2025·12</div>
@@ -281,6 +313,7 @@
         <h3>데이터전처리</h3>
       </div>
     </a>
+      </div>
     </div>
   </div>
   <div class="category-section">
@@ -290,6 +323,7 @@
       <span class="category-arrow">▾</span>
     </div>
     <div class="card-list">
+      <div class="card-page active" data-page="1">
     <a class="card" href="posts/카운트-기반의-단어-표현.html" data-tag="NLP">
       <div class="card-meta">
         <div class="card-date">2025·12</div>
@@ -308,6 +342,7 @@
         <h3>언어 모델</h3>
       </div>
     </a>
+      </div>
     </div>
   </div>
   <div class="category-section">
@@ -317,6 +352,7 @@
       <span class="category-arrow">▾</span>
     </div>
     <div class="card-list">
+      <div class="card-page active" data-page="1">
     <a class="card" href="posts/Return-to-Library.html" data-tag="Note">
       <div class="card-meta">
         <div class="card-date">2026·04</div>
@@ -353,14 +389,54 @@
         <h3>return to sellcode</h3>
       </div>
     </a>
+      </div>
     </div>
   </div>
 </main>
 <script src="../js/nav.js"></script>
 <script>
+  // collapse/expand
   document.querySelectorAll('.category-header').forEach(function(header) {
     header.addEventListener('click', function() {
       header.closest('.category-section').classList.toggle('collapsed');
+    });
+  });
+
+  // per-category pagination
+  document.querySelectorAll('.category-section').forEach(function(section) {
+    var btns = section.querySelectorAll('.cat-page-num');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var target = btn.getAttribute('data-page');
+        // hide all pages in this section, show target
+        section.querySelectorAll('.card-page').forEach(function(p) {
+          p.classList.remove('active');
+        });
+        section.querySelector('.card-page[data-page="' + target + '"]').classList.add('active');
+        // update active button
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        // update prev/next
+        var prevBtn = section.querySelector('.cat-prev');
+        var nextBtn = section.querySelector('.cat-next');
+        var total = section.querySelectorAll('.card-page').length;
+        var cur = parseInt(target);
+        if (prevBtn) prevBtn.setAttribute('data-page', String(Math.max(1, cur - 1)));
+        if (nextBtn) nextBtn.setAttribute('data-page', String(Math.min(total, cur + 1)));
+        if (prevBtn) prevBtn.style.visibility = cur <= 1 ? 'hidden' : 'visible';
+        if (nextBtn) nextBtn.style.visibility = cur >= total ? 'hidden' : 'visible';
+      });
+    });
+
+    // prev/next buttons
+    section.querySelectorAll('.cat-prev, .cat-next').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var target = btn.getAttribute('data-page');
+        var targetBtn = section.querySelector('.cat-page-num[data-page="' + target + '"]');
+        if (targetBtn) targetBtn.click();
+      });
     });
   });
 </script>
