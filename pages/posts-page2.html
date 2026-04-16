@@ -8,6 +8,16 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <style>
+    .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+    .filter-btn {
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      padding: .3rem .85rem; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--card);
+      color: var(--muted); cursor: pointer; transition: all .15s;
+    }
+    .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .card.hidden { display: none; }
     .pagination {
       display: flex; align-items: center; justify-content: center;
       gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
@@ -16,29 +26,53 @@
       font-family: 'DM Mono', monospace; font-size: .75rem;
       padding: .35rem .8rem; border-radius: 6px;
       border: 1px solid var(--line); text-decoration: none;
-      color: var(--muted); background: var(--card);
-      transition: all .15s;
+      color: var(--muted); background: var(--card); transition: all .15s;
     }
     .page-btn:hover, .page-num:hover { border-color: var(--ink); color: var(--ink); }
     .page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  </style>
+</style>
 </head>
 <body>
 <nav>
   <a class="nav-logo" href="../index.html">Gahyun Baek</a>
   <ul class="nav-links">
     <li><a href="../index.html">Home</a></li>
-    <li><a href="papers.html">Papers</a></li>
-    <li><a href="posts.html" class="active">Posts</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="cv.html">CV</a></li>
+    <li><a href="../pages/papers.html">Papers</a></li>
+    <li><a href="../pages/posts.html" class="active">Posts</a></li>
+    <li><a href="../pages/blog.html">Blog</a></li>
+    <li><a href="../pages/cv.html">CV</a></li>
   </ul>
 </nav>
 <main class="page">
   <h1 class="page-title">Posts</h1>
   <p class="page-sub">Study notes, concepts, and technical write-ups.</p>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-tag="all">All</button>
+    <button class="filter-btn" data-tag="2025-12-11">2025-12-11</button>
+    <button class="filter-btn" data-tag="2025-12-12">2025-12-12</button>
+    <button class="filter-btn" data-tag="2025-12-16">2025-12-16</button>
+    <button class="filter-btn" data-tag="2025-12-17">2025-12-17</button>
+    <button class="filter-btn" data-tag="2025-12-18">2025-12-18</button>
+    <button class="filter-btn" data-tag="2025-12-22">2025-12-22</button>
+    <button class="filter-btn" data-tag="2025-12-24">2025-12-24</button>
+    <button class="filter-btn" data-tag="2026-01-07">2026-01-07</button>
+    <button class="filter-btn" data-tag="2026-01-08">2026-01-08</button>
+    <button class="filter-btn" data-tag="2026-01-21">2026-01-21</button>
+    <button class="filter-btn" data-tag="2026-02-26">2026-02-26</button>
+    <button class="filter-btn" data-tag="2026-03-06">2026-03-06</button>
+    <button class="filter-btn" data-tag="2026-03-10">2026-03-10</button>
+    <button class="filter-btn" data-tag="2026-03-11">2026-03-11</button>
+    <button class="filter-btn" data-tag="2026-03-12">2026-03-12</button>
+    <button class="filter-btn" data-tag="2026-03-13">2026-03-13</button>
+    <button class="filter-btn" data-tag="2026-03-17">2026-03-17</button>
+    <button class="filter-btn" data-tag="2026-03-18">2026-03-18</button>
+    <button class="filter-btn" data-tag="2026-03-27">2026-03-27</button>
+    <button class="filter-btn" data-tag="2026-04-12">2026-04-12</button>
+    <button class="filter-btn" data-tag="2026-04-14">2026-04-14</button>
+    <button class="filter-btn" data-tag="2026-04-15">2026-04-15</button>
+  </div>
   <div class="card-list">
-    <a class="card" href="posts/ctf3.html">
+    <a class="card" href="posts/ctf3.html" data-tag="CTF">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
         <div class="card-tag">CTF</div>
@@ -47,16 +81,16 @@
         <h3>ctf3</h3>
       </div>
     </a>
-    <a class="card" href="posts/shell_basic.html">
+    <a class="card" href="posts/shell_basic.html" data-tag="CTF">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
-        <div class="card-tag">Note</div>
+        <div class="card-tag">CTF</div>
       </div>
       <div class="card-body">
         <h3>shell basic</h3>
       </div>
     </a>
-    <a class="card" href="posts/ctf2.html">
+    <a class="card" href="posts/ctf2.html" data-tag="CTF">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
         <div class="card-tag">CTF</div>
@@ -65,34 +99,34 @@
         <h3>ctf2</h3>
       </div>
     </a>
-    <a class="card" href="posts/optimizingCom.html">
+    <a class="card" href="posts/optimizingCom.html" data-tag="Compiler">
       <div class="card-meta">
         <div class="card-date">2026·02</div>
-        <div class="card-tag">Note</div>
+        <div class="card-tag">Compiler</div>
       </div>
       <div class="card-body">
         <h3>optimizingCom</h3>
       </div>
     </a>
-    <a class="card" href="posts/frontend.html">
+    <a class="card" href="posts/frontend.html" data-tag="Compiler">
       <div class="card-meta">
         <div class="card-date">2026·02</div>
-        <div class="card-tag">Note</div>
+        <div class="card-tag">Compiler</div>
       </div>
       <div class="card-body">
         <h3>frontend</h3>
       </div>
     </a>
-    <a class="card" href="posts/backend.html">
+    <a class="card" href="posts/backend.html" data-tag="Compiler">
       <div class="card-meta">
         <div class="card-date">2026·02</div>
-        <div class="card-tag">Note</div>
+        <div class="card-tag">Compiler</div>
       </div>
       <div class="card-body">
         <h3>backend</h3>
       </div>
     </a>
-    <a class="card" href="posts/Improving-Deep-Neural-Networks.html">
+    <a class="card" href="posts/Improving-Deep-Neural-Networks.html" data-tag="DL">
       <div class="card-meta">
         <div class="card-date">2026·01</div>
         <div class="card-tag">DL</div>
@@ -101,7 +135,7 @@
         <h3>Improving Deep Neural Networks</h3>
       </div>
     </a>
-    <a class="card" href="posts/CNN-실습.html">
+    <a class="card" href="posts/CNN-실습.html" data-tag="DL">
       <div class="card-meta">
         <div class="card-date">2026·01</div>
         <div class="card-tag">DL</div>
@@ -110,7 +144,7 @@
         <h3>CNN 실습</h3>
       </div>
     </a>
-    <a class="card" href="posts/lab-11---12.html">
+    <a class="card" href="posts/lab-11---12.html" data-tag="DL">
       <div class="card-meta">
         <div class="card-date">2026·01</div>
         <div class="card-tag">DL</div>
@@ -119,7 +153,7 @@
         <h3>lab 11   12</h3>
       </div>
     </a>
-    <a class="card" href="posts/overfitting-lec-10.html">
+    <a class="card" href="posts/overfitting-lec-10.html" data-tag="DL">
       <div class="card-meta">
         <div class="card-date">2025·12</div>
         <div class="card-tag">DL</div>
@@ -136,5 +170,23 @@
   </div>
 </main>
 <script src="../js/nav.js"></script>
+<script>
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+      var tag = btn.getAttribute('data-tag');
+      document.querySelectorAll('.card').forEach(function(card) {
+        if (tag === 'all' || card.getAttribute('data-tag') === tag) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>

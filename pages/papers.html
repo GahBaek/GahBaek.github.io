@@ -8,6 +8,16 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <style>
+    .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+    .filter-btn {
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      padding: .3rem .85rem; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--card);
+      color: var(--muted); cursor: pointer; transition: all .15s;
+    }
+    .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .card.hidden { display: none; }
     .pagination {
       display: flex; align-items: center; justify-content: center;
       gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
@@ -16,29 +26,34 @@
       font-family: 'DM Mono', monospace; font-size: .75rem;
       padding: .35rem .8rem; border-radius: 6px;
       border: 1px solid var(--line); text-decoration: none;
-      color: var(--muted); background: var(--card);
-      transition: all .15s;
+      color: var(--muted); background: var(--card); transition: all .15s;
     }
     .page-btn:hover, .page-num:hover { border-color: var(--ink); color: var(--ink); }
     .page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  </style>
+</style>
 </head>
 <body>
 <nav>
   <a class="nav-logo" href="../index.html">Gahyun Baek</a>
   <ul class="nav-links">
     <li><a href="../index.html">Home</a></li>
-    <li><a href="papers.html" class="active">Papers</a></li>
-    <li><a href="posts.html">Posts</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="cv.html">CV</a></li>
+    <li><a href="../pages/papers.html" class="active">Papers</a></li>
+    <li><a href="../pages/posts.html">Posts</a></li>
+    <li><a href="../pages/blog.html">Blog</a></li>
+    <li><a href="../pages/cv.html">CV</a></li>
   </ul>
 </nav>
 <main class="page">
   <h1 class="page-title">Paper Reviews</h1>
   <p class="page-sub">Summaries and critiques of papers I've read.</p>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-tag="all">All</button>
+    <button class="filter-btn" data-tag="2026-03-16">2026-03-16</button>
+    <button class="filter-btn" data-tag="2026-04-09">2026-04-09</button>
+    <button class="filter-btn" data-tag="2026-04-13">2026-04-13</button>
+  </div>
   <div class="card-list">
-    <a class="card" href="papers/SAFETY-LAYERS-IN-ALIGNED-LARGE-LANGUAGE-MODELS---THE-KEY-TO-LLM-SECURITY.html">
+    <a class="card" href="papers/SAFETY-LAYERS-IN-ALIGNED-LARGE-LANGUAGE-MODELS---THE-KEY-TO-LLM-SECURITY.html" data-tag="LLM">
       <div class="card-meta">
         <div class="card-date">2026·04</div>
         <div class="card-tag">LLM</div>
@@ -47,7 +62,7 @@
         <h3>SAFETY LAYERS IN ALIGNED LARGE LANGUAGE MODELS   THE KEY TO LLM SECURITY</h3>
       </div>
     </a>
-    <a class="card" href="papers/ZTaint-Havoc.html">
+    <a class="card" href="papers/ZTaint-Havoc.html" data-tag="Security">
       <div class="card-meta">
         <div class="card-date">2026·04</div>
         <div class="card-tag">Security</div>
@@ -56,7 +71,7 @@
         <h3>ZTaint Havoc</h3>
       </div>
     </a>
-    <a class="card" href="papers/I_know_this_function.html">
+    <a class="card" href="papers/I_know_this_function.html" data-tag="Paper">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
         <div class="card-tag">Paper</div>
@@ -68,5 +83,23 @@
   </div>
 </main>
 <script src="../js/nav.js"></script>
+<script>
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+      var tag = btn.getAttribute('data-tag');
+      document.querySelectorAll('.card').forEach(function(card) {
+        if (tag === 'all' || card.getAttribute('data-tag') === tag) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>
