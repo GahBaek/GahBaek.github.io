@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf 메모리 보호 기법 · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0; border-radius: 6px;
+      padding: 1.2rem; overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../pages/papers.html">Papers</a></li>
+    <li><a href="../../pages/posts.html" class="active">Posts</a></li>
+    <li><a href="../../pages/blog.html">Blog</a></li>
+    <li><a href="../../pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
+  <div class="post-header">
+    <h1>ctf 메모리 보호 기법</h1>
+    <div class="post-meta">
+      <span>2026·04</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<ul>
+<li>메모리 보호 기법</li>
+</ul>
+<p>    - <strong><code>checksec</code></strong></p>
+
+<p>        실행 파일에서 제공하는 보안 메커니즘을 알기 쉬운 형태로 표시해준다.</p>
+
+
+<pre><code class="language-bash">
+gef➤  checksec
+[+] checksec for '/home/hyeoni/Documents/Dreamhack/0410/r2s'
+Canary                        : ✓
+NX                            : ✘
+PIE                           : ✓
+Fortify                       : ✘
+RelRO                         : Ful시
+</code></pre>
+
+<ul>
+<li><strong><code>NX</code></strong> - No Execute</li>
+</ul>
+<p>    - 코드 실행 가능한 메모리 영역과 쓰기 가능한 메모리 영역을 분이라는 보호 기법.</p>
+<ul>
+<li><strong><code>PIE</code></strong> - Position Independent Execution</li>
+</ul>
+<p>    - PIE 보호 기법이 적용되면 실행할 때마다 바이너리의 주소가 랜덤화된다.</p>
+<ul>
+<li><strong><code>RelRO</code></strong> - RELocation Read Only</li>
+</ul>
+<p>    - 데이터가 배치된 메모리의 어느 부분에 읽기 전용 속성을 부여하는 기법이다. → 즉, 메모리에 배치되어 있는 데이터를 변경하지 못하도록 보호한다.</p>
+<p>    - Full RelRO / Partial RelRO / No RelRO</p>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
