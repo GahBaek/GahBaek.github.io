@@ -8,28 +8,31 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
-    .filter-btn {
-      font-family: 'DM Mono', monospace; font-size: .72rem;
-      padding: .3rem .85rem; border-radius: 999px;
-      border: 1px solid var(--line); background: var(--card);
-      color: var(--muted); cursor: pointer; transition: all .15s;
+    .category-section { margin-bottom: 2rem; }
+    .category-header {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 0; margin-bottom: .5rem;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer; user-select: none;
     }
-    .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
-    .filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-    .card.hidden { display: none; }
-    .pagination {
-      display: flex; align-items: center; justify-content: center;
-      gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
+    .category-header:hover .category-title { color: var(--accent); }
+    .category-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem; font-weight: 400; margin: 0;
+      transition: color .15s;
     }
-    .page-btn, .page-num {
-      font-family: 'DM Mono', monospace; font-size: .75rem;
-      padding: .35rem .8rem; border-radius: 6px;
-      border: 1px solid var(--line); text-decoration: none;
-      color: var(--muted); background: var(--card); transition: all .15s;
+    .category-count {
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      background: var(--tag); color: var(--muted);
+      border-radius: 999px; padding: .15rem .6rem;
     }
-    .page-btn:hover, .page-num:hover { border-color: var(--ink); color: var(--ink); }
-    .page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .category-arrow {
+      margin-left: auto; font-size: .7rem; color: var(--muted);
+      transition: transform .2s;
+    }
+    .category-section.collapsed .category-arrow { transform: rotate(-90deg); }
+    .category-section.collapsed .card-list { display: none; }
+    .card-list { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: .5rem; }
 </style>
 </head>
 <body>
@@ -46,13 +49,13 @@
 <main class="page">
   <h1 class="page-title">Paper Reviews</h1>
   <p class="page-sub">Summaries and critiques of papers I've read.</p>
-  <div class="filter-bar">
-    <button class="filter-btn active" data-tag="all">All</button>
-    <button class="filter-btn" data-tag="2026-03-16">2026-03-16</button>
-    <button class="filter-btn" data-tag="2026-04-09">2026-04-09</button>
-    <button class="filter-btn" data-tag="2026-04-13">2026-04-13</button>
-  </div>
-  <div class="card-list">
+  <div class="category-section">
+    <div class="category-header">
+      <h2 class="category-title">LLM</h2>
+      <span class="category-count">1</span>
+      <span class="category-arrow">▾</span>
+    </div>
+    <div class="card-list">
     <a class="card" href="papers/SAFETY-LAYERS-IN-ALIGNED-LARGE-LANGUAGE-MODELS---THE-KEY-TO-LLM-SECURITY.html" data-tag="LLM">
       <div class="card-meta">
         <div class="card-date">2026·04</div>
@@ -62,15 +65,15 @@
         <h3>SAFETY LAYERS IN ALIGNED LARGE LANGUAGE MODELS   THE KEY TO LLM SECURITY</h3>
       </div>
     </a>
-    <a class="card" href="papers/ZTaint-Havoc.html" data-tag="Security">
-      <div class="card-meta">
-        <div class="card-date">2026·04</div>
-        <div class="card-tag">Security</div>
-      </div>
-      <div class="card-body">
-        <h3>ZTaint Havoc</h3>
-      </div>
-    </a>
+    </div>
+  </div>
+  <div class="category-section">
+    <div class="category-header">
+      <h2 class="category-title">Paper</h2>
+      <span class="category-count">1</span>
+      <span class="category-arrow">▾</span>
+    </div>
+    <div class="card-list">
     <a class="card" href="papers/I_know_this_function.html" data-tag="Paper">
       <div class="card-meta">
         <div class="card-date">2026·03</div>
@@ -80,24 +83,32 @@
         <h3>I know this function</h3>
       </div>
     </a>
+    </div>
+  </div>
+  <div class="category-section">
+    <div class="category-header">
+      <h2 class="category-title">Security</h2>
+      <span class="category-count">1</span>
+      <span class="category-arrow">▾</span>
+    </div>
+    <div class="card-list">
+    <a class="card" href="papers/ZTaint-Havoc.html" data-tag="Security">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Security</div>
+      </div>
+      <div class="card-body">
+        <h3>ZTaint Havoc</h3>
+      </div>
+    </a>
+    </div>
   </div>
 </main>
 <script src="../js/nav.js"></script>
 <script>
-  document.querySelectorAll('.filter-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-btn').forEach(function(b) {
-        b.classList.remove('active');
-      });
-      btn.classList.add('active');
-      var tag = btn.getAttribute('data-tag');
-      document.querySelectorAll('.card').forEach(function(card) {
-        if (tag === 'all' || card.getAttribute('data-tag') === tag) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
+  document.querySelectorAll('.category-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+      header.closest('.category-section').classList.toggle('collapsed');
     });
   });
 </script>

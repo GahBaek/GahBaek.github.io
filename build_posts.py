@@ -12,13 +12,14 @@ Generates:
     pages/posts/      <- individual post HTML pages
     pages/papers/     <- individual paper HTML pages
     pages/blog/       <- individual blog HTML pages
-    pages/posts.html  <- card index with category filter + pagination
-    pages/papers.html <- card index with category filter + pagination
-    pages/blog.html   <- card index with category filter + pagination
+    pages/posts.html  <- grouped by category, collapsible
+    pages/papers.html <- grouped by category, collapsible
+    pages/blog.html   <- grouped by category, collapsible
 """
 
 import os
 import re
+from collections import defaultdict
 
 # -- TAG MAPS ----------------------------------------------------------------
 POSTS_TAG_MAP = {
@@ -116,7 +117,6 @@ def md_to_html_body(md_text):
     in_ol = False
 
     for line in lines:
-        # fenced code block
         if line.startswith("```"):
             if not in_code:
                 lang = line[3:].strip() or ""
@@ -133,7 +133,6 @@ def md_to_html_body(md_text):
             )
             continue
 
-        # close open lists
         if in_ul and not re.match(r"^[-*] ", line):
             html.append("</ul>")
             in_ul = False
@@ -179,7 +178,7 @@ def md_to_html_body(md_text):
     return "\n".join(html)
 
 
-# -- SHARED STYLES -----------------------------------------------------------
+# -- STYLES ------------------------------------------------------------------
 
 POST_STYLES = """
     .post-header { margin-bottom: 2.5rem; }
@@ -220,51 +219,43 @@ POST_STYLES = """
 """
 
 INDEX_STYLES = """
-    .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
-    .filter-btn {
-      font-family: 'DM Mono', monospace; font-size: .72rem;
-      padding: .3rem .85rem; border-radius: 999px;
-      border: 1px solid var(--line); background: var(--card);
-      color: var(--muted); cursor: pointer; transition: all .15s;
+    .category-section { margin-bottom: 2rem; }
+    .category-header {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .75rem 0; margin-bottom: .5rem;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer; user-select: none;
     }
-    .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
-    .filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-    .card.hidden { display: none; }
-    .pagination {
-      display: flex; align-items: center; justify-content: center;
-      gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
+    .category-header:hover .category-title { color: var(--accent); }
+    .category-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem; font-weight: 400; margin: 0;
+      transition: color .15s;
     }
-    .page-btn, .page-num {
-      font-family: 'DM Mono', monospace; font-size: .75rem;
-      padding: .35rem .8rem; border-radius: 6px;
-      border: 1px solid var(--line); text-decoration: none;
-      color: var(--muted); background: var(--card); transition: all .15s;
+    .category-count {
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      background: var(--tag); color: var(--muted);
+      border-radius: 999px; padding: .15rem .6rem;
     }
-    .page-btn:hover, .page-num:hover { border-color: var(--ink); color: var(--ink); }
-    .page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .category-arrow {
+      margin-left: auto; font-size: .7rem; color: var(--muted);
+      transition: transform .2s;
+    }
+    .category-section.collapsed .category-arrow { transform: rotate(-90deg); }
+    .category-section.collapsed .card-list { display: none; }
+    .card-list { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: .5rem; }
 """
 
-FILTER_JS = """<script>
-  document.querySelectorAll('.filter-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-btn').forEach(function(b) {
-        b.classList.remove('active');
-      });
-      btn.classList.add('active');
-      var tag = btn.getAttribute('data-tag');
-      document.querySelectorAll('.card').forEach(function(card) {
-        if (tag === 'all' || card.getAttribute('data-tag') === tag) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
+COLLAPSE_JS = """<script>
+  document.querySelectorAll('.category-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+      header.closest('.category-section').classList.toggle('collapsed');
     });
   });
 </script>"""
 
 
-# -- HTML BUILDERS -----------------------------------------------------------
+# -- NAV ---------------------------------------------------------------------
 
 def make_nav(nav_active, depth=".."):
     papers_cls = ' class="active"' if nav_active == "papers" else ""
@@ -284,6 +275,8 @@ def make_nav(nav_active, depth=".."):
     )
 
 
+# -- TEMPLATES ---------------------------------------------------------------
+
 def render_post_page(title, date_str, tag, body_html, back_label, back_href, nav_active):
     nav = make_nav(nav_active, depth="../..")
     return (
@@ -294,13 +287,14 @@ def render_post_page(title, date_str, tag, body_html, back_label, back_href, nav
         '  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
         "  <title>" + title + " \u00b7 Gahyun Baek</title>\n"
         '  <link rel="preconnect" href="https://fonts.googleapis.com">\n'
-        '  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">\n'
+        '  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1'
+        '&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">\n'
         '  <link rel="stylesheet" href="../../css/style.css">\n'
         "  <style>" + POST_STYLES + "</style>\n"
         "</head>\n"
         "<body>\n"
         + nav + "\n"
-        "<main class=\"page\">\n"
+        '<main class="page">\n'
         '  <a class="back-link" href="' + back_href + '">\u2190 Back to ' + back_label + "</a>\n"
         '  <div class="post-header">\n'
         "    <h1>" + title + "</h1>\n"
@@ -334,104 +328,77 @@ def render_card(date_str, tag, title, href):
     )
 
 
-def render_index_page(page_title, page_sub, all_cards, index_path,
-                      nav_active, section_slug, per_page=10):
+def render_index_page(page_title, page_sub, all_cards, index_path, nav_active):
+    """
+    all_cards: list of (tag, sort_key, card_html)
+    Groups cards by tag, sorts each group newest-first.
+    Renders a single page with collapsible category sections.
+    """
+    # group by tag
+    groups = defaultdict(list)
+    for tag, sort_key, card_str in all_cards:
+        groups[tag].append((sort_key, card_str))
 
-    # unique tags across ALL cards for the filter bar
-    all_tags = sorted(set(tag for tag, _, _ in all_cards))
+    # sort each group newest-first
+    for tag in groups:
+        groups[tag].sort(key=lambda x: x[0], reverse=True)
 
-    filter_btns = '    <button class="filter-btn active" data-tag="all">All</button>\n'
-    for t in all_tags:
-        filter_btns += (
-            '    <button class="filter-btn" data-tag="' + t + '">' + t + "</button>\n"
+    # build category sections — alphabetical order
+    body_html = ""
+    for tag in sorted(groups.keys()):
+        entries = groups[tag]
+        count = len(entries)
+        cards_html = "\n".join(card_str for _, card_str in entries)
+        body_html += (
+            '  <div class="category-section">\n'
+            '    <div class="category-header">\n'
+            '      <h2 class="category-title">' + tag + "</h2>\n"
+            '      <span class="category-count">' + str(count) + "</span>\n"
+            '      <span class="category-arrow">\u25be</span>\n'
+            "    </div>\n"
+            '    <div class="card-list">\n'
+            + cards_html + "\n"
+            "    </div>\n"
+            "  </div>\n"
         )
+
+    nav = make_nav(nav_active, depth="..")
+
+    html = (
+        "<!DOCTYPE html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '  <meta charset="UTF-8" />\n'
+        '  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
+        "  <title>" + page_title + " \u00b7 Gahyun Baek</title>\n"
+        '  <link rel="preconnect" href="https://fonts.googleapis.com">\n'
+        '  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1'
+        '&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">\n'
+        '  <link rel="stylesheet" href="../css/style.css">\n'
+        "  <style>" + INDEX_STYLES + "</style>\n"
+        "</head>\n"
+        "<body>\n"
+        + nav + "\n"
+        '<main class="page">\n'
+        '  <h1 class="page-title">' + page_title + "</h1>\n"
+        '  <p class="page-sub">' + page_sub + "</p>\n"
+        + body_html
+        + "</main>\n"
+        '<script src="../js/nav.js"></script>\n'
+        + COLLAPSE_JS + "\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+    with open(index_path, "w", encoding="utf-8") as f:
+        f.write(html)
 
     total = len(all_cards)
-    total_pages = max(1, -(-total // per_page))
-
-    for page_num in range(1, total_pages + 1):
-        start = (page_num - 1) * per_page
-        chunk = all_cards[start : start + per_page]
-        cards_html = "\n".join(card_str for _, _, card_str in chunk)
-
-        # prev / next links
-        prev_link = ""
-        next_link = ""
-        if page_num > 1:
-            if page_num == 2:
-                prev_href = section_slug + ".html"
-            else:
-                prev_href = section_slug + "-page" + str(page_num - 1) + ".html"
-            prev_link = '<a class="page-btn" href="' + prev_href + '">\u2190 Prev</a>'
-        if page_num < total_pages:
-            next_href = section_slug + "-page" + str(page_num + 1) + ".html"
-            next_link = '<a class="page-btn" href="' + next_href + '">Next \u2192</a>'
-
-        # page number buttons
-        page_btns = ""
-        for i in range(1, total_pages + 1):
-            if i == 1:
-                href = section_slug + ".html"
-            else:
-                href = section_slug + "-page" + str(i) + ".html"
-            active_cls = " active" if i == page_num else ""
-            page_btns += (
-                '<a class="page-num' + active_cls + '" href="' + href + '">' + str(i) + "</a>"
-            )
-
-        pagination = ""
-        if total_pages > 1:
-            pagination = (
-                "\n  <div class=\"pagination\">\n"
-                "    " + prev_link + "\n"
-                '    <div class="page-nums">' + page_btns + "</div>\n"
-                "    " + next_link + "\n"
-                "  </div>"
-            )
-
-        nav = make_nav(nav_active, depth="..")
-
-        html = (
-            "<!DOCTYPE html>\n"
-            '<html lang="en">\n'
-            "<head>\n"
-            '  <meta charset="UTF-8" />\n'
-            '  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
-            "  <title>" + page_title + " \u00b7 Gahyun Baek</title>\n"
-            '  <link rel="preconnect" href="https://fonts.googleapis.com">\n'
-            '  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">\n'
-            '  <link rel="stylesheet" href="../css/style.css">\n'
-            "  <style>" + INDEX_STYLES + "</style>\n"
-            "</head>\n"
-            "<body>\n"
-            + nav + "\n"
-            "<main class=\"page\">\n"
-            "  <h1 class=\"page-title\">" + page_title + "</h1>\n"
-            "  <p class=\"page-sub\">" + page_sub + "</p>\n"
-            '  <div class="filter-bar">\n'
-            + filter_btns
-            + "  </div>\n"
-            '  <div class="card-list">\n'
-            + cards_html + "\n"
-            "  </div>"
-            + pagination + "\n"
-            "</main>\n"
-            '<script src="../js/nav.js"></script>\n'
-            + FILTER_JS + "\n"
-            "</body>\n"
-            "</html>\n"
-        )
-
-        if page_num == 1:
-            out_path = index_path
-        else:
-            base_dir = os.path.dirname(index_path)
-            out_path = os.path.join(base_dir, section_slug + "-page" + str(page_num) + ".html")
-
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write(html)
-
-    print("  ✓  " + index_path + "  (" + str(total) + " entries, " + str(total_pages) + " page(s))\n")
+    print(
+        "  ✓  " + index_path
+        + "  (" + str(total) + " entries, "
+        + str(len(groups)) + " categories)\n"
+    )
 
 
 # -- SECTION BUILDER ---------------------------------------------------------
@@ -456,7 +423,7 @@ def build_section(src_dir, out_dir, index_path,
         return
 
     section_slug = os.path.basename(out_dir)
-    cards = []  # (sort_key, tag, card_html)
+    cards = []  # (tag, sort_key, card_html)
 
     for fname in md_files:
         path = os.path.join(src_dir, fname)
@@ -488,13 +455,9 @@ def build_section(src_dir, out_dir, index_path,
         print("  ✓  " + fname)
 
         card_href = section_slug + "/" + slug + ".html"
-        cards.append((sort_key, tag, render_card(date_str, tag, title, card_href)))
+        cards.append((tag, sort_key, render_card(date_str, tag, title, card_href)))
 
-    cards.sort(key=lambda x: x[0], reverse=True)
-    render_index_page(
-        page_title, page_sub, cards, index_path,
-        nav_active, section_slug, per_page=10
-    )
+    render_index_page(page_title, page_sub, cards, index_path, nav_active)
 
 
 # -- MAIN --------------------------------------------------------------------
@@ -502,41 +465,41 @@ def build_section(src_dir, out_dir, index_path,
 def main():
     print("\n-- Building Posts ------------------------------------------")
     build_section(
-        src_dir    = "posts_content",
-        out_dir    = "pages/posts",
-        index_path = "pages/posts.html",
-        page_title = "Posts",
-        page_sub   = "Study notes, concepts, and technical write-ups.",
-        nav_active = "posts",
-        tag_map    = POSTS_TAG_MAP,
-        tag_default= "Note",
-        back_label = "Posts",
+        src_dir     = "posts_content",
+        out_dir     = "pages/posts",
+        index_path  = "pages/posts.html",
+        page_title  = "Posts",
+        page_sub    = "Study notes, concepts, and technical write-ups.",
+        nav_active  = "posts",
+        tag_map     = POSTS_TAG_MAP,
+        tag_default = "Note",
+        back_label  = "Posts",
     )
 
     print("-- Building Paper Reviews ----------------------------------")
     build_section(
-        src_dir    = "papers_content",
-        out_dir    = "pages/papers",
-        index_path = "pages/papers.html",
-        page_title = "Paper Reviews",
-        page_sub   = "Summaries and critiques of papers I've read.",
-        nav_active = "papers",
-        tag_map    = PAPERS_TAG_MAP,
-        tag_default= "Paper",
-        back_label = "Papers",
+        src_dir     = "papers_content",
+        out_dir     = "pages/papers",
+        index_path  = "pages/papers.html",
+        page_title  = "Paper Reviews",
+        page_sub    = "Summaries and critiques of papers I've read.",
+        nav_active  = "papers",
+        tag_map     = PAPERS_TAG_MAP,
+        tag_default = "Paper",
+        back_label  = "Papers",
     )
 
     print("-- Building Blog -------------------------------------------")
     build_section(
-        src_dir    = "blog_content",
-        out_dir    = "pages/blog",
-        index_path = "pages/blog.html",
-        page_title = "Blog",
-        page_sub   = "Personal essays, thoughts, and reflections.",
-        nav_active = "blog",
-        tag_map    = BLOG_TAG_MAP,
-        tag_default= "Essay",
-        back_label = "Blog",
+        src_dir     = "blog_content",
+        out_dir     = "pages/blog",
+        index_path  = "pages/blog.html",
+        page_title  = "Blog",
+        page_sub    = "Personal essays, thoughts, and reflections.",
+        nav_active  = "blog",
+        tag_map     = BLOG_TAG_MAP,
+        tag_default = "Essay",
+        back_label  = "Blog",
     )
 
     print("Done!  git add . && git commit -m 'update' && git push")
