@@ -88,7 +88,8 @@ int main(int argc, char *argv[]) {
 - 함수 호출 시 세 번째 인자를 전달하는 용도로 사용된다.
 - 정수 값이나 문자 등의 데이터를 전달할 때 사용된다.
 
-![image.png](attachment:433e0b7d-b1b5-4b90-8a93-5c6dea205c19:image.png)
+<img width="931" height="610" alt="image" src="https://github.com/user-attachments/assets/0c3a11e2-1ef4-4378-a377-66ab2aec158b" />
+
 
 ```c
 ┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
