@@ -81,59 +81,59 @@
 </ul>
 <p>    <img width="1714" height="2096" alt="image" src="https://github.com/user-attachments/assets/5baa4d41-731c-4ca3-b7df-9dc25c017547" /></p>
 
-<p>    <code>`</code>python</p>
-<p>    class MultiHeadAttention(nn.Module):</p>
-<p>        ''' Multi-Head Attention module '''</p>
+<pre><code class="language-python">
+    class MultiHeadAttention(nn.Module):
+        ''' Multi-Head Attention module '''
+    
+        def __init__(self, n_head, d_model, d_k, d_v, dropout=0.1):
+            super().__init__()
+    
+            self.n_head = n_head
+            self.d_k = d_k
+            self.d_v = d_v
+    
+            self.w_qs = nn.Linear(d_model, n_head * d_k, bias=False)
+            self.w_ks = nn.Linear(d_model, n_head * d_k, bias=False)
+            self.w_vs = nn.Linear(d_model, n_head * d_v, bias=False)
+            self.fc = nn.Linear(n_head * d_v, d_model, bias=False)
+    
+            self.attention = ScaledDotProductAttention(temperature=d_k ** 0.5)
+    
+            self.dropout = nn.Dropout(dropout)
+            self.layer_norm = nn.LayerNorm(d_model, eps=1e-6)
+    
+        def forward(self, q, k, v, mask=None):
+    
+            d_k, d_v, n_head = self.d_k, self.d_v, self.n_head
+            sz_b, len_q, len_k, len_v = q.size(0), q.size(1), k.size(1), v.size(1)
+    
+            residual = q
+    
+            # Pass through the pre-attention projection: b x lq x (n*dv)
+            # Separate different heads: b x lq x n x dv
+            q = self.w_qs(q).view(sz_b, len_q, n_head, d_k)
+            k = self.w_ks(k).view(sz_b, len_k, n_head, d_k)
+            v = self.w_vs(v).view(sz_b, len_v, n_head, d_v)
+    
+            # Transpose for attention dot product: b x n x lq x dv
+            q, k, v = q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2)
+    
+            if mask is not None:
+                mask = mask.unsqueeze(1)   # For head axis broadcasting.
+    
+            q, attn = self.attention(q, k, v, mask=mask)
+    
+            # Transpose to move the head dimension back: b x lq x n x dv
+            # Combine the last two dimensions to concatenate all the heads together: b x lq x (n*dv)
+            q = q.transpose(1, 2).contiguous().view(sz_b, len_q, -1)
+            q = self.dropout(self.fc(q))
+            q += residual
+    
+            q = self.layer_norm(q)
+    
+            return q, attn
 
-<p>        def __init__(self, n_head, d_model, d_k, d_v, dropout=0.1):</p>
-<p>            super().__init__()</p>
-
-<p>            self.n_head = n_head</p>
-<p>            self.d_k = d_k</p>
-<p>            self.d_v = d_v</p>
-
-<p>            self.w_qs = nn.Linear(d_model, n_head * d_k, bias=False)</p>
-<p>            self.w_ks = nn.Linear(d_model, n_head * d_k, bias=False)</p>
-<p>            self.w_vs = nn.Linear(d_model, n_head * d_v, bias=False)</p>
-<p>            self.fc = nn.Linear(n_head * d_v, d_model, bias=False)</p>
-
-<p>            self.attention = ScaledDotProductAttention(temperature=d_k ** 0.5)</p>
-
-<p>            self.dropout = nn.Dropout(dropout)</p>
-<p>            self.layer_norm = nn.LayerNorm(d_model, eps=1e-6)</p>
-
-<p>        def forward(self, q, k, v, mask=None):</p>
-
-<p>            d_k, d_v, n_head = self.d_k, self.d_v, self.n_head</p>
-<p>            sz_b, len_q, len_k, len_v = q.size(0), q.size(1), k.size(1), v.size(1)</p>
-
-<p>            residual = q</p>
-
-<p>            # Pass through the pre-attention projection: b x lq x (n*dv)</p>
-<p>            # Separate different heads: b x lq x n x dv</p>
-<p>            q = self.w_qs(q).view(sz_b, len_q, n_head, d_k)</p>
-<p>            k = self.w_ks(k).view(sz_b, len_k, n_head, d_k)</p>
-<p>            v = self.w_vs(v).view(sz_b, len_v, n_head, d_v)</p>
-
-<p>            # Transpose for attention dot product: b x n x lq x dv</p>
-<p>            q, k, v = q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2)</p>
-
-<p>            if mask is not None:</p>
-<p>                mask = mask.unsqueeze(1)   # For head axis broadcasting.</p>
-
-<p>            q, attn = self.attention(q, k, v, mask=mask)</p>
-
-<p>            # Transpose to move the head dimension back: b x lq x n x dv</p>
-<p>            # Combine the last two dimensions to concatenate all the heads together: b x lq x (n*dv)</p>
-<p>            q = q.transpose(1, 2).contiguous().view(sz_b, len_q, -1)</p>
-<p>            q = self.dropout(self.fc(q))</p>
-<p>            q += residual</p>
-
-<p>            q = self.layer_norm(q)</p>
-
-<p>            return q, attn</p>
-
-<p>    <code>`</code></p>
+</code></pre>
 
 <p>    - self attention</p>
 <p>        - 같은 문장 내에서 단어들 간의 관계. 즉, 연관성을 고려하여 attention 을 계산하는 방법이다.</p>
@@ -143,13 +143,13 @@
 <p>    - attention score</p>
 <p>        - query-key 의 내적 (transformers 에서는 대부분 q-k 내적)</p>
 
-<p>            <code>`</code>python</p>
+<p>  <code>`</code>python</p>
 <p>            score = QK^T / sqrt(d_k)</p>
 <p>            # softmax 적용해서 attention weight 를 만든다.</p>
 <p>            attention_weight = softmax(QK^T / sqrt(d_k))</p>
 <p>            # 마지막으로 value 와 곱한다.</p>
 <p>            output = softmax(QK^T / sqrt(d_k)) V</p>
-<p>            <code>`</code></p>
+<p>  <code>`</code></p>
 
 <p>        - 행렬곱: 행렬 간의 유사도</p>
 <ul>
@@ -159,15 +159,15 @@
 <p>        - 이전 layer 보다 학습이 덜 되지 않게 이전 학습된 결과에 이번 layer 에서 더 학습할 잔여 학습이 있다면 이를 학습한다.</p>
 <p>        - 데이터의 정보가 중간의 layer 을 우회하도록 허용함으로써 network 가 이전 계층의 정보에 접근할 수 있도록 하여, 신경망이 깊어질수록 발생하기 쉬운 “기울기 소실” 등의 리스크를 줄여준다.</p>
 
-<p>        <code>`</code>python</p>
-<p>        attention_output = self_attention(x)</p>
-<p>        x = x + attention_output</p>
-
-<p>        새로운 정보 = attention_output</p>
-<p>        기존 정보 = x</p>
-
-<p>        둘을 합쳐서 다음 layer로 보냄</p>
-<p>        <code>`</code></p>
+<pre><code class="language-python">
+        attention_output = self_attention(x)
+        x = x + attention_output
+        
+        새로운 정보 = attention_output
+        기존 정보 = x
+        
+        둘을 합쳐서 다음 layer로 보냄
+</code></pre>
 
 <p>    - Layer Normalization</p>
 <ul>
