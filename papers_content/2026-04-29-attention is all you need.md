@@ -17,7 +17,7 @@ https://github.com/jadore801120/attention-is-all-you-need-pytorch
 - Multi-Head Attention  
     <img width="1714" height="2096" alt="image" src="https://github.com/user-attachments/assets/5baa4d41-731c-4ca3-b7df-9dc25c017547" />
  
-    ```python
+```python
     class MultiHeadAttention(nn.Module):
         ''' Multi-Head Attention module '''
     
@@ -68,8 +68,8 @@ https://github.com/jadore801120/attention-is-all-you-need-pytorch
             q = self.layer_norm(q)
     
             return q, attn
-    
-    ```
+
+```
     
     - self attention
         - 같은 문장 내에서 단어들 간의 관계. 즉, 연관성을 고려하여 attention 을 계산하는 방법이다.
@@ -79,13 +79,13 @@ https://github.com/jadore801120/attention-is-all-you-need-pytorch
     - attention score
         - query-key 의 내적 (transformers 에서는 대부분 q-k 내적)
             
-            ```python
+  ```python
             score = QK^T / sqrt(d_k)
             # softmax 적용해서 attention weight 를 만든다.
             attention_weight = softmax(QK^T / sqrt(d_k))
             # 마지막으로 value 와 곱한다.
             output = softmax(QK^T / sqrt(d_k)) V
-            ```
+  ```
             
         - 행렬곱: 행렬 간의 유사도
 - Add & Norm
@@ -93,7 +93,7 @@ https://github.com/jadore801120/attention-is-all-you-need-pytorch
         - 이전 layer 보다 학습이 덜 되지 않게 이전 학습된 결과에 이번 layer 에서 더 학습할 잔여 학습이 있다면 이를 학습한다.
         - 데이터의 정보가 중간의 layer 을 우회하도록 허용함으로써 network 가 이전 계층의 정보에 접근할 수 있도록 하여, 신경망이 깊어질수록 발생하기 쉬운 “기울기 소실” 등의 리스크를 줄여준다.
         
-        ```python
+```python
         attention_output = self_attention(x)
         x = x + attention_output
         
@@ -101,7 +101,7 @@ https://github.com/jadore801120/attention-is-all-you-need-pytorch
         기존 정보 = x
         
         둘을 합쳐서 다음 layer로 보냄
-        ```
+```
         
     - Layer Normalization
 - Feed Forward
