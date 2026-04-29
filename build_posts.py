@@ -710,7 +710,7 @@ def main():
 
     print("-- Building Blog (flat list) --------------------------------")
     build_section(
-        src_dir     = "blog_content",
+        src_dir     = "blogs_content",
         out_dir     = "pages/blog",
         index_path  = "pages/blog.html",
         page_title  = "Blog",
