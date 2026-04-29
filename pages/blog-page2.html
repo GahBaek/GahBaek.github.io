@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .card-list {
+      border: 1px solid var(--line); border-radius: 8px;
+      overflow: hidden;
+    }
+    .pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .page-btn, .page-num {
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      padding: .35rem .8rem; border-radius: 6px;
+      border: 1px solid var(--line); text-decoration: none;
+      color: var(--muted); background: var(--card); transition: all .15s;
+    }
+    .page-btn:hover, .page-num:hover { border-color: var(--ink); color: var(--ink); }
+    .page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../pages/papers.html">Papers</a></li>
+    <li><a href="../pages/posts.html">Posts</a></li>
+    <li><a href="../pages/blog.html" class="active">Blog</a></li>
+    <li><a href="../pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <h1 class="page-title">Blog</h1>
+  <p class="page-sub">Personal essays, thoughts, and reflections.</p>
+  <div class="card-list">
+    <a class="card" href="blog/profiling-resilient-to-change-in-probe-position.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>profiling resilient to change in probe position</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/neuroclaw-technical-report.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>neuroclaw technical report</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/long-context-aware-upcycling-a-new-frontier-for-hybrid-llm-scaling.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>long context aware upcycling a new frontier for hybrid llm scaling</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/green-shielding-a-user-centric-approach-towards-trustworthy-ai.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>green shielding a user centric approach towards trustworthy ai</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/defective-task-descriptions-in-llm-based-code-generation-detection-and-analysis.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>defective task descriptions in llm based code generation detection and analysis</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/case-specific-rubrics-for-clinical-ai-evaluation-methodology-validation-and-llm-clinician-agreement-across-823-encounters.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>case specific rubrics for clinical ai evaluation methodology validation and llm clinician agreement across 823 encounters</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/can-llms-act-as-historians-evaluating-historical-research-capabilities-of-llms-via-the-chinese-imperial-examination.html" data-tag="Research">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Research</div>
+      </div>
+      <div class="card-body">
+        <h3>can llms act as historians evaluating historical research capabilities of llms via the chinese imperial examination</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/analysis-of-the-gaia-dr3-planetary-nebula-candidates-and-the-possible-symbiotic-stars-among-them.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>analysis of the gaia dr3 planetary nebula candidates and the possible symbiotic stars among them</h3>
+      </div>
+    </a>
+  </div>
+  <div class="pagination">
+    <a class="page-btn" href="blog.html">← Prev</a>
+    <div class="page-nums"><a class="page-num" href="blog.html">1</a><a class="page-num active" href="blog-page2.html">2</a></div>
+    
+  </div>
+</main>
+<script src="../js/nav.js"></script>
+</body>
+</html>

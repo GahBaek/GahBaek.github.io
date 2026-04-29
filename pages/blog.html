@@ -7,40 +7,137 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .card-list {
+      border: 1px solid var(--line); border-radius: 8px;
+      overflow: hidden;
+    }
+    .pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: .6rem; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .page-btn, .page-num {
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      padding: .35rem .8rem; border-radius: 6px;
+      border: 1px solid var(--line); text-decoration: none;
+      color: var(--muted); background: var(--card); transition: all .15s;
+    }
+    .page-btn:hover, .page-num:hover { border-color: var(--ink); color: var(--ink); }
+    .page-num.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+</style>
 </head>
 <body>
-
 <nav>
   <a class="nav-logo" href="../index.html">Gahyun Baek</a>
   <ul class="nav-links">
     <li><a href="../index.html">Home</a></li>
-    <li><a href="papers.html">Papers</a></li>
-    <li><a href="posts.html">Posts</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="cv.html">CV</a></li>
+    <li><a href="../pages/papers.html">Papers</a></li>
+    <li><a href="../pages/posts.html">Posts</a></li>
+    <li><a href="../pages/blog.html" class="active">Blog</a></li>
+    <li><a href="../pages/cv.html">CV</a></li>
   </ul>
 </nav>
-
 <main class="page">
   <h1 class="page-title">Blog</h1>
-  <p class="page-sub">개인 블로그입니다..</p>
-
+  <p class="page-sub">Personal essays, thoughts, and reflections.</p>
   <div class="card-list">
-
-    <a class="card" href="#">
+    <a class="card" href="blog/the-ethical-and-legal-complexities-of-regulating-companion-ai-chatbots.html" data-tag="Essay">
       <div class="card-meta">
-        <div class="card-date">2026·01</div>
+        <div class="card-date">2027·01</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>the ethical and legal complexities of regulating companion ai chatbots</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/scambaiting-as-entrepreneurial-digilantism-the-evolution-of-scambaiting-and-its-role-in-combating-online-fraud.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·08</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>scambaiting as entrepreneurial digilantism the evolution of scambaiting and its role in combating online fraud</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/multi-taxonomy-vulnerability-classification-with-hierarchically-finetuned-language-models.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·07</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>multi taxonomy vulnerability classification with hierarchically finetuned language models</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/generative-machine-learning-in-professional-work-and-professional-service-firms-a-research-agenda.html" data-tag="Research">
+      <div class="card-meta">
+        <div class="card-date">2026·06</div>
         <div class="card-tag">Research</div>
       </div>
       <div class="card-body">
-        <h3>First Year as a Master Student</h3>
-        <p>SecAILab.</p>
+        <h3>generative machine learning in professional work and professional service firms a research agenda</h3>
       </div>
     </a>
-
+    <a class="card" href="blog/knowing-your-weaknesses-is-your-greatest-strengthmapping-cve-to-cwe-by-leveraging-cwe-hierarchy-and-llms.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·06</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>knowing your weaknesses is your greatest strengthmapping cve to cwe by leveraging cwe hierarchy and llms</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/machine-learning-for-modern-cybersecurity-trend-driven-architectures-threat-models-and-quantitative-evaluation.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·06</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>machine learning for modern cybersecurity trend driven architectures threat models and quantitative evaluation</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/revue-des-systèmes-aériens-sans-pilote-contre-contre-radio-c²-uas-et-dune-architecture-inspirée-du-cortex-pour-celui-ci.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·05</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>revue des systèmes aériens sans pilote contre contre radio c² uas et dune architecture inspirée du cortex pour celui ci</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/sens-asr-semantic-embedding-injection-in-neural-transducer-for-streaming-automatic-speech-recognition.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·05</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>sens asr semantic embedding injection in neural transducer for streaming automatic speech recognition</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/when-prompt-under-specification-improves-code-correctness-an-exploratory-study-of-prompt-wording-and-structure-effects-on-llm-based-code-generation.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>when prompt under specification improves code correctness an exploratory study of prompt wording and structure effects on llm based code generation</h3>
+      </div>
+    </a>
+    <a class="card" href="blog/the-chameleons-limit-investigating-persona-collapse-and-homogenization-in-large-language-models.html" data-tag="Essay">
+      <div class="card-meta">
+        <div class="card-date">2026·04</div>
+        <div class="card-tag">Essay</div>
+      </div>
+      <div class="card-body">
+        <h3>the chameleons limit investigating persona collapse and homogenization in large language models</h3>
+      </div>
+    </a>
+  </div>
+  <div class="pagination">
+    
+    <div class="page-nums"><a class="page-num active" href="blog.html">1</a><a class="page-num" href="blog-page2.html">2</a></div>
+    <a class="page-btn" href="blog-page2.html">Next →</a>
   </div>
 </main>
-
 <script src="../js/nav.js"></script>
 </body>
 </html>

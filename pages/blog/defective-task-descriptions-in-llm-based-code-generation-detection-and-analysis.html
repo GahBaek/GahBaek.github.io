@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>defective task descriptions in llm based code generation detection and analysis · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0; border-radius: 6px;
+      padding: 1.2rem; overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../pages/papers.html">Papers</a></li>
+    <li><a href="../../pages/posts.html">Posts</a></li>
+    <li><a href="../../pages/blog.html" class="active">Blog</a></li>
+    <li><a href="../../pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../blog.html">← Back to Blog</a>
+  <div class="post-header">
+    <h1>defective task descriptions in llm based code generation detection and analysis</h1>
+    <div class="post-meta">
+      <span>2026·04</span>
+      <span class="post-tag">Essay</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<h2>Defective Task Descriptions in LLM-Based Code Generation: Detection and Analysis</h2>
+
+<ul>
+<li>Source: arxiv</li>
+<li>Published: 2026-04-27T17:07:08Z</li>
+<li>Venue: arXiv</li>
+<li>Authors: Amal Akli, Mike Papadakis, Maxime Cordy, Yves Le Traon</li>
+<li>Relevance score: 2.5</li>
+<li>Paper URL: http://arxiv.org/abs/2604.24703v1</li>
+<li>PDF: https://arxiv.org/pdf/2604.24703v1</li>
+</ul>
+
+<h2>Why I saved this</h2>
+
+<p>Large language models are widely used for code generation, yet they rely on an implicit assumption that the task descriptions are sufficiently detailed and well-formed. However, in practice, users may provide defective descriptions, which can have a strong effect on code correctness. To address this issue, we develop SpecValidator, a lightweight classifier based on a small model that has been parameter-efficiently finetuned, to automatically detect task description defects.</p>
+
+<h2>Problem</h2>
+
+<p>Large language models are widely used for code generation, yet they rely on an implicit assumption that the task descriptions are sufficiently detailed and well-formed</p>
+
+<h2>Method</h2>
+
+<p>However, in practice, users may provide defective descriptions, which can have a strong effect on code correctness</p>
+
+<h2>Key Results</h2>
+
+<ul>
+<li>To address this issue, we develop SpecValidator, a lightweight classifier based on a small model that has been parameter-efficiently finetuned, to automatically detect task description defects</li>
+</ul>
+
+<h2>Limitations</h2>
+
+<ul>
+<li>Metadata-only summary. Read the full paper before relying on conclusions.</li>
+</ul>
+
+<h2>Relevance</h2>
+
+<p>Matched against topic 'LLM security' with relevance score 2.5.</p>
+
+<h2>Abstract</h2>
+
+<p>Large language models are widely used for code generation, yet they rely on an implicit assumption that the task descriptions are sufficiently detailed and well-formed. However, in practice, users may provide defective descriptions, which can have a strong effect on code correctness. To address this issue, we develop SpecValidator, a lightweight classifier based on a small model that has been parameter-efficiently finetuned, to automatically detect task description defects. We evaluate SpecValidator on three types of defects, Lexical Vagueness, Under-Specification and Syntax-Formatting on 3 benchmarks with task descriptions of varying structure and complexity. Our results show that SpecValidator achieves defect detection of F1 = 0.804 and MCC = 0.745, significantly outperforming GPT-5-mini (F1 = 0.469 and MCC = 0.281) and Claude Sonnet 4 (F1 = 0.518 and MCC = 0.359). Perhaps more importantly, our analysis indicates that SpecValidator can generalize to unseen issues and detect unknown Under-Specification defects in the original (real) descriptions of the benchmarks used. Our results also show that the robustness of LLMs in task description defects depends primarily on the type of defect and the characteristics of the task description, rather than the capacity of the model, with Under-Specification defects being the most severe. We further found that benchmarks with richer contextual grounding, such as LiveCodeBench, exhibit substantially greater resilience, highlighting the importance of structured task descriptions for reliable LLM-based code generation.</p>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
