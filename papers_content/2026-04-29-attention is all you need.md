@@ -14,11 +14,9 @@ https://github.com/jadore801120/attention-is-all-you-need-pytorch
 
 - Input Embedding
 - Positional Encoding
-- Multi-Head Attention
-    
+- Multi-Head Attention  
     <img width="1714" height="2096" alt="image" src="https://github.com/user-attachments/assets/5baa4d41-731c-4ca3-b7df-9dc25c017547" />
-
-    
+ 
     ```python
     class MultiHeadAttention(nn.Module):
         ''' Multi-Head Attention module '''
