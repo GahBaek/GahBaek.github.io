@@ -203,7 +203,7 @@ td{padding:9px 13px;vertical-align:top}
 
 <script>
 const TODAY = (() => { const d=new Date(); d.setHours(0,0,0,0); return d; })();
-const TIERS = ['Sys1','SE1','SE2','AI1','Sec1','Sec2','Sec3','Sec4'];
+const TIERS = ['Sys','SE','AI','Sec'];
 const TORD  = Object.fromEntries(TIERS.map((t,i)=>[t,i]));
 
 let ALL = [];
