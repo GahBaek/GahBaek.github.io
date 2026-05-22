@@ -13,7 +13,7 @@
 
 # ── Sec2: 자동 소스에 deadline이 없는 것들 ─────────────────────────────────
 - name: FSE
-  tier: Sec2
+  tier: Sec1
   year: 2027
   description: Foundations of Software Engineering
   link: https://conf.researchr.org/home/fse-2027
