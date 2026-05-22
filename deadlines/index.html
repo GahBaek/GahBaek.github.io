@@ -25,7 +25,6 @@
   --soo-bg:#FEF3CD;--soo-t:#7A4200;
   --ok-bg:#E6F4EA; --ok-t:#1A6A30;
   --pas-bg:#EFEFED;--pas-t:#888880;
-  --tab-act-bg:#1A1A18;--tab-act-t:#FFF;
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#131312;--sf:#1E1E1C;--sf2:#272725;--sf3:#313130;
@@ -42,33 +41,23 @@
   --soo-bg:#3D2800;--soo-t:#FCD34D;
   --ok-bg:#0A2E14; --ok-t:#86EFAC;
   --pas-bg:#252523;--pas-t:#6B6A64;
-  --tab-act-bg:#EDECEA;--tab-act-t:#131312;
 }}
 html{font-family:var(--fn);background:var(--bg);color:var(--tp);font-size:15px}
 body{min-height:100vh;padding:2rem 1rem 5rem}
 .page{max-width:1360px;margin:0 auto}
 
-/* ── header ── */
 .hdr{margin-bottom:2rem}
 .hdr h1{font-size:21px;font-weight:500;letter-spacing:-.3px;margin-bottom:6px}
 .hdr-meta{font-size:12px;color:var(--ts);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.upd-badge{background:var(--sf2);border:0.5px solid var(--bd2);border-radius:10px;padding:2px 8px;font-size:11px;color:var(--tm)}
+.upd{background:var(--sf2);border:0.5px solid var(--bd2);border-radius:10px;padding:2px 8px;font-size:11px;color:var(--tm)}
 
-/* ── stats ── */
+/* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.75rem}
 .stat{background:var(--sf);border:0.5px solid var(--bd);border-radius:var(--rmd);padding:11px 15px}
 .stat-lbl{font-size:10px;font-weight:500;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
 .stat-val{font-size:21px;font-weight:500}
 
-/* ── year tabs ── */
-.year-tabs{display:flex;gap:4px;margin-bottom:1.25rem;flex-wrap:wrap}
-.ytab{padding:6px 16px;border-radius:20px;border:0.5px solid var(--bd2);background:var(--sf);font-size:13px;font-weight:500;color:var(--ts);cursor:pointer;font-family:var(--fn);transition:all .12s}
-.ytab:hover{background:var(--sf2)}
-.ytab.ya{background:var(--tab-act-bg);color:var(--tab-act-t);border-color:var(--tab-act-bg)}
-.ytab.ya-all{background:var(--sf2);color:var(--tp);border-color:var(--bd2)}
-.ybadge{display:inline-block;background:rgba(128,128,128,0.18);color:inherit;border-radius:8px;font-size:10px;padding:1px 5px;margin-left:4px;vertical-align:middle}
-
-/* ── tier filters ── */
+/* tier filters */
 .tier-filters{display:flex;gap:5px;margin-bottom:1.25rem;flex-wrap:wrap}
 .tfbtn{padding:5px 13px;border-radius:20px;border:0.5px solid var(--bd2);background:var(--sf);font-size:12px;font-weight:500;color:var(--ts);cursor:pointer;font-family:var(--fn);transition:all .12s}
 .tfbtn:hover{background:var(--sf2)}
@@ -81,12 +70,11 @@ body{min-height:100vh;padding:2rem 1rem 5rem}
 .tfbtn.ta-Sec3{background:var(--s3-bg);color:var(--s3-t);border-color:var(--s3-b)}
 .tfbtn.ta-Sec4{background:var(--s4-bg);color:var(--s4-t);border-color:var(--s4-b)}
 
-/* ── sort + hide row ── */
+/* sort */
 .ctrls{display:flex;gap:8px;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap}
 select{padding:7px 11px;border:0.5px solid var(--bd2);border-radius:var(--rsm);background:var(--sf);color:var(--tp);font-size:13px;font-family:var(--fn);outline:none;cursor:pointer}
-.hl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ts);cursor:pointer}
 
-/* ── table ── */
+/* table */
 .tw{overflow-x:auto;border:0.5px solid var(--bd);border-radius:var(--rlg);box-shadow:0 1px 3px rgba(0,0,0,0.04)}
 table{width:100%;border-collapse:collapse;font-size:13px;background:var(--sf)}
 thead th{padding:9px 13px;text-align:left;font-size:10px;font-weight:500;color:var(--ts);background:var(--sf2);border-bottom:0.5px solid var(--bd);white-space:nowrap;text-transform:uppercase;letter-spacing:.4px}
@@ -97,18 +85,38 @@ tbody tr:last-child{border-bottom:none}
 tbody tr:hover td{background:var(--sf2)}
 td{padding:9px 13px;vertical-align:top}
 
+/* year group row */
+.yr-row td{
+  padding:10px 13px 8px;
+  background:var(--sf3);
+  font-size:11px;
+  font-weight:500;
+  color:var(--ts);
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  border-top:0.5px solid var(--bd2);
+  border-bottom:0.5px solid var(--bd);
+  cursor:pointer;
+  user-select:none;
+}
+.yr-row:first-child td{border-top:none}
+.yr-row td:hover{background:var(--sf2)}
+.yr-label{display:flex;align-items:center;gap:8px}
+.yr-badge{background:var(--bd2);border-radius:10px;padding:1px 7px;font-size:10px;color:var(--ts)}
+.yr-chevron{font-size:10px;margin-left:auto;transition:transform .18s;display:inline-block}
+.yr-chevron.open{transform:rotate(180deg)}
+
+/* conf rows */
 .cl{font-weight:500;color:var(--tp);text-decoration:none;white-space:nowrap}
 .cl:hover{color:var(--sys-t);text-decoration:underline}
 .cf{font-size:11px;color:var(--tm);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note-t{display:inline-block;margin-top:3px;font-size:10px;color:var(--tm);background:var(--sf2);border:0.5px solid var(--bd);border-radius:4px;padding:1px 5px}
 
-/* cycles */
 .cycles{display:flex;flex-direction:column;gap:4px}
 .cy-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ts);white-space:nowrap}
 .cy-lbl{font-size:10px;color:var(--tm);background:var(--sf2);border:0.5px solid var(--bd);border-radius:4px;padding:1px 5px;flex-shrink:0}
 .cy-past{opacity:.35}
 
-/* tier */
 .tier{display:inline-block;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:500;white-space:nowrap}
 .t-Sys1{background:var(--sys-bg);color:var(--sys-t);border:0.5px solid var(--sys-b)}
 .t-SE1,.t-SE2{background:var(--se-bg);color:var(--se-t);border:0.5px solid var(--se-b)}
@@ -118,15 +126,13 @@ td{padding:9px 13px;vertical-align:top}
 .t-Sec3{background:var(--s3-bg);color:var(--s3-t);border:0.5px solid var(--s3-b)}
 .t-Sec4{background:var(--s4-bg);color:var(--s4-t);border:0.5px solid var(--s4-b)}
 
-/* days */
 .days{display:inline-block;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:500;white-space:nowrap}
-.d-past{background:var(--pas-bg);color:var(--pas-t)}
 .d-urg{background:var(--urg-bg);color:var(--urg-t)}
 .d-soo{background:var(--soo-bg);color:var(--soo-t)}
 .d-ok{background:var(--ok-bg);color:var(--ok-t)}
 .d-tbd{color:var(--tm);font-size:12px}
 
-.vc{font-size:12px;color:var(--ts);min-width:100px}
+.vc{font-size:12px;color:var(--ts)}
 .dc{font-size:12px;color:var(--ts);white-space:nowrap}
 .empty{text-align:center;padding:3rem;color:var(--ts);font-size:14px}
 .loading{text-align:center;padding:3rem;color:var(--tm);font-size:14px}
@@ -135,10 +141,7 @@ td{padding:9px 13px;vertical-align:top}
 .footer a{color:var(--ts);text-decoration:none}
 .footer a:hover{text-decoration:underline}
 
-@media(max-width:640px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .hdr h1{font-size:18px}
-}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.hdr h1{font-size:18px}}
 </style>
 </head>
 <body>
@@ -148,7 +151,7 @@ td{padding:9px 13px;vertical-align:top}
   <h1>Conference Deadline Tracker</h1>
   <div class="hdr-meta">
     <span>오늘: <strong id="today-str"></strong></span>
-    <span id="upd-badge" class="upd-badge" style="display:none"></span>
+    <span id="upd-badge" class="upd" style="display:none"></span>
   </div>
 </header>
 
@@ -159,22 +162,14 @@ td{padding:9px 13px;vertical-align:top}
   <div class="stat"><div class="stat-lbl">날짜 미정</div><div class="stat-val" id="s-tbd" style="color:var(--tm)">—</div></div>
 </div>
 
-<!-- Year tabs -->
-<div class="year-tabs" id="year-tabs"></div>
-
-<!-- Tier filters -->
 <div class="tier-filters" id="tier-filters"></div>
 
-<!-- Sort / hide -->
 <div class="ctrls">
   <select id="sort" onchange="render()">
     <option value="days">다음 마감 순</option>
     <option value="tier">카테고리 순</option>
     <option value="name">이름 순</option>
   </select>
-  <label class="hl">
-    <input type="checkbox" id="hide-past" onchange="render()"> 지난 마감 숨기기
-  </label>
 </div>
 
 <div class="tw">
@@ -209,176 +204,210 @@ td{padding:9px 13px;vertical-align:top}
 const TODAY = (() => { const d=new Date(); d.setHours(0,0,0,0); return d; })();
 const TIERS = ['Sys1','SE1','SE2','AI1','Sec1','Sec2','Sec3','Sec4'];
 const TORD  = Object.fromEntries(TIERS.map((t,i)=>[t,i]));
-let ALL=[], activeYear='all', activeTiers=new Set();
+
+let ALL = [];
+let activeTiers = new Set();
+// collapsed years: Set of year strings
+let collapsed = new Set();
 
 /* ── helpers ── */
-function parseDt(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
-function daysFrom(s){const dt=parseDt(s);if(!dt)return null;return Math.round((dt-TODAY)/86400000)}
-function fmt(s){if(!s)return'—';return parseDt(s).toLocaleDateString('ko-KR',{month:'short',day:'numeric'})}
+function parseDt(s){ if(!s)return null; const[y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function daysFrom(s){ const dt=parseDt(s); if(!dt)return null; return Math.round((dt-TODAY)/86400000); }
+function fmt(s){ if(!s)return'—'; return parseDt(s).toLocaleDateString('ko-KR',{month:'short',day:'numeric'}); }
 function nextDl(dls){
-  if(!dls||!dls.length)return null;
-  const f=dls.filter(d=>daysFrom(d)>=0);
-  return f.length?f[0]:dls[dls.length-1];
+  if(!dls||!dls.length) return null;
+  const f = dls.filter(d=>daysFrom(d)>=0);
+  return f.length ? f[0] : null;   // only future deadlines (past ones already filtered by crawler)
 }
 function daysChip(dls){
-  const n=nextDl(dls);
-  if(!n)return'<span class="d-tbd">TBD</span>';
-  const d=daysFrom(n);
-  if(d<0)  return`<span class="days d-past">${Math.abs(d)}일 전</span>`;
-  if(d<=14)return`<span class="days d-urg">D-${d}</span>`;
-  if(d<=60)return`<span class="days d-soo">D-${d}</span>`;
-  return`<span class="days d-ok">D-${d}</span>`;
+  const n = nextDl(dls);
+  if(!n) return '<span class="d-tbd">TBD</span>';
+  const d = daysFrom(n);
+  if(d<=14) return `<span class="days d-urg">D-${d}</span>`;
+  if(d<=60) return `<span class="days d-soo">D-${d}</span>`;
+  return `<span class="days d-ok">D-${d}</span>`;
 }
 function cycleCell(dls){
-  if(!dls||!dls.length)return'<span class="d-tbd">TBD</span>';
-  const multi=dls.length>1;
-  return`<div class="cycles">${dls.map((dl,i)=>{
-    const past=daysFrom(dl)<0;
-    const lbl=multi?`<span class="cy-lbl">Cycle ${i+1}</span>`:'';
-    return`<div class="cy-row${past?' cy-past':''}">${lbl}<span>${fmt(dl)}</span></div>`;
+  if(!dls||!dls.length) return '<span class="d-tbd">TBD</span>';
+  const future = dls.filter(d=>daysFrom(d)>=0);
+  if(!future.length) return '<span class="d-tbd">TBD</span>';
+  const multi = future.length > 1;
+  // index by original position
+  return `<div class="cycles">${future.map((dl,i)=>{
+    const origIdx = dls.indexOf(dl);
+    const lbl = multi ? `<span class="cy-lbl">Cycle ${origIdx+1}</span>` : '';
+    return `<div class="cy-row">${lbl}<span>${fmt(dl)}</span></div>`;
   }).join('')}</div>`;
 }
-function absCell(abs){
-  if(!abs||!abs.length)return'<span style="color:var(--tm);font-size:12px">—</span>';
-  const multi=abs.length>1;
-  return`<div class="cycles">${abs.map((a,i)=>{
-    const past=daysFrom(a)<0;
-    const lbl=multi?`<span class="cy-lbl">Cycle ${i+1}</span>`:'';
-    return`<div class="cy-row${past?' cy-past':''}">${lbl}<span>${fmt(a)}</span></div>`;
-  }).join('')}</div>`;
-}
-
-/* ── get available years from data ── */
-function getYears(){
-  const ys=new Set(ALL.map(c=>c.year).filter(Boolean));
-  return [...ys].sort();
-}
-
-/* ── year tabs ── */
-function buildYearTabs(){
-  const wrap=document.getElementById('year-tabs');
-  wrap.innerHTML='';
-  const years=getYears();
-
-  // count per year
-  const counts={};
-  years.forEach(y=>{ counts[y]=ALL.filter(c=>c.year===y).length; });
-
-  function mkTab(label,val,count){
-    const b=document.createElement('button');
-    b.className='ytab'+(activeYear===val?(val==='all'?' ya-all':' ya'):'');
-    b.innerHTML=label+(count!=null?`<span class="ybadge">${count}</span>`:'');
-    b.onclick=()=>{ activeYear=val; buildYearTabs(); render(); };
-    return b;
+function absCell(abs, dls){
+  if(!abs||!abs.length) return '<span style="color:var(--tm);font-size:12px">—</span>';
+  // Only show abstracts corresponding to future paper deadlines
+  const futureDlIdxs = new Set(
+    (dls||[]).map((dl,i)=>daysFrom(dl)>=0?i:-1).filter(i=>i>=0)
+  );
+  const relevant = abs.filter((_,i)=>futureDlIdxs.has(i) || futureDlIdxs.size===0);
+  if(!relevant.length){
+    // fallback: show all
+    const all = abs;
+    const multi = all.length>1;
+    return `<div class="cycles">${all.map((a,i)=>{
+      const lbl = multi?`<span class="cy-lbl">Cycle ${i+1}</span>`:'';
+      return `<div class="cy-row">${lbl}<span>${fmt(a)}</span></div>`;
+    }).join('')}</div>`;
   }
-  wrap.appendChild(mkTab('전체',  'all', ALL.length));
-  years.forEach(y=>wrap.appendChild(mkTab(`'${y.slice(-2)}`, y, counts[y])));
+  const multi = relevant.length>1;
+  return `<div class="cycles">${relevant.map((a,i)=>{
+    const lbl = multi?`<span class="cy-lbl">Cycle ${i+1}</span>`:'';
+    return `<div class="cy-row">${lbl}<span>${fmt(a)}</span></div>`;
+  }).join('')}</div>`;
 }
 
 /* ── tier filters ── */
 function buildTierFilters(){
-  const wrap=document.getElementById('tier-filters');
-  wrap.innerHTML='';
-  function mkBtn(cls,text,fn){
-    const b=document.createElement('button');
-    b.className=`tfbtn ${cls}`; b.textContent=text; b.onclick=fn; return b;
+  const wrap = document.getElementById('tier-filters');
+  wrap.innerHTML = '';
+  function mkBtn(cls, text, fn){
+    const b = document.createElement('button');
+    b.className = `tfbtn ${cls}`; b.textContent = text; b.onclick = fn; return b;
   }
-  wrap.appendChild(mkBtn(activeTiers.size===0?'ta-all':'','전체',()=>{activeTiers.clear();buildTierFilters();render();}));
-  TIERS.forEach(t=>{
-    const b=mkBtn(activeTiers.has(t)?`ta-${t}`:'',t,()=>{
-      activeTiers.has(t)?activeTiers.delete(t):activeTiers.add(t);
-      buildTierFilters();render();
-    });
-    wrap.appendChild(b);
+  wrap.appendChild(mkBtn(activeTiers.size===0?'ta-all':'', '전체', ()=>{
+    activeTiers.clear(); buildTierFilters(); render();
+  }));
+  TIERS.forEach(t => {
+    wrap.appendChild(mkBtn(activeTiers.has(t)?`ta-${t}`:'', t, ()=>{
+      activeTiers.has(t) ? activeTiers.delete(t) : activeTiers.add(t);
+      buildTierFilters(); render();
+    }));
   });
 }
 
-/* ── main render ── */
+/* ── render ── */
 function render(){
-  const sort    =document.getElementById('sort').value;
-  const hidePast=document.getElementById('hide-past').checked;
+  const sort = document.getElementById('sort').value;
 
-  let data=[...ALL];
-  if(activeYear!=='all') data=data.filter(c=>c.year===activeYear);
-  if(activeTiers.size)   data=data.filter(c=>activeTiers.has(c.tier));
-  if(hidePast)           data=data.filter(c=>{const n=nextDl(c.deadlines);return!n||daysFrom(n)>=0;});
+  let data = [...ALL];
+  if(activeTiers.size) data = data.filter(c => activeTiers.has(c.tier));
 
-  if(sort==='days'){
-    data.sort((a,b)=>{
-      const da=daysFrom(nextDl(a.deadlines)),db=daysFrom(nextDl(b.deadlines));
-      if(da==null&&db==null)return 0;if(da==null)return 1;if(db==null)return-1;return da-db;
-    });
-  }else if(sort==='name'){
-    data.sort((a,b)=>a.name.localeCompare(b.name));
-  }else{
-    data.sort((a,b)=>{
-      const t=TORD[a.tier]-TORD[b.tier];if(t)return t;
-      const da=daysFrom(nextDl(a.deadlines)),db=daysFrom(nextDl(b.deadlines));
-      if(da==null)return 1;if(db==null)return-1;return da-db;
-    });
+  // sort within each year group
+  function sortFn(a, b){
+    if(sort === 'days'){
+      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
+      if(da==null&&db==null) return 0;
+      if(da==null) return 1; if(db==null) return -1;
+      return da - db;
+    } else if(sort === 'name'){
+      return a.name.localeCompare(b.name);
+    } else {
+      const t = TORD[a.tier] - TORD[b.tier]; if(t) return t;
+      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
+      if(da==null) return 1; if(db==null) return -1; return da-db;
+    }
   }
 
-  const tbody=document.getElementById('tbody');
-  tbody.innerHTML=data.length===0
-    ?'<tr><td colspan="7" class="empty">표시할 컨퍼런스가 없습니다</td></tr>'
-    :data.map(c=>{
-      const note=c.note?`<span class="note-t">${c.note}</span>`:'';
-      return`<tr>
-        <td>
-          <a class="cl" href="${c.url||'#'}" target="_blank" rel="noopener">${c.name}</a>
-          <div class="cf" title="${c.full}">${c.full||''}</div>
-          ${note}
-        </td>
-        <td><span class="tier t-${c.tier}">${c.tier}</span></td>
-        <td>${absCell(c.abstracts)}</td>
-        <td>${cycleCell(c.deadlines)}</td>
-        <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
-        <td class="vc">${c.venue||'—'}</td>
-        <td class="dc">${c.date||'—'}</td>
-      </tr>`;
-    }).join('');
+  // Group by year
+  const yearMap = {};
+  data.forEach(c => {
+    const yr = c.year || 'TBD';
+    if(!yearMap[yr]) yearMap[yr] = [];
+    yearMap[yr].push(c);
+  });
+  const years = Object.keys(yearMap).sort();
+  years.forEach(yr => yearMap[yr].sort(sortFn));
 
-  // stats over current year+tier filter (ignoring hidePast)
-  let base=[...ALL];
-  if(activeYear!=='all') base=base.filter(c=>c.year===activeYear);
-  if(activeTiers.size)   base=base.filter(c=>activeTiers.has(c.tier));
-  const up =base.filter(c=>{const d=daysFrom(nextDl(c.deadlines));return d!=null&&d>=0;}).length;
-  const urg=base.filter(c=>{const d=daysFrom(nextDl(c.deadlines));return d!=null&&d>=0&&d<=30;}).length;
-  const tbd=base.filter(c=>!c.deadlines||!c.deadlines.length).length;
-  document.getElementById('s-tot').textContent=base.length;
-  document.getElementById('s-up').textContent=up;
-  document.getElementById('s-urg').textContent=urg;
-  document.getElementById('s-tbd').textContent=tbd;
+  const tbody = document.getElementById('tbody');
+  if(!data.length){
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">표시할 컨퍼런스가 없습니다</td></tr>';
+    updateStats(data); return;
+  }
+
+  const rows = [];
+  years.forEach(yr => {
+    const confs = yearMap[yr];
+    const isCollapsed = collapsed.has(yr);
+    const label = yr.length===4 ? `'${yr.slice(-2)}` : yr;
+
+    // year group header row
+    rows.push(`
+      <tr class="yr-row" data-yr="${yr}">
+        <td colspan="7">
+          <div class="yr-label">
+            <span>${label}</span>
+            <span class="yr-badge">${confs.length}</span>
+            <span class="yr-chevron${isCollapsed?'':' open'}">▼</span>
+          </div>
+        </td>
+      </tr>
+    `);
+
+    if(!isCollapsed){
+      confs.forEach(c => {
+        const note = c.note ? `<span class="note-t">${c.note}</span>` : '';
+        rows.push(`<tr data-yr-body="${yr}">
+          <td>
+            <a class="cl" href="${c.url||'#'}" target="_blank" rel="noopener">${c.name}</a>
+            <div class="cf" title="${c.full}">${c.full||''}</div>
+            ${note}
+          </td>
+          <td><span class="tier t-${c.tier}">${c.tier}</span></td>
+          <td>${absCell(c.abstracts, c.deadlines)}</td>
+          <td>${cycleCell(c.deadlines)}</td>
+          <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
+          <td class="vc">${c.venue||'—'}</td>
+          <td class="dc">${c.date||'—'}</td>
+        </tr>`);
+      });
+    }
+  });
+
+  tbody.innerHTML = rows.join('');
+
+  // attach collapse handlers
+  tbody.querySelectorAll('tr.yr-row').forEach(row => {
+    row.onclick = () => {
+      const yr = row.dataset.yr;
+      if(collapsed.has(yr)) collapsed.delete(yr);
+      else collapsed.add(yr);
+      render();
+    };
+  });
+
+  updateStats(data);
+}
+
+function updateStats(data){
+  const up  = data.filter(c=>{ const d=daysFrom(nextDl(c.deadlines)); return d!=null&&d>=0; }).length;
+  const urg = data.filter(c=>{ const d=daysFrom(nextDl(c.deadlines)); return d!=null&&d>=0&&d<=30; }).length;
+  const tbd = data.filter(c=>!c.deadlines||!c.deadlines.length).length;
+  document.getElementById('s-tot').textContent = data.length;
+  document.getElementById('s-up').textContent  = up;
+  document.getElementById('s-urg').textContent = urg;
+  document.getElementById('s-tbd').textContent = tbd;
 }
 
 /* ── load ── */
 async function loadData(){
   try{
-    const ts=Math.floor(Date.now()/3600000);
-    const res=await fetch(`data.json?v=${ts}`);
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const json=await res.json();
-    ALL=json.conferences||[];
+    const ts = Math.floor(Date.now()/3600000);
+    const res = await fetch(`data.json?v=${ts}`);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    ALL = json.conferences || [];
     if(json.updated){
-      const dt=new Date(json.updated);
-      const b=document.getElementById('upd-badge');
-      b.textContent=`업데이트: ${dt.toLocaleDateString('ko-KR',{month:'short',day:'numeric'})} ${dt.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}`;
-      b.style.display='';
+      const dt = new Date(json.updated);
+      const b = document.getElementById('upd-badge');
+      b.textContent = `업데이트: ${dt.toLocaleDateString('ko-KR',{month:'short',day:'numeric'})} ${dt.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}`;
+      b.style.display = '';
     }
-    // default: show current year
-    const curYear=String(new Date().getFullYear());
-    const years=new Set(ALL.map(c=>c.year));
-    activeYear=years.has(curYear)?curYear:'all';
-    buildYearTabs();
     buildTierFilters();
     render();
-  }catch(e){
-    document.getElementById('tbody').innerHTML=
-      `<tr><td colspan="7" class="empty">데이터 로드 실패: ${e.message}<br><small style="color:var(--tm)">로컬에서는 python3 -m http.server 로 실행하세요</small></td></tr>`;
+  } catch(e){
+    document.getElementById('tbody').innerHTML =
+      `<tr><td colspan="7" class="empty">데이터 로드 실패: ${e.message}<br>
+      <small style="color:var(--tm)">로컬에서는 python3 -m http.server 로 실행하세요</small></td></tr>`;
   }
 }
 
-document.getElementById('today-str').textContent=
+document.getElementById('today-str').textContent =
   TODAY.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 loadData();
 </script>

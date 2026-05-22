@@ -109,13 +109,19 @@ def _xlist(raw) -> list[str]:
     items = [raw] if isinstance(raw, str) else list(raw)
     return [d for i in items if (d := _xdate(str(i)))]
 
-def _conf_year(c: dict) -> int:
-    try: return int(str(c.get("year","")).strip())
-    except: pass
-    for dl in c.get("deadlines",[]):
-        m = re.match(r"(\d{4})", dl)
-        if m: return int(m.group(1))
-    return TODAY.year
+def _has_future_dl(c: dict) -> bool:
+    """True if TBD or has at least one future deadline."""
+    dls = c.get("deadlines", [])
+    if not dls:
+        return True   # TBD — keep
+    for dl in dls:
+        try:
+            y, m, d = map(int, dl.split("-"))
+            if date(y, m, d) >= TODAY:
+                return True
+        except:
+            pass
+    return False
 
 # ── YAML parser ───────────────────────────────────────────────────────────────
 def _parse(text: str) -> list[dict]:
@@ -316,7 +322,7 @@ def crawl():
         c["deadlines"] = sorted(set(c["deadlines"]))
         c["abstracts"] = sorted(set(c.get("abstracts",[])))
         c.pop("_src", None)
-        if _conf_year(c) >= YEAR_MIN:
+        if _has_future_dl(c):
             result.append(c)
 
     return sorted(result, key=lambda x:(
@@ -326,7 +332,7 @@ def crawl():
     ))
 
 def main():
-    print(f"{'='*50}\n Conference Deadline Crawler v5\n Filter: {YEAR_MIN}+\n{'='*50}")
+    print(f"{'='*50}\n Conference Deadline Crawler v5\n Filter: future deadlines only\n{'='*50}")
     confs = crawl()
     print(f"\nTotal: {len(confs)}")
     for c in confs:
