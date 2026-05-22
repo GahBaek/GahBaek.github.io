@@ -23,6 +23,16 @@ OUT_FILE    = ROOT / "data.json"
 TODAY       = date.today()
 YEAR_MIN    = TODAY.year - 2
 
+SRC_RANK = {
+    "manual": 0,
+    "casys": 1,
+    "sec": 2,
+    "se": 3,
+    "mlciv": 4,
+    "abhshkdz": 5,
+    "remote": 9,
+}
+
 TIER_ORDER = {t:i for i,t in enumerate(
     ["Sys","SE","AI","Sec"])}
 
@@ -215,22 +225,27 @@ def _from_sec(e):
 # ── Upsert ────────────────────────────────────────────────────────────────────
 def _upsert(merged, conf):
     k = _key(conf["name"], conf["year"])
+
     if k not in merged:
-        merged[k] = dict(conf); return
-    ex = merged[k]
-    is_man_ex  = ex.get("_src") == "manual"
-    is_man_in  = conf.get("_src") == "manual"
-    if is_man_in and not is_man_ex:
-        merged[k] = dict(conf); return
-    if is_man_ex and not is_man_in:
-        for d in conf["deadlines"]:
-            if d not in ex["deadlines"]: ex["deadlines"].append(d)
-        if conf["abstracts"] and not ex["abstracts"]: ex["abstracts"] = conf["abstracts"]
+        merged[k] = dict(conf)
         return
-    for d in conf["deadlines"]:
-        if d not in ex["deadlines"]: ex["deadlines"].append(d)
-    for a in conf.get("abstracts",[]):
-        if a not in ex.get("abstracts",[]): ex.setdefault("abstracts",[]).append(a)
+
+    ex = merged[k]
+    ex_rank = SRC_RANK.get(ex.get("_src"), 99)
+    in_rank = SRC_RANK.get(conf.get("_src"), 99)
+
+    # higher-priority source wins completely
+    if in_rank < ex_rank:
+        merged[k] = dict(conf)
+        return
+
+    # lower-priority source must not modify higher-priority data
+    if in_rank > ex_rank:
+        return
+
+    # same-priority source only: merge deadlines
+    ex["deadlines"] = sorted(set(ex.get("deadlines", []) + conf.get("deadlines", [])))
+    ex["abstracts"] = sorted(set(ex.get("abstracts", []) + conf.get("abstracts", [])))
 
 # ── Loaders ───────────────────────────────────────────────────────────────────
 def load_manual(merged):
