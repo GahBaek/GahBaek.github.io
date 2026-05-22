@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-22T05:24:03Z",
+  "updated": "2026-05-22T07:24:31Z",
   "conferences": [
     {
       "name": "NSDI (Spring) '27",
@@ -64,24 +64,6 @@
       "date": "July 7-9, 2027",
       "url": "https://www.usenix.org/conference/osdi27",
       "note": ""
-    },
-    {
-      "name": "FSE '27",
-      "full": "IACR Transactions on Symmetric Cryptology",
-      "tier": "SE1",
-      "year": "2027",
-      "deadlines": [
-        "2026-03-01",
-        "2026-06-01",
-        "2026-09-01",
-        "2026-10-09",
-        "2026-11-23"
-      ],
-      "abstracts": [],
-      "venue": "TBD",
-      "date": "TBD",
-      "url": "https://tosc.iacr.org/",
-      "note": "Rolling deadline every quarter"
     },
     {
       "name": "ICSE '27",
@@ -189,6 +171,25 @@
       "date": "August 11-13",
       "url": "https://www.usenix.org/conference/usenixsecurity27",
       "note": "Abstract registration required (1 week before deadline AoE)."
+    },
+    {
+      "name": "FSE '27",
+      "full": "Foundations of Software Engineering",
+      "tier": "Sec2",
+      "year": "2027",
+      "deadlines": [
+        "2026-03-01",
+        "2026-06-01",
+        "2026-09-01",
+        "2026-10-02",
+        "2026-10-09",
+        "2026-11-23"
+      ],
+      "abstracts": [],
+      "venue": "Shenzhen, China",
+      "date": "Jul 12-16, 2027",
+      "url": "https://conf.researchr.org/home/fse-2027",
+      "note": ""
     },
     {
       "name": "ACSAC '26",
