@@ -342,12 +342,18 @@ def crawl():
     except Exception as e: print(f"  ERROR: {e}")
 
     result = []
+
     for c in merged.values():
-        c["deadlines"] = sorted(set(c["deadlines"]))
-        c["abstracts"] = sorted(set(c.get("abstracts",[])))
-        c.pop("_src", None)
-        if _has_future_dl(c):
-            result.append(c)
+      c["deadlines"] = sorted(set(c.get("deadlines", [])))
+      c["abstracts"] = sorted(set(c.get("abstracts", [])))
+      if not _in_year_window(c):
+        continue
+
+      if not _has_future_dl(c):
+        continue
+
+      c.pop("_src", None)
+      result.append(c)
 
     return sorted(result, key=lambda x:(
         TIER_ORDER.get(x["tier"],99),
