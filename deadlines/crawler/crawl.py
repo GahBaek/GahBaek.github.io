@@ -1,22 +1,3 @@
-#!/usr/bin/env python3
-"""
-Conference Deadline Crawler v6
-
-Sources priority:
-  1. conferences.manual.yml
-  2. casys-kaist
-  3. sec-deadlines
-  4. se-deadlines
-  5. mlciv
-  6. abhshkdz/ai-deadlines
-
-Fixes:
-  - manual source always wins
-  - lower-priority sources cannot append/overwrite higher-priority data
-  - final output keeps only conference years from today.year - 2 to today.year + 2
-  - old conferences without deadlines are removed by year filter
-"""
-
 import json
 import re
 import urllib.request
@@ -144,7 +125,6 @@ def _canon(name: str) -> str:
             return canon.lower()
 
     return re.split(r"[\s'(\-]", n)[0]
-
 
 def _key(name: str, year: str) -> str:
     return f"{_canon(name)}|{str(year).strip()}"
