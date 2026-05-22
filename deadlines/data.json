@@ -1,6 +1,124 @@
 {
-  "updated": "2026-05-22T07:24:31Z",
+  "updated": "2026-05-22T08:37:59Z",
   "conferences": [
+    {
+      "name": "ACSAC '26",
+      "full": "Annual Computer Security Applications Conference",
+      "tier": "Sec2",
+      "year": "2026",
+      "deadlines": [
+        "2026-05-26"
+      ],
+      "abstracts": [],
+      "venue": "Los Angeles, CA, USA",
+      "date": "Dec 7–11, 2026",
+      "url": "https://www.acsac.org/2026/submissions/papers/",
+      "note": ""
+    },
+    {
+      "name": "ATC '26",
+      "full": "",
+      "tier": "Sys1",
+      "year": "2026",
+      "deadlines": [
+        "2026-06-10"
+      ],
+      "abstracts": [],
+      "venue": "Shatin, Hong Kong",
+      "date": "November 15-18, 2026",
+      "url": "https://sigops.org/s/conferences/atc/2026/",
+      "note": ""
+    },
+    {
+      "name": "S&P (Oakland) '27",
+      "full": "IEEE Symposium on Security and Privacy",
+      "tier": "Sec1",
+      "year": "2027",
+      "deadlines": [
+        "2026-06-11",
+        "2026-11-17"
+      ],
+      "abstracts": [],
+      "venue": "Montreal, Canada",
+      "date": "TBA",
+      "url": "https://sp2027.ieee-security.org/",
+      "note": "Abstract registration required (1 week before deadline AoE)."
+    },
+    {
+      "name": "ICSE '27",
+      "full": "IEEE/ACM International Conference on Software Engineering",
+      "tier": "SE1",
+      "year": "2027",
+      "deadlines": [
+        "2026-06-30"
+      ],
+      "abstracts": [],
+      "venue": "Dublin, Ireland",
+      "date": "April 25 - May 1",
+      "url": "https://conf.researchr.org/home/icse-2027",
+      "note": "Abstract registration required (1 week before deadline AoE)."
+    },
+    {
+      "name": "AAAI '27",
+      "full": "AAAI Conference on Artificial Intelligence",
+      "tier": "AI1",
+      "year": "2027",
+      "deadlines": [
+        "2026-08-15"
+      ],
+      "abstracts": [
+        "2026-08-07"
+      ],
+      "venue": "TBA",
+      "date": "February 2027",
+      "url": "https://aaai.org/conference/aaai/aaai-27/",
+      "note": "Predicted based on historical pattern. Mandatory abstract deadline typically 1 week before paper deadline. More info here (when available)."
+    },
+    {
+      "name": "NDSS '27",
+      "full": "ISOC Network and Distributed System Security Symposium",
+      "tier": "Sec1",
+      "year": "2027",
+      "deadlines": [
+        "2026-05-06",
+        "2026-08-19"
+      ],
+      "abstracts": [],
+      "venue": "Seoul, Republic of Korea",
+      "date": "March 22-26",
+      "url": "https://www.ndss-symposium.org/ndss2027/submissions/call-for-papers/",
+      "note": ""
+    },
+    {
+      "name": "ASIA CCS '27",
+      "full": "ACM Asia Conference on Computer and Communications Security",
+      "tier": "Sec2",
+      "year": "2027",
+      "deadlines": [
+        "2026-08-21",
+        "2026-12-11"
+      ],
+      "abstracts": [],
+      "venue": "Macau",
+      "date": "July 12-16",
+      "url": "https://asiaccs2027.cityu.edu.mo/home/index.html",
+      "note": ""
+    },
+    {
+      "name": "USENIX Security '27",
+      "full": "USENIX Security Symposium",
+      "tier": "Sec1",
+      "year": "2027",
+      "deadlines": [
+        "2026-08-25",
+        "2027-01-26"
+      ],
+      "abstracts": [],
+      "venue": "Denver, CO, USA",
+      "date": "August 11-13",
+      "url": "https://www.usenix.org/conference/usenixsecurity27",
+      "note": "Abstract registration required (1 week before deadline AoE)."
+    },
     {
       "name": "NSDI (Spring) '27",
       "full": "",
@@ -38,62 +156,18 @@
       "note": ""
     },
     {
-      "name": "ATC '26",
-      "full": "",
-      "tier": "Sys1",
-      "year": "2026",
+      "name": "FSE '27",
+      "full": "Foundations of Software Engineering",
+      "tier": "Sec1",
+      "year": "2027",
       "deadlines": [
-        "2026-06-10"
+        "2026-10-02"
       ],
       "abstracts": [],
-      "venue": "Shatin, Hong Kong",
-      "date": "November 15-18, 2026",
-      "url": "https://sigops.org/s/conferences/atc/2026/",
+      "venue": "Shenzhen, China",
+      "date": "Jul 12-16, 2027",
+      "url": "https://conf.researchr.org/home/fse-2027",
       "note": ""
-    },
-    {
-      "name": "OSDI '27",
-      "full": "",
-      "tier": "Sys1",
-      "year": "2027",
-      "deadlines": [
-        "2026-12-11"
-      ],
-      "abstracts": [],
-      "venue": "Baltimore, MD, USA",
-      "date": "July 7-9, 2027",
-      "url": "https://www.usenix.org/conference/osdi27",
-      "note": ""
-    },
-    {
-      "name": "ICSE '27",
-      "full": "IEEE/ACM International Conference on Software Engineering",
-      "tier": "SE1",
-      "year": "2027",
-      "deadlines": [
-        "2026-06-30"
-      ],
-      "abstracts": [],
-      "venue": "Dublin, Ireland",
-      "date": "April 25 - May 1",
-      "url": "https://conf.researchr.org/home/icse-2027",
-      "note": "Abstract registration required (1 week before deadline AoE)."
-    },
-    {
-      "name": "AAAI '27",
-      "full": "AAAI Conference on Artificial Intelligence",
-      "tier": "AI1",
-      "year": "2027",
-      "deadlines": [
-        "2026-08-15"
-      ],
-      "abstracts": [
-        "2026-08-07"
-      ],
-      "venue": "TBA",
-      "date": "February 2027",
-      "url": "https://aaai.org/conference/aaai/aaai-27/",
-      "note": "Predicted based on historical pattern. Mandatory abstract deadline typically 1 week before paper deadline. More info here (when available)."
     },
     {
       "name": "WWW '27",
@@ -112,6 +186,20 @@
       "note": "Predicted based on 2026 schedule pattern. Please verify on the official conference website. More info here."
     },
     {
+      "name": "OSDI '27",
+      "full": "",
+      "tier": "Sys1",
+      "year": "2027",
+      "deadlines": [
+        "2026-12-11"
+      ],
+      "abstracts": [],
+      "venue": "Baltimore, MD, USA",
+      "date": "July 7-9, 2027",
+      "url": "https://www.usenix.org/conference/osdi27",
+      "note": ""
+    },
+    {
       "name": "IJCAI '27",
       "full": "International Joint Conference on Artificial Intelligence",
       "tier": "AI1",
@@ -128,97 +216,16 @@
       "note": "Predicted based on historical pattern. Mandatory abstract deadline typically 1 week before paper deadline. More info here (when available)."
     },
     {
-      "name": "NDSS '27",
-      "full": "ISOC Network and Distributed System Security Symposium",
-      "tier": "Sec1",
-      "year": "2027",
-      "deadlines": [
-        "2026-05-06",
-        "2026-08-19"
-      ],
-      "abstracts": [],
-      "venue": "Seoul, Republic of Korea",
-      "date": "March 22-26",
-      "url": "https://www.ndss-symposium.org/ndss2027/submissions/call-for-papers/",
-      "note": ""
-    },
-    {
-      "name": "S&P (Oakland) '27",
-      "full": "IEEE Symposium on Security and Privacy",
-      "tier": "Sec1",
-      "year": "2027",
-      "deadlines": [
-        "2026-06-11",
-        "2026-11-17"
-      ],
-      "abstracts": [],
-      "venue": "Montreal, Canada",
-      "date": "TBA",
-      "url": "https://sp2027.ieee-security.org/",
-      "note": "Abstract registration required (1 week before deadline AoE)."
-    },
-    {
-      "name": "USENIX Security '27",
-      "full": "USENIX Security Symposium",
-      "tier": "Sec1",
-      "year": "2027",
-      "deadlines": [
-        "2026-08-25",
-        "2027-01-26"
-      ],
-      "abstracts": [],
-      "venue": "Denver, CO, USA",
-      "date": "August 11-13",
-      "url": "https://www.usenix.org/conference/usenixsecurity27",
-      "note": "Abstract registration required (1 week before deadline AoE)."
-    },
-    {
-      "name": "FSE '27",
-      "full": "Foundations of Software Engineering",
-      "tier": "Sec2",
-      "year": "2027",
-      "deadlines": [
-        "2026-03-01",
-        "2026-06-01",
-        "2026-09-01",
-        "2026-10-02",
-        "2026-10-09",
-        "2026-11-23"
-      ],
-      "abstracts": [],
-      "venue": "Shenzhen, China",
-      "date": "Jul 12-16, 2027",
-      "url": "https://conf.researchr.org/home/fse-2027",
-      "note": ""
-    },
-    {
-      "name": "ACSAC '26",
-      "full": "Annual Computer Security Applications Conference",
-      "tier": "Sec2",
+      "name": "SecureComm '26",
+      "full": "EAI International Conference on Security and Privacy in Communication Networks",
+      "tier": "Sec3",
       "year": "2026",
-      "deadlines": [
-        "2026-05-26"
-      ],
+      "deadlines": [],
       "abstracts": [],
-      "venue": "Los Angeles, CA, USA",
-      "date": "Dec 7–11, 2026",
-      "url": "https://www.acsac.org/2026/submissions/papers/",
-      "note": ""
-    },
-    {
-      "name": "ASIA CCS '27",
-      "full": "ACM Asia Conference on Computer and Communications Security",
-      "tier": "Sec2",
-      "year": "2027",
-      "deadlines": [
-        "2026-08-21",
-        "2026-12-11"
-      ],
-      "abstracts": [],
-      "venue": "Macau",
-      "date": "July 12-16",
-      "url": "https://asiaccs2027.cityu.edu.mo/home/index.html",
-      "note": ""
+      "venue": "TBD",
+      "date": "Late 2026",
+      "url": "https://securecomm.eai-conferences.org/",
+      "note": "CFP TBD"
     }
   ]
 }
