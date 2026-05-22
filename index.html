@@ -1,398 +1,112 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conference Deadline Tracker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home · Baek Gahyun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── HOME-SPECIFIC STYLES ── */
+    .home-header { display: flex; gap: 3rem; align-items: flex-start; margin-bottom: 3rem; }
+    .avatar {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: linear-gradient(135deg, #c0392b22, #1a181422);
+      border: 2px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.8rem; color: var(--muted);
+      flex-shrink: 0;
+    }
+    .home-intro h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem; font-weight: 400; line-height: 1.15;
+      margin-bottom: .6rem;
+    }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: var(--tag); border-radius: 999px;
+      padding: .25rem .85rem;
+      font-size: .75rem; font-weight: 500; color: var(--muted);
+      margin-bottom: .9rem;
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #27ae60; }
+    .home-intro p { font-size: .95rem; color: var(--muted); line-height: 1.7; max-width: 480px; }
 
-:root{
-  --bg:#FAFAF8;--surface:#FFFFFF;--surface2:#F4F3EE;
-  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.16);
-  --text-p:#1C1C1A;--text-s:#6B6A65;--text-m:#9E9D97;
-  --r-sm:6px;--r-md:10px;--r-lg:14px;
-  --font:'Geist',system-ui,sans-serif;
-  --sys-bg:#E6F1FB;--sys-t:#185FA5;--sys-b:#85B7EB;
-  --se-bg:#EAF3DE; --se-t:#3B6D11; --se-b:#97C459;
-  --ai-bg:#FAEEDA; --ai-t:#854F0B; --ai-b:#EF9F27;
-  --s1-bg:#FAECE7; --s1-t:#993C1D; --s1-b:#F0997B;
-  --s2-bg:#FBEAF0; --s2-t:#993556; --s2-b:#ED93B1;
-  --s3-bg:#EEEDFE; --s3-t:#534AB7; --s3-b:#AFA9EC;
-  --s4-bg:#E1F5EE; --s4-t:#0F6E56; --s4-b:#5DCAA5;
-  --urg-bg:#FCEBEB;--urg-t:#A32D2D;
-  --soo-bg:#FAEEDA;--soo-t:#854F0B;
-  --ok-bg:#EAF3DE; --ok-t:#3B6D11;
-  --pas-bg:#F1EFE8;--pas-t:#888780;
-}
+    .contact-grid { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2.5rem; }
+    .contact-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+      padding: .35rem 1rem;
+      font-size: .78rem; font-family: 'DM Mono', monospace;
+      text-decoration: none; color: var(--ink);
+      transition: border-color .2s, background .2s;
+    }
+    .contact-pill:hover { border-color: var(--ink); background: var(--ink); color: var(--bg); }
 
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#18181A;--surface:#222224;--surface2:#2C2C2E;
-    --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
-    --text-p:#EFEDEA;--text-s:#9E9D97;--text-m:#666662;
-    --sys-bg:#0C447C;--sys-t:#B5D4F4;--sys-b:#185FA5;
-    --se-bg:#27500A; --se-t:#C0DD97; --se-b:#3B6D11;
-    --ai-bg:#633806; --ai-t:#FAC775; --ai-b:#854F0B;
-    --s1-bg:#712B13; --s1-t:#F5C4B3; --s1-b:#993C1D;
-    --s2-bg:#72243E; --s2-t:#F4C0D1; --s2-b:#993556;
-    --s3-bg:#3C3489; --s3-t:#CECBF6; --s3-b:#534AB7;
-    --s4-bg:#085041; --s4-t:#9FE1CB; --s4-b:#0F6E56;
-    --urg-bg:#501313;--urg-t:#F7C1C1;
-    --soo-bg:#412402;--soo-t:#FAC775;
-    --ok-bg:#173404; --ok-t:#C0DD97;
-    --pas-bg:#2C2C2A;--pas-t:#888780;
-  }
-}
+    .cert-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .cert-list li {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .65rem 1rem;
+      background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+      font-size: .85rem;
+    }
+    .cert-list li span { font-family: 'DM Mono', monospace; font-size: .72rem; color: var(--muted); }
 
-html{font-family:var(--font);background:var(--bg);color:var(--text-p);font-size:15px}
-body{min-height:100vh;padding:2rem 1rem 4rem}
-.page{max-width:1340px;margin:0 auto}
-
-/* header */
-.hdr{margin-bottom:1.75rem}
-.hdr h1{font-size:22px;font-weight:500;letter-spacing:-.3px;margin-bottom:5px}
-.hdr-meta{font-size:12px;color:var(--text-s);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.hdr-meta a{color:inherit}
-.upd{background:var(--surface2);border:0.5px solid var(--border2);border-radius:12px;padding:2px 9px;font-size:11px;color:var(--text-m)}
-
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
-.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-md);padding:12px 16px}
-.stat .lbl{font-size:11px;color:var(--text-s);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
-.stat .val{font-size:22px;font-weight:500}
-
-/* controls */
-.ctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:1rem}
-.sw{flex:1;min-width:200px;position:relative}
-.sw svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--text-s);fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none}
-.sw input{width:100%;padding:8px 10px 8px 32px;border:0.5px solid var(--border2);border-radius:var(--r-sm);background:var(--surface);color:var(--text-p);font-size:13px;font-family:var(--font);outline:none}
-.sw input:focus{border-color:var(--sys-b)}
-select{padding:8px 12px;border:0.5px solid var(--border2);border-radius:var(--r-sm);background:var(--surface);color:var(--text-p);font-size:13px;font-family:var(--font);outline:none;cursor:pointer}
-.hl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-s);cursor:pointer;white-space:nowrap}
-
-/* tag filters */
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
-.tb{padding:5px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--surface);font-size:12px;font-weight:500;color:var(--text-s);cursor:pointer;font-family:var(--font);transition:all .12s}
-.tb:hover{background:var(--surface2)}
-.tb.a-all{background:var(--surface2);color:var(--text-p)}
-.tb.a-Sys1{background:var(--sys-bg);color:var(--sys-t);border-color:var(--sys-b)}
-.tb.a-SE1,.tb.a-SE2{background:var(--se-bg);color:var(--se-t);border-color:var(--se-b)}
-.tb.a-AI1{background:var(--ai-bg);color:var(--ai-t);border-color:var(--ai-b)}
-.tb.a-Sec1{background:var(--s1-bg);color:var(--s1-t);border-color:var(--s1-b)}
-.tb.a-Sec2{background:var(--s2-bg);color:var(--s2-t);border-color:var(--s2-b)}
-.tb.a-Sec3{background:var(--s3-bg);color:var(--s3-t);border-color:var(--s3-b)}
-.tb.a-Sec4{background:var(--s4-bg);color:var(--s4-t);border-color:var(--s4-b)}
-
-/* table */
-.tw{overflow-x:auto;border:0.5px solid var(--border);border-radius:var(--r-lg)}
-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface)}
-thead th{padding:9px 14px;text-align:left;font-size:11px;font-weight:500;color:var(--text-s);background:var(--surface2);border-bottom:0.5px solid var(--border);white-space:nowrap;text-transform:uppercase;letter-spacing:.3px}
-thead th:first-child{border-radius:var(--r-lg) 0 0 0}
-thead th:last-child{border-radius:0 var(--r-lg) 0 0}
-tbody tr{border-bottom:0.5px solid var(--border)}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover td{background:var(--surface2)}
-td{padding:9px 14px;vertical-align:top}
-
-.cl{font-weight:500;color:var(--text-p);text-decoration:none}
-.cl:hover{color:var(--sys-t);text-decoration:underline}
-.cf{font-size:11px;color:var(--text-m);margin-top:2px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.note-tag{display:inline-block;margin-top:3px;font-size:10px;color:var(--text-m);background:var(--surface2);border:0.5px solid var(--border);border-radius:4px;padding:1px 5px}
-
-/* cycle rows */
-.cycles{display:flex;flex-direction:column;gap:4px}
-.cycle-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-s)}
-.cyc-lbl{font-size:10px;color:var(--text-m);background:var(--surface2);border:0.5px solid var(--border);border-radius:4px;padding:1px 5px;white-space:nowrap;flex-shrink:0}
-.cyc-date{white-space:nowrap}
-.cyc-past{opacity:.4}
-
-/* tier badges */
-.tier{display:inline-block;padding:3px 8px;border-radius:12px;font-size:10px;font-weight:500;white-space:nowrap}
-.t-Sys1{background:var(--sys-bg);color:var(--sys-t);border:0.5px solid var(--sys-b)}
-.t-SE1,.t-SE2{background:var(--se-bg);color:var(--se-t);border:0.5px solid var(--se-b)}
-.t-AI1{background:var(--ai-bg);color:var(--ai-t);border:0.5px solid var(--ai-b)}
-.t-Sec1{background:var(--s1-bg);color:var(--s1-t);border:0.5px solid var(--s1-b)}
-.t-Sec2{background:var(--s2-bg);color:var(--s2-t);border:0.5px solid var(--s2-b)}
-.t-Sec3{background:var(--s3-bg);color:var(--s3-t);border:0.5px solid var(--s3-b)}
-.t-Sec4{background:var(--s4-bg);color:var(--s4-t);border:0.5px solid var(--s4-b)}
-
-/* days chips */
-.days{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap}
-.d-past{background:var(--pas-bg);color:var(--pas-t)}
-.d-urg{background:var(--urg-bg);color:var(--urg-t)}
-.d-soo{background:var(--soo-bg);color:var(--soo-t)}
-.d-ok{background:var(--ok-bg);color:var(--ok-t)}
-.d-tbd{color:var(--text-m);font-size:12px}
-
-.vc{font-size:12px;color:var(--text-s);min-width:120px}
-.dc{font-size:12px;color:var(--text-s);white-space:nowrap}
-.empty{text-align:center;padding:3rem;color:var(--text-s);font-size:14px}
-.loading{text-align:center;padding:3rem;color:var(--text-m);font-size:14px}
-
-.footer{margin-top:2.5rem;text-align:center;font-size:12px;color:var(--text-m);line-height:2.2}
-.footer a{color:var(--text-s)}
-
-@media(max-width:680px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .hdr h1{font-size:19px}
-}
-</style>
+    @media (max-width: 600px) {
+      .home-header { flex-direction: column; gap: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
-<div class="page">
 
-<header class="hdr">
-  <h1>Conference Deadline Tracker</h1>
-  <div class="hdr-meta">
-    <span>오늘: <strong id="today-str"></strong></span>
-    <span id="upd-badge" class="upd" style="display:none"></span>
-    <span>
-      소스:
-      <a href="https://sec-deadlines.github.io/" target="_blank" rel="noopener">sec-deadlines</a> ·
-      <a href="https://se-deadlines.github.io/"  target="_blank" rel="noopener">se-deadlines</a> ·
-      <a href="https://github.com/abhshkdz/ai-deadlines" target="_blank" rel="noopener">ai-deadlines</a> ·
-      수동 입력(<code>conferences.manual.yml</code>)
-    </span>
+<nav>
+  <a class="nav-logo" href="index.html">Gahyun Baek</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="pages/papers.html">Papers</a></li>
+    <li><a href="pages/posts.html">Posts</a></li>
+    <li><a href="pages/blog.html">Blog</a></li>
+    <li><a href="pages/cv.html">CV</a></li>
+  </ul>
+</nav>
+
+<main class="page">
+  <div class="home-header">
+    <div class="avatar"><img src="assets/files/Gahyun_Baek.jpg" alt="Gahyun Baek"></div>
+    <div class="home-intro">
+      <div class="status-badge"><span class="status-dot"></span> Open to opportunities</div>
+      <h1>Baek Gahyun</h1>
+      <p>Mater student / Researcher in AI for security. Interested in LLM, system, and security. Based in Suwon, South Korea.</p>
+    </div>
   </div>
-</header>
 
-<div class="stats">
-  <div class="stat"><div class="lbl">전체</div><div class="val" id="s-tot">—</div></div>
-  <div class="stat"><div class="lbl">예정</div><div class="val" id="s-up" style="color:var(--sys-t)">—</div></div>
-  <div class="stat"><div class="lbl">30일 이내</div><div class="val" id="s-urg" style="color:var(--urg-t)">—</div></div>
-  <div class="stat"><div class="lbl" style="color:var(--text-m)">날짜 미정</div><div class="val" id="s-tbd" style="color:var(--text-m)">—</div></div>
-</div>
-
-<div class="ctrls">
-  <div class="sw">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="컨퍼런스 검색 (USENIX, Sec1, Seoul …)" oninput="render()" aria-label="검색">
+  <div class="contact-grid">
+    <a class="contact-pill" href="https://linkedin.com/in/gahyun-baek" target="_blank">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a class="contact-pill" href="mailto:gusqorrk@gmail.com">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      gusqorrk@gmail.com
+    </a>
+    <a class="contact-pill" href="https://github.com/GahBaek" target="_blank">
+      <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
   </div>
-  <select id="sort" onchange="render()" aria-label="정렬">
-    <option value="days">다음 마감 순</option>
-    <option value="name">이름 순</option>
-    <option value="tier">카테고리 순</option>
-  </select>
-  <label class="hl">
-    <input type="checkbox" id="hide-past" onchange="render()"> 지난 마감 숨기기
-  </label>
-</div>
 
-<div class="tags" id="tag-filters" role="group" aria-label="카테고리 필터"></div>
+  <hr class="divider">
 
-<div class="tw">
-  <table>
-    <thead>
-      <tr>
-        <th>컨퍼런스</th>
-        <th>카테고리</th>
-        <th>Abstract 마감</th>
-        <th>Paper 마감</th>
-        <th>다음 마감까지</th>
-        <th>장소</th>
-        <th>학회 날짜</th>
-      </tr>
-    </thead>
-    <tbody id="tbody">
-      <tr><td colspan="7" class="loading">데이터 로딩 중…</td></tr>
-    </tbody>
-  </table>
-</div>
+  <p class="section-label">Certifications</p>
+  <ul class="cert-list">
+    <li>정보처리기사 <span>2025</span></li>
+    <li>SQLD<span>2025</span></li>
+    <li>HSK Level 5<span>2026</span></li>
+  </ul>
+</main>
 
-<footer class="footer">
-  <div>데드라인은 AoE(Anywhere on Earth) 기준 · 반드시 공식 CFP를 확인하세요</div>
-  <div>
-    <a href="https://github.com/sec-deadlines/sec-deadlines.github.io" target="_blank" rel="noopener">sec-deadlines</a> ·
-    <a href="https://github.com/se-deadlines/se-deadlines.github.io"  target="_blank" rel="noopener">se-deadlines</a> ·
-    <a href="https://github.com/abhshkdz/ai-deadlines"               target="_blank" rel="noopener">ai-deadlines</a>
-  </div>
-</footer>
-
-</div><!-- .page -->
-
-<script>
-const TODAY = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
-const TIERS = ['Sys1','SE1','SE2','AI1','Sec1','Sec2','Sec3','Sec4'];
-const TIER_ORD = Object.fromEntries(TIERS.map((t,i) => [t,i]));
-
-let ALL = [];
-let active = new Set();
-
-/* ── date helpers ── */
-function parseDt(s) {
-  if (!s) return null;
-  const [y,m,d] = s.split('-').map(Number);
-  return new Date(y, m-1, d);
-}
-function daysFrom(s) {
-  const dt = parseDt(s); if (!dt) return null;
-  return Math.round((dt - TODAY) / 86400000);
-}
-function fmt(s) {
-  if (!s) return '—';
-  return parseDt(s).toLocaleDateString('ko-KR',{month:'short',day:'numeric'});
-}
-function nextDl(dls) {
-  if (!dls || !dls.length) return null;
-  const fut = dls.filter(d => daysFrom(d) >= 0);
-  return fut.length ? fut[0] : dls[dls.length - 1];
-}
-
-/* ── chips ── */
-function daysChip(dls) {
-  const n = nextDl(dls);
-  if (!n) return '<span class="d-tbd">TBD</span>';
-  const d = daysFrom(n);
-  if (d <  0)  return `<span class="days d-past">${Math.abs(d)}일 전</span>`;
-  if (d <= 14) return `<span class="days d-urg">D-${d}</span>`;
-  if (d <= 60) return `<span class="days d-soo">D-${d}</span>`;
-  return `<span class="days d-ok">D-${d}</span>`;
-}
-
-/* ── render deadline / abstract cells (per-cycle) ── */
-function cycleCell(dls, abs) {
-  // dls = paper deadlines list, abs = abstract deadlines list (may be shorter)
-  if (!dls || !dls.length) return '<span class="d-tbd">TBD</span>';
-  const multi = dls.length > 1;
-  return `<div class="cycles">${dls.map((dl, i) => {
-    const past = daysFrom(dl) < 0;
-    const lbl  = multi ? `<span class="cyc-lbl">Cycle ${i+1}</span>` : '';
-    return `<div class="cycle-row${past ? ' cyc-past' : ''}">${lbl}<span class="cyc-date">${fmt(dl)}</span></div>`;
-  }).join('')}</div>`;
-}
-
-function absCell(dls, abs) {
-  if (!abs || !abs.length) {
-    // Try extracting from note: not available here, just show —
-    return '<span style="color:var(--text-m);font-size:12px">—</span>';
-  }
-  const multi = abs.length > 1;
-  return `<div class="cycles">${abs.map((a, i) => {
-    const past = daysFrom(a) < 0;
-    const lbl  = multi ? `<span class="cyc-lbl">Cycle ${i+1}</span>` : '';
-    return `<div class="cycle-row${past ? ' cyc-past' : ''}">${lbl}<span class="cyc-date">${fmt(a)}</span></div>`;
-  }).join('')}</div>`;
-}
-
-/* ── filters ── */
-function buildFilters() {
-  const w = document.getElementById('tag-filters');
-  w.innerHTML = '';
-  const all = mk('button', 'tb ' + (active.size === 0 ? 'a-all' : ''), '전체');
-  all.onclick = () => { active.clear(); buildFilters(); render(); };
-  w.appendChild(all);
-  TIERS.forEach(t => {
-    const b = mk('button', 'tb ' + (active.has(t) ? `a-${t}` : ''), t);
-    b.onclick = () => { active.has(t) ? active.delete(t) : active.add(t); buildFilters(); render(); };
-    w.appendChild(b);
-  });
-}
-
-function mk(tag, cls, text) {
-  const el = document.createElement(tag);
-  el.className = cls; el.textContent = text; return el;
-}
-
-/* ── main render ── */
-function render() {
-  const q       = (document.getElementById('search').value || '').toLowerCase();
-  const sort    = document.getElementById('sort').value;
-  const hidePast = document.getElementById('hide-past').checked;
-
-  let data = [...ALL];
-  if (active.size)  data = data.filter(c => active.has(c.tier));
-  if (q) data = data.filter(c =>
-    c.name.toLowerCase().includes(q) ||
-    c.full.toLowerCase().includes(q) ||
-    c.tier.toLowerCase().includes(q) ||
-    (c.venue||'').toLowerCase().includes(q)
-  );
-  if (hidePast) data = data.filter(c => {
-    const n = nextDl(c.deadlines); return !n || daysFrom(n) >= 0;
-  });
-
-  if (sort === 'days') {
-    data.sort((a,b) => {
-      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
-      if (da==null&&db==null) return 0; if (da==null) return 1; if (db==null) return -1;
-      return da - db;
-    });
-  } else if (sort === 'name') {
-    data.sort((a,b) => a.name.localeCompare(b.name));
-  } else {
-    data.sort((a,b) => {
-      const t = TIER_ORD[a.tier] - TIER_ORD[b.tier]; if (t) return t;
-      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
-      if (da==null) return 1; if (db==null) return -1; return da - db;
-    });
-  }
-
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = data.length === 0
-    ? '<tr><td colspan="7" class="empty">검색 결과가 없습니다</td></tr>'
-    : data.map(c => {
-        const note = c.note ? `<span class="note-tag">${c.note}</span>` : '';
-        return `<tr>
-          <td>
-            <a class="cl" href="${c.url||'#'}" target="_blank" rel="noopener">${c.name}</a>
-            <div class="cf" title="${c.full}">${c.full||''}</div>
-            ${note}
-          </td>
-          <td><span class="tier t-${c.tier}">${c.tier}</span></td>
-          <td>${absCell(c.deadlines, c.abstracts)}</td>
-          <td>${cycleCell(c.deadlines, c.abstracts)}</td>
-          <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
-          <td class="vc">${c.venue||'—'}</td>
-          <td class="dc">${c.date||'—'}</td>
-        </tr>`;
-      }).join('');
-
-  /* stats over full filtered set (ignoring hidePast) */
-  let base = [...ALL];
-  if (active.size) base = base.filter(c => active.has(c.tier));
-  if (q) base = base.filter(c => c.name.toLowerCase().includes(q) || c.tier.toLowerCase().includes(q));
-  const up  = base.filter(c => { const d=daysFrom(nextDl(c.deadlines)); return d!==null&&d>=0; }).length;
-  const urg = base.filter(c => { const d=daysFrom(nextDl(c.deadlines)); return d!==null&&d>=0&&d<=30; }).length;
-  const tbd = base.filter(c => !c.deadlines||!c.deadlines.length).length;
-  document.getElementById('s-tot').textContent = base.length;
-  document.getElementById('s-up').textContent  = up;
-  document.getElementById('s-urg').textContent = urg;
-  document.getElementById('s-tbd').textContent = tbd;
-}
-
-/* ── load data.json ── */
-async function loadData() {
-  try {
-    const ts  = Math.floor(Date.now() / 3600000);   // cache bust hourly
-    const res = await fetch(`data.json?v=${ts}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    ALL = json.conferences || [];
-
-    if (json.updated) {
-      const dt = new Date(json.updated);
-      const b  = document.getElementById('upd-badge');
-      b.textContent = `업데이트: ${dt.toLocaleDateString('ko-KR',{month:'short',day:'numeric'})} ${dt.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}`;
-      b.style.display = '';
-    }
-    buildFilters();
-    render();
-  } catch(e) {
-    document.getElementById('tbody').innerHTML =
-      `<tr><td colspan="7" class="empty">
-        데이터 로드 실패: ${e.message}<br>
-        <small style="color:var(--text-m)">data.json 파일이 레포에 있는지 확인하세요. 로컬에서는 <code>python3 -m http.server</code>로 실행하세요.</small>
-      </td></tr>`;
-  }
-}
-
-document.getElementById('today-str').textContent =
-  TODAY.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-
-loadData();
-</script>
+<script src="js/nav.js"></script>
 </body>
 </html>
