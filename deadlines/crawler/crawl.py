@@ -26,7 +26,7 @@ TIER_ORDER = {
     "Sys": 0,
     "SE": 1,
     "AI": 2,
-    "Sec1": 3,
+    "Sec": 3,
 }
 
 TIER_ALIASES = {
