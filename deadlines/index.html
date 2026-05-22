@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conference Deadline Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F6F3;--sf:#FFF;--sf2:#F0EFE9;--sf3:#E8E7E0;
+  --bd:rgba(0,0,0,0.08);--bd2:rgba(0,0,0,0.15);
+  --tp:#1A1A18;--ts:#65645F;--tm:#9C9B95;
+  --rsm:6px;--rmd:10px;--rlg:14px;
+  --fn:'Geist',system-ui,sans-serif;
+  --sys-bg:#E6F1FB;--sys-t:#185FA5;--sys-b:#85B7EB;
+  --se-bg:#EAF3DE; --se-t:#3B6D11; --se-b:#97C459;
+  --ai-bg:#FFF3DF; --ai-t:#7A4200; --ai-b:#F0B85A;
+  --s1-bg:#FAECE7; --s1-t:#8B3218; --s1-b:#E8917A;
+  --s2-bg:#FBEAF0; --s2-t:#8B2E4E; --s2-b:#E895B8;
+  --s3-bg:#EEEDFE; --s3-t:#4A3FA8; --s3-b:#A8A5EA;
+  --s4-bg:#E1F5EE; --s4-t:#0D6148; --s4-b:#52C8A0;
+  --urg-bg:#FDECEC;--urg-t:#991B1B;
+  --soo-bg:#FEF3CD;--soo-t:#7A4200;
+  --ok-bg:#E6F4EA; --ok-t:#1A6A30;
+  --pas-bg:#EFEFED;--pas-t:#888880;
+  --tab-act-bg:#1A1A18;--tab-act-t:#FFF;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#131312;--sf:#1E1E1C;--sf2:#272725;--sf3:#313130;
+  --bd:rgba(255,255,255,0.08);--bd2:rgba(255,255,255,0.16);
+  --tp:#EDECEA;--ts:#9C9B95;--tm:#5E5D58;
+  --sys-bg:#0B3D6E;--sys-t:#93C5FD;--sys-b:#1D4E89;
+  --se-bg:#1A3D08; --se-t:#86EFAC; --se-b:#166534;
+  --ai-bg:#3D2800; --ai-t:#FCD34D; --ai-b:#78450A;
+  --s1-bg:#4A1A0E; --s1-t:#FCA5A5; --s1-b:#7F1D1D;
+  --s2-bg:#3D1024; --s2-t:#F9A8D4; --s2-b:#831843;
+  --s3-bg:#221B5C; --s3-t:#C4B5FD; --s3-b:#3730A3;
+  --s4-bg:#053321; --s4-t:#6EE7B7; --s4-b:#065F46;
+  --urg-bg:#3B0A0A;--urg-t:#FCA5A5;
+  --soo-bg:#3D2800;--soo-t:#FCD34D;
+  --ok-bg:#0A2E14; --ok-t:#86EFAC;
+  --pas-bg:#252523;--pas-t:#6B6A64;
+  --tab-act-bg:#EDECEA;--tab-act-t:#131312;
+}}
+html{font-family:var(--fn);background:var(--bg);color:var(--tp);font-size:15px}
+body{min-height:100vh;padding:2rem 1rem 5rem}
+.page{max-width:1360px;margin:0 auto}
+
+/* ── header ── */
+.hdr{margin-bottom:2rem}
+.hdr h1{font-size:21px;font-weight:500;letter-spacing:-.3px;margin-bottom:6px}
+.hdr-meta{font-size:12px;color:var(--ts);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.upd-badge{background:var(--sf2);border:0.5px solid var(--bd2);border-radius:10px;padding:2px 8px;font-size:11px;color:var(--tm)}
+
+/* ── stats ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.75rem}
+.stat{background:var(--sf);border:0.5px solid var(--bd);border-radius:var(--rmd);padding:11px 15px}
+.stat-lbl{font-size:10px;font-weight:500;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.stat-val{font-size:21px;font-weight:500}
+
+/* ── year tabs ── */
+.year-tabs{display:flex;gap:4px;margin-bottom:1.25rem;flex-wrap:wrap}
+.ytab{padding:6px 16px;border-radius:20px;border:0.5px solid var(--bd2);background:var(--sf);font-size:13px;font-weight:500;color:var(--ts);cursor:pointer;font-family:var(--fn);transition:all .12s}
+.ytab:hover{background:var(--sf2)}
+.ytab.ya{background:var(--tab-act-bg);color:var(--tab-act-t);border-color:var(--tab-act-bg)}
+.ytab.ya-all{background:var(--sf2);color:var(--tp);border-color:var(--bd2)}
+.ybadge{display:inline-block;background:rgba(128,128,128,0.18);color:inherit;border-radius:8px;font-size:10px;padding:1px 5px;margin-left:4px;vertical-align:middle}
+
+/* ── tier filters ── */
+.tier-filters{display:flex;gap:5px;margin-bottom:1.25rem;flex-wrap:wrap}
+.tfbtn{padding:5px 13px;border-radius:20px;border:0.5px solid var(--bd2);background:var(--sf);font-size:12px;font-weight:500;color:var(--ts);cursor:pointer;font-family:var(--fn);transition:all .12s}
+.tfbtn:hover{background:var(--sf2)}
+.tfbtn.ta-all{background:var(--sf2);color:var(--tp)}
+.tfbtn.ta-Sys1{background:var(--sys-bg);color:var(--sys-t);border-color:var(--sys-b)}
+.tfbtn.ta-SE1,.tfbtn.ta-SE2{background:var(--se-bg);color:var(--se-t);border-color:var(--se-b)}
+.tfbtn.ta-AI1{background:var(--ai-bg);color:var(--ai-t);border-color:var(--ai-b)}
+.tfbtn.ta-Sec1{background:var(--s1-bg);color:var(--s1-t);border-color:var(--s1-b)}
+.tfbtn.ta-Sec2{background:var(--s2-bg);color:var(--s2-t);border-color:var(--s2-b)}
+.tfbtn.ta-Sec3{background:var(--s3-bg);color:var(--s3-t);border-color:var(--s3-b)}
+.tfbtn.ta-Sec4{background:var(--s4-bg);color:var(--s4-t);border-color:var(--s4-b)}
+
+/* ── sort + hide row ── */
+.ctrls{display:flex;gap:8px;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap}
+select{padding:7px 11px;border:0.5px solid var(--bd2);border-radius:var(--rsm);background:var(--sf);color:var(--tp);font-size:13px;font-family:var(--fn);outline:none;cursor:pointer}
+.hl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ts);cursor:pointer}
+
+/* ── table ── */
+.tw{overflow-x:auto;border:0.5px solid var(--bd);border-radius:var(--rlg);box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--sf)}
+thead th{padding:9px 13px;text-align:left;font-size:10px;font-weight:500;color:var(--ts);background:var(--sf2);border-bottom:0.5px solid var(--bd);white-space:nowrap;text-transform:uppercase;letter-spacing:.4px}
+thead th:first-child{border-radius:var(--rlg) 0 0 0}
+thead th:last-child{border-radius:0 var(--rlg) 0 0}
+tbody tr{border-bottom:0.5px solid var(--bd)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover td{background:var(--sf2)}
+td{padding:9px 13px;vertical-align:top}
+
+.cl{font-weight:500;color:var(--tp);text-decoration:none;white-space:nowrap}
+.cl:hover{color:var(--sys-t);text-decoration:underline}
+.cf{font-size:11px;color:var(--tm);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-t{display:inline-block;margin-top:3px;font-size:10px;color:var(--tm);background:var(--sf2);border:0.5px solid var(--bd);border-radius:4px;padding:1px 5px}
+
+/* cycles */
+.cycles{display:flex;flex-direction:column;gap:4px}
+.cy-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ts);white-space:nowrap}
+.cy-lbl{font-size:10px;color:var(--tm);background:var(--sf2);border:0.5px solid var(--bd);border-radius:4px;padding:1px 5px;flex-shrink:0}
+.cy-past{opacity:.35}
+
+/* tier */
+.tier{display:inline-block;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:500;white-space:nowrap}
+.t-Sys1{background:var(--sys-bg);color:var(--sys-t);border:0.5px solid var(--sys-b)}
+.t-SE1,.t-SE2{background:var(--se-bg);color:var(--se-t);border:0.5px solid var(--se-b)}
+.t-AI1{background:var(--ai-bg);color:var(--ai-t);border:0.5px solid var(--ai-b)}
+.t-Sec1{background:var(--s1-bg);color:var(--s1-t);border:0.5px solid var(--s1-b)}
+.t-Sec2{background:var(--s2-bg);color:var(--s2-t);border:0.5px solid var(--s2-b)}
+.t-Sec3{background:var(--s3-bg);color:var(--s3-t);border:0.5px solid var(--s3-b)}
+.t-Sec4{background:var(--s4-bg);color:var(--s4-t);border:0.5px solid var(--s4-b)}
+
+/* days */
+.days{display:inline-block;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:500;white-space:nowrap}
+.d-past{background:var(--pas-bg);color:var(--pas-t)}
+.d-urg{background:var(--urg-bg);color:var(--urg-t)}
+.d-soo{background:var(--soo-bg);color:var(--soo-t)}
+.d-ok{background:var(--ok-bg);color:var(--ok-t)}
+.d-tbd{color:var(--tm);font-size:12px}
+
+.vc{font-size:12px;color:var(--ts);min-width:100px}
+.dc{font-size:12px;color:var(--ts);white-space:nowrap}
+.empty{text-align:center;padding:3rem;color:var(--ts);font-size:14px}
+.loading{text-align:center;padding:3rem;color:var(--tm);font-size:14px}
+
+.footer{margin-top:3rem;text-align:center;font-size:12px;color:var(--tm);line-height:2.2}
+.footer a{color:var(--ts);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+@media(max-width:640px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .hdr h1{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="hdr">
+  <h1>Conference Deadline Tracker</h1>
+  <div class="hdr-meta">
+    <span>오늘: <strong id="today-str"></strong></span>
+    <span id="upd-badge" class="upd-badge" style="display:none"></span>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="stat-lbl">표시</div><div class="stat-val" id="s-tot">—</div></div>
+  <div class="stat"><div class="stat-lbl">예정</div><div class="stat-val" id="s-up" style="color:var(--ok-t)">—</div></div>
+  <div class="stat"><div class="stat-lbl">30일 이내</div><div class="stat-val" id="s-urg" style="color:var(--urg-t)">—</div></div>
+  <div class="stat"><div class="stat-lbl">날짜 미정</div><div class="stat-val" id="s-tbd" style="color:var(--tm)">—</div></div>
+</div>
+
+<!-- Year tabs -->
+<div class="year-tabs" id="year-tabs"></div>
+
+<!-- Tier filters -->
+<div class="tier-filters" id="tier-filters"></div>
+
+<!-- Sort / hide -->
+<div class="ctrls">
+  <select id="sort" onchange="render()">
+    <option value="days">다음 마감 순</option>
+    <option value="tier">카테고리 순</option>
+    <option value="name">이름 순</option>
+  </select>
+  <label class="hl">
+    <input type="checkbox" id="hide-past" onchange="render()"> 지난 마감 숨기기
+  </label>
+</div>
+
+<div class="tw">
+  <table>
+    <thead>
+      <tr>
+        <th>컨퍼런스</th>
+        <th>카테고리</th>
+        <th>Abstract 마감</th>
+        <th>Paper 마감</th>
+        <th>남은 일수</th>
+        <th>장소</th>
+        <th>학회 날짜</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr><td colspan="7" class="loading">데이터 로딩 중…</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="footer">
+  데드라인은 AoE 기준 · 반드시 공식 CFP를 확인하세요<br>
+  <a href="https://casys-kaist.github.io/" target="_blank" rel="noopener">casys-kaist</a> ·
+  <a href="https://sec-deadlines.github.io/" target="_blank" rel="noopener">sec-deadlines</a> ·
+  <a href="https://se-deadlines.github.io/" target="_blank" rel="noopener">se-deadlines</a> ·
+  <a href="https://mlciv.com/ai-deadlines/" target="_blank" rel="noopener">mlciv</a>
+</footer>
+</div>
+
+<script>
+const TODAY = (() => { const d=new Date(); d.setHours(0,0,0,0); return d; })();
+const TIERS = ['Sys1','SE1','SE2','AI1','Sec1','Sec2','Sec3','Sec4'];
+const TORD  = Object.fromEntries(TIERS.map((t,i)=>[t,i]));
+let ALL=[], activeYear='all', activeTiers=new Set();
+
+/* ── helpers ── */
+function parseDt(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function daysFrom(s){const dt=parseDt(s);if(!dt)return null;return Math.round((dt-TODAY)/86400000)}
+function fmt(s){if(!s)return'—';return parseDt(s).toLocaleDateString('ko-KR',{month:'short',day:'numeric'})}
+function nextDl(dls){
+  if(!dls||!dls.length)return null;
+  const f=dls.filter(d=>daysFrom(d)>=0);
+  return f.length?f[0]:dls[dls.length-1];
+}
+function daysChip(dls){
+  const n=nextDl(dls);
+  if(!n)return'<span class="d-tbd">TBD</span>';
+  const d=daysFrom(n);
+  if(d<0)  return`<span class="days d-past">${Math.abs(d)}일 전</span>`;
+  if(d<=14)return`<span class="days d-urg">D-${d}</span>`;
+  if(d<=60)return`<span class="days d-soo">D-${d}</span>`;
+  return`<span class="days d-ok">D-${d}</span>`;
+}
+function cycleCell(dls){
+  if(!dls||!dls.length)return'<span class="d-tbd">TBD</span>';
+  const multi=dls.length>1;
+  return`<div class="cycles">${dls.map((dl,i)=>{
+    const past=daysFrom(dl)<0;
+    const lbl=multi?`<span class="cy-lbl">Cycle ${i+1}</span>`:'';
+    return`<div class="cy-row${past?' cy-past':''}">${lbl}<span>${fmt(dl)}</span></div>`;
+  }).join('')}</div>`;
+}
+function absCell(abs){
+  if(!abs||!abs.length)return'<span style="color:var(--tm);font-size:12px">—</span>';
+  const multi=abs.length>1;
+  return`<div class="cycles">${abs.map((a,i)=>{
+    const past=daysFrom(a)<0;
+    const lbl=multi?`<span class="cy-lbl">Cycle ${i+1}</span>`:'';
+    return`<div class="cy-row${past?' cy-past':''}">${lbl}<span>${fmt(a)}</span></div>`;
+  }).join('')}</div>`;
+}
+
+/* ── get available years from data ── */
+function getYears(){
+  const ys=new Set(ALL.map(c=>c.year).filter(Boolean));
+  return [...ys].sort();
+}
+
+/* ── year tabs ── */
+function buildYearTabs(){
+  const wrap=document.getElementById('year-tabs');
+  wrap.innerHTML='';
+  const years=getYears();
+
+  // count per year
+  const counts={};
+  years.forEach(y=>{ counts[y]=ALL.filter(c=>c.year===y).length; });
+
+  function mkTab(label,val,count){
+    const b=document.createElement('button');
+    b.className='ytab'+(activeYear===val?(val==='all'?' ya-all':' ya'):'');
+    b.innerHTML=label+(count!=null?`<span class="ybadge">${count}</span>`:'');
+    b.onclick=()=>{ activeYear=val; buildYearTabs(); render(); };
+    return b;
+  }
+  wrap.appendChild(mkTab('전체',  'all', ALL.length));
+  years.forEach(y=>wrap.appendChild(mkTab(`'${y.slice(-2)}`, y, counts[y])));
+}
+
+/* ── tier filters ── */
+function buildTierFilters(){
+  const wrap=document.getElementById('tier-filters');
+  wrap.innerHTML='';
+  function mkBtn(cls,text,fn){
+    const b=document.createElement('button');
+    b.className=`tfbtn ${cls}`; b.textContent=text; b.onclick=fn; return b;
+  }
+  wrap.appendChild(mkBtn(activeTiers.size===0?'ta-all':'','전체',()=>{activeTiers.clear();buildTierFilters();render();}));
+  TIERS.forEach(t=>{
+    const b=mkBtn(activeTiers.has(t)?`ta-${t}`:'',t,()=>{
+      activeTiers.has(t)?activeTiers.delete(t):activeTiers.add(t);
+      buildTierFilters();render();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+/* ── main render ── */
+function render(){
+  const sort    =document.getElementById('sort').value;
+  const hidePast=document.getElementById('hide-past').checked;
+
+  let data=[...ALL];
+  if(activeYear!=='all') data=data.filter(c=>c.year===activeYear);
+  if(activeTiers.size)   data=data.filter(c=>activeTiers.has(c.tier));
+  if(hidePast)           data=data.filter(c=>{const n=nextDl(c.deadlines);return!n||daysFrom(n)>=0;});
+
+  if(sort==='days'){
+    data.sort((a,b)=>{
+      const da=daysFrom(nextDl(a.deadlines)),db=daysFrom(nextDl(b.deadlines));
+      if(da==null&&db==null)return 0;if(da==null)return 1;if(db==null)return-1;return da-db;
+    });
+  }else if(sort==='name'){
+    data.sort((a,b)=>a.name.localeCompare(b.name));
+  }else{
+    data.sort((a,b)=>{
+      const t=TORD[a.tier]-TORD[b.tier];if(t)return t;
+      const da=daysFrom(nextDl(a.deadlines)),db=daysFrom(nextDl(b.deadlines));
+      if(da==null)return 1;if(db==null)return-1;return da-db;
+    });
+  }
+
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML=data.length===0
+    ?'<tr><td colspan="7" class="empty">표시할 컨퍼런스가 없습니다</td></tr>'
+    :data.map(c=>{
+      const note=c.note?`<span class="note-t">${c.note}</span>`:'';
+      return`<tr>
+        <td>
+          <a class="cl" href="${c.url||'#'}" target="_blank" rel="noopener">${c.name}</a>
+          <div class="cf" title="${c.full}">${c.full||''}</div>
+          ${note}
+        </td>
+        <td><span class="tier t-${c.tier}">${c.tier}</span></td>
+        <td>${absCell(c.abstracts)}</td>
+        <td>${cycleCell(c.deadlines)}</td>
+        <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
+        <td class="vc">${c.venue||'—'}</td>
+        <td class="dc">${c.date||'—'}</td>
+      </tr>`;
+    }).join('');
+
+  // stats over current year+tier filter (ignoring hidePast)
+  let base=[...ALL];
+  if(activeYear!=='all') base=base.filter(c=>c.year===activeYear);
+  if(activeTiers.size)   base=base.filter(c=>activeTiers.has(c.tier));
+  const up =base.filter(c=>{const d=daysFrom(nextDl(c.deadlines));return d!=null&&d>=0;}).length;
+  const urg=base.filter(c=>{const d=daysFrom(nextDl(c.deadlines));return d!=null&&d>=0&&d<=30;}).length;
+  const tbd=base.filter(c=>!c.deadlines||!c.deadlines.length).length;
+  document.getElementById('s-tot').textContent=base.length;
+  document.getElementById('s-up').textContent=up;
+  document.getElementById('s-urg').textContent=urg;
+  document.getElementById('s-tbd').textContent=tbd;
+}
+
+/* ── load ── */
+async function loadData(){
+  try{
+    const ts=Math.floor(Date.now()/3600000);
+    const res=await fetch(`data.json?v=${ts}`);
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const json=await res.json();
+    ALL=json.conferences||[];
+    if(json.updated){
+      const dt=new Date(json.updated);
+      const b=document.getElementById('upd-badge');
+      b.textContent=`업데이트: ${dt.toLocaleDateString('ko-KR',{month:'short',day:'numeric'})} ${dt.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}`;
+      b.style.display='';
+    }
+    // default: show current year
+    const curYear=String(new Date().getFullYear());
+    const years=new Set(ALL.map(c=>c.year));
+    activeYear=years.has(curYear)?curYear:'all';
+    buildYearTabs();
+    buildTierFilters();
+    render();
+  }catch(e){
+    document.getElementById('tbody').innerHTML=
+      `<tr><td colspan="7" class="empty">데이터 로드 실패: ${e.message}<br><small style="color:var(--tm)">로컬에서는 python3 -m http.server 로 실행하세요</small></td></tr>`;
+  }
+}
+
+document.getElementById('today-str').textContent=
+  TODAY.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+loadData();
+</script>
+</body>
+</html>
