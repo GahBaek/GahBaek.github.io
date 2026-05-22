@@ -1,0 +1,168 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# 수동으로 관리하는 컨퍼런스 목록
+# 자동 소스(sec-deadlines, se-deadlines, ai-deadlines)에 없거나
+# 데드라인이 누락된 경우 여기에 추가하세요.
+#
+# 필수 필드: name, tier, year
+# tier 선택지: Sys1 / SE1 / SE2 / AI1 / Sec1 / Sec2 / Sec3 / Sec4
+#
+# deadline은 리스트로 작성 (멀티 사이클 지원):
+#   deadline:
+#     - "2026-06-11 23:59"   # Cycle 1
+#     - "2026-11-17 23:59"   # Cycle 2
+#
+# abstract_deadline도 리스트로 작성 (deadline과 순서 대응):
+#   abstract_deadline:
+#     - "2026-06-04 23:59"   # Cycle 1 abstract
+#     - "2026-11-10 23:59"   # Cycle 2 abstract
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Sys1: Systems ─────────────────────────────────────────────────────────────
+- name: OSDI
+  tier: Sys1
+  year: 2026
+  description: USENIX Symposium on Operating Systems Design and Implementation
+  link: https://www.usenix.org/conference/osdi26/call-for-papers
+  deadline:
+    - "2025-12-11 23:59"
+  abstract_deadline:
+    - "2025-12-04 23:59"
+  date: Jul 13–15, 2026
+  place: Seattle, WA, USA
+
+- name: SOSP
+  tier: Sys1
+  year: 2026
+  description: ACM Symposium on Operating Systems Principles
+  link: https://sigops.org/s/conferences/sosp/2026/
+  deadline: []
+  date: Sep 29–Oct 2, 2026
+  place: Prague, Czechia
+  note: CFP TBD
+
+- name: EuroSys
+  tier: Sys1
+  year: 2027
+  description: ACM European Conference on Computer Systems
+  link: https://2027.eurosys.org/cfp.html
+  deadline:
+    - "2026-09-17 23:59"   # Fall deadline → EuroSys '27
+  date: Apr 19–24, 2027
+  place: Rabat, Morocco
+  note: Fall deadline
+
+- name: ATC
+  tier: Sys1
+  year: 2026
+  description: ACM SIGOPS Annual Technical Conference
+  link: https://sigops.org/s/conferences/atc/2026/cfp.html
+  deadline:
+    - "2026-06-10 23:59"
+  date: Nov 15–18, 2026
+  place: Shatin, Hong Kong
+
+- name: NSDI
+  tier: Sys1
+  year: 2027
+  description: USENIX Symposium on Networked Systems Design and Implementation
+  link: https://www.usenix.org/conference/nsdi27/call-for-papers
+  deadline:
+    - "2026-09-17 23:59"   # Fall deadline
+  abstract_deadline:
+    - "2026-09-10 23:59"
+  date: May 11–13, 2027
+  place: Providence, RI, USA
+  note: Fall deadline
+
+# ── Sec2: Security Tier 2 ─────────────────────────────────────────────────────
+- name: ACSAC
+  tier: Sec2
+  year: 2026
+  description: Annual Computer Security Applications Conference
+  link: https://www.acsac.org/2026/submissions/papers/
+  deadline:
+    - "2026-05-26 23:59"
+  date: Dec 7–11, 2026
+  place: Los Angeles, CA, USA
+
+- name: RAID
+  tier: Sec2
+  year: 2026
+  description: International Symposium on Research in Attacks, Intrusions and Defenses
+  link: https://raid2026.org/
+  deadline:
+    - "2026-04-25 23:59"
+  date: Oct 11–14, 2026
+  place: Lancaster, UK
+
+- name: DSN
+  tier: Sec2
+  year: 2026
+  description: IEEE/IFIP International Conference on Dependable Systems and Networks
+  link: https://dsn2026.github.io/
+  deadline:
+    - "2025-12-06 23:59"
+  abstract_deadline:
+    - "2025-11-29 23:59"
+  date: Jun 23–26, 2026
+  place: Brisbane, Australia
+
+- name: Euro S&P
+  tier: Sec2
+  year: 2026
+  description: IEEE European Symposium on Security and Privacy
+  link: https://eurosp2026.ieee-security.org/
+  deadline:
+    - "2025-11-20 23:59"
+  abstract_deadline:
+    - "2025-11-13 23:59"
+  date: Jul 6–10, 2026
+  place: Lisbon, Portugal
+
+# ── Sec3: Security Tier 3 ─────────────────────────────────────────────────────
+- name: CODASPY
+  tier: Sec3
+  year: 2026
+  description: ACM Conference on Data and Application Security and Privacy
+  link: https://www.codaspy.org/2026/
+  deadline:
+    - "2026-01-02 23:59"
+  abstract_deadline:
+    - "2025-12-26 23:59"
+  date: Jun 23–25, 2026
+  place: Frankfurt, Germany
+
+- name: SecureComm
+  tier: Sec3
+  year: 2026
+  description: EAI International Conference on Security and Privacy in Communication Networks
+  link: https://securecomm.eai-conferences.org/
+  deadline: []
+  date: Late 2026
+  place: TBD
+  note: CFP TBD
+
+# ── Sec4: Security Tier 4 ─────────────────────────────────────────────────────
+- name: IFIP-SEC
+  tier: Sec4
+  year: 2026
+  description: IFIP International Information Security and Privacy Conference
+  link: https://ifipsec.org/cfp.html
+  deadline:
+    - "2025-12-19 23:59"
+  date: Jun 9–11, 2026
+  place: Perth, Australia
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 새 컨퍼런스 추가 예시:
+#
+# - name: NewConf
+#   tier: Sec2
+#   year: 2027
+#   description: Full Conference Name
+#   link: https://newconf2027.example.com/cfp
+#   deadline:
+#     - "2026-10-01 23:59"
+#   date: Mar 2027
+#   place: City, Country
+# ─────────────────────────────────────────────────────────────────────────────
