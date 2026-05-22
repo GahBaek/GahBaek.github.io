@@ -12,6 +12,16 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Sec2: 자동 소스에 deadline이 없는 것들 ─────────────────────────────────
+- name: FSE
+  tier: Sec2
+  year: 2027
+  description: Foundations of Software Engineering
+  link: https://conf.researchr.org/home/fse-2027
+  deadline:
+    - "2026-10-02 23:59"
+  date: Jul 12-16, 2027
+  place: Shenzhen, China
+
 - name: ACSAC
   tier: Sec2
   year: 2026
