@@ -21,7 +21,8 @@ ROOT        = Path(__file__).parent.parent
 MANUAL_FILE = ROOT / "conferences.manual.yml"
 OUT_FILE    = ROOT / "data.json"
 TODAY       = date.today()
-YEAR_MIN    = TODAY.year - 2
+YEAR_MIN = TODAY.year - 2
+YEAR_MAX = TODAY.year + 2 
 
 SRC_RANK = {
     "manual": 0,
@@ -246,6 +247,14 @@ def _upsert(merged, conf):
     # same-priority source only: merge deadlines
     ex["deadlines"] = sorted(set(ex.get("deadlines", []) + conf.get("deadlines", [])))
     ex["abstracts"] = sorted(set(ex.get("abstracts", []) + conf.get("abstracts", [])))
+
+def _in_year_window(c: dict) -> bool:
+    try:
+        y = int(str(c.get("year", "")).strip())
+    except ValueError:
+        return False
+
+    return YEAR_MIN <= y <= YEAR_MAX
 
 # ── Loaders ───────────────────────────────────────────────────────────────────
 def load_manual(merged):
