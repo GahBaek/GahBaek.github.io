@@ -287,54 +287,124 @@ function render(){
   const sort = document.getElementById('sort').value;
 
   let data = [...ALL];
-  if(activeTiers.size) data = data.filter(c => activeTiers.has(c.tier));
 
-  // sort within each year group
-  function sortFn(a, b){
-    if(sort === 'days'){
-      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
-      if(da==null&&db==null) return 0;
-      if(da==null) return 1; if(db==null) return -1;
-      return da - db;
-    } else if(sort === 'name'){
-      return a.name.localeCompare(b.name);
-    } else {
-      const t = TORD[a.tier] - TORD[b.tier]; if(t) return t;
-      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
-      if(da==null) return 1; if(db==null) return -1; return da-db;
-    }
+  if(activeTiers.size){
+    data = data.filter(c => activeTiers.has(c.tier));
   }
-
-  // Group by year
-  const yearMap = {};
-  data.forEach(c => {
-    const yr = c.year || 'TBD';
-    if(!yearMap[yr]) yearMap[yr] = [];
-    yearMap[yr].push(c);
-  });
-  const years = Object.keys(yearMap).sort();
-  years.forEach(yr => yearMap[yr].sort(sortFn));
 
   const tbody = document.getElementById('tbody');
+
   if(!data.length){
     tbody.innerHTML = '<tr><td colspan="7" class="empty">표시할 컨퍼런스가 없습니다</td></tr>';
-    updateStats(data); return;
+    updateStats(data);
+    return;
   }
 
+  function deadlineValue(c){
+    const d = daysFrom(nextDl(c.deadlines));
+    return d == null ? null : d;
+  }
+
+  function sortFn(a, b){
+    if(sort === 'days_asc' || sort === 'days_desc'){
+      const da = deadlineValue(a);
+      const db = deadlineValue(b);
+
+      if(da == null && db == null) return a.name.localeCompare(b.name);
+      if(da == null) return 1;
+      if(db == null) return -1;
+
+      if(sort === 'days_asc'){
+        return da - db || a.name.localeCompare(b.name);
+      }
+
+      return db - da || a.name.localeCompare(b.name);
+    }
+
+    if(sort === 'name'){
+      return a.name.localeCompare(b.name);
+    }
+
+    const t = TORD[a.tier] - TORD[b.tier];
+
+    if(t) return t;
+
+    const da = deadlineValue(a);
+    const db = deadlineValue(b);
+
+    if(da == null && db == null) return a.name.localeCompare(b.name);
+    if(da == null) return 1;
+    if(db == null) return -1;
+
+    return da - db || a.name.localeCompare(b.name);
+  }
+
+  function confRow(c, extraAttr = ''){
+    const note = c.note ? `<span class="note-t">${c.note}</span>` : '';
+
+    return `
+      <tr ${extraAttr}>
+        <td>
+          <a class="cl" href="${c.url || '#'}" target="_blank" rel="noopener">${c.name}</a>
+          <div class="cf" title="${c.full || ''}">${c.full || ''}</div>
+          ${note}
+        </td>
+        <td><span class="tier t-${c.tier}">${c.tier}</span></td>
+        <td>${absCell(c.abstracts, c.deadlines)}</td>
+        <td>${cycleCell(c.deadlines)}</td>
+        <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
+        <td class="vc">${c.venue || '—'}</td>
+        <td class="dc">${c.date || '—'}</td>
+      </tr>
+    `;
+  }
+
+  /*
+   * Deadline sorting은 year grouping을 하지 않는다.
+   * 그래야 2027 conference라도 deadline이 가까우면 위로 올라온다.
+   */
+  if(sort === 'days_asc' || sort === 'days_desc'){
+    data.sort(sortFn);
+    tbody.innerHTML = data.map(c => confRow(c)).join('');
+    updateStats(data);
+    return;
+  }
+
+  /*
+   * name/tier 정렬에서는 기존처럼 year grouping 유지.
+   */
+  const yearMap = {};
+
+  data.forEach(c => {
+    const yr = c.year || 'TBD';
+
+    if(!yearMap[yr]){
+      yearMap[yr] = [];
+    }
+
+    yearMap[yr].push(c);
+  });
+
+  const years = Object.keys(yearMap).sort();
+
+  years.forEach(yr => {
+    yearMap[yr].sort(sortFn);
+  });
+
   const rows = [];
+
   years.forEach(yr => {
     const confs = yearMap[yr];
     const isCollapsed = collapsed.has(yr);
-    const label = yr.length===4 ? `'${yr.slice(-2)}` : yr;
+    const label = yr.length === 4 ? `'${yr.slice(-2)}` : yr;
 
-    // year group header row
     rows.push(`
       <tr class="yr-row" data-yr="${yr}">
         <td colspan="7">
           <div class="yr-label">
             <span>${label}</span>
             <span class="yr-badge">${confs.length}</span>
-            <span class="yr-chevron${isCollapsed?'':' open'}">▼</span>
+            <span class="yr-chevron${isCollapsed ? '' : ' open'}">▼</span>
           </div>
         </td>
       </tr>
@@ -342,39 +412,29 @@ function render(){
 
     if(!isCollapsed){
       confs.forEach(c => {
-        const note = c.note ? `<span class="note-t">${c.note}</span>` : '';
-        rows.push(`<tr data-yr-body="${yr}">
-          <td>
-            <a class="cl" href="${c.url||'#'}" target="_blank" rel="noopener">${c.name}</a>
-            <div class="cf" title="${c.full}">${c.full||''}</div>
-            ${note}
-          </td>
-          <td><span class="tier t-${c.tier}">${c.tier}</span></td>
-          <td>${absCell(c.abstracts, c.deadlines)}</td>
-          <td>${cycleCell(c.deadlines)}</td>
-          <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
-          <td class="vc">${c.venue||'—'}</td>
-          <td class="dc">${c.date||'—'}</td>
-        </tr>`);
+        rows.push(confRow(c, `data-yr-body="${yr}"`));
       });
     }
   });
 
   tbody.innerHTML = rows.join('');
 
-  // attach collapse handlers
   tbody.querySelectorAll('tr.yr-row').forEach(row => {
     row.onclick = () => {
       const yr = row.dataset.yr;
-      if(collapsed.has(yr)) collapsed.delete(yr);
-      else collapsed.add(yr);
+
+      if(collapsed.has(yr)){
+        collapsed.delete(yr);
+      } else {
+        collapsed.add(yr);
+      }
+
       render();
     };
   });
 
   updateStats(data);
 }
-
 function updateStats(data){
   const up  = data.filter(c=>{ const d=daysFrom(nextDl(c.deadlines)); return d!=null&&d>=0; }).length;
   const urg = data.filter(c=>{ const d=daysFrom(nextDl(c.deadlines)); return d!=null&&d>=0&&d<=30; }).length;
