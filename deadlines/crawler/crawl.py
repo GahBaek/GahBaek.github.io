@@ -24,49 +24,49 @@ TODAY       = date.today()
 YEAR_MIN    = TODAY.year - 2
 
 TIER_ORDER = {t:i for i,t in enumerate(
-    ["Sys1","SE1","SE2","AI1","Sec1","Sec2","Sec3","Sec4"])}
+    ["Sys","SE","AI","Sec"])}
 
 # ── Whitelist ─────────────────────────────────────────────────────────────────
 WHITELIST = [
     # Sys1
-    (r"^osdi\b",            "Sys1"),
-    (r"^sosp\b",            "Sys1"),
-    (r"^eurosys\b",         "Sys1"),
-    (r"^atc\b",             "Sys1"),
-    (r"^nsdi\b",            "Sys1"),
+    (r"^osdi\b",            "Sys"),
+    (r"^sosp\b",            "Sys"),
+    (r"^eurosys\b",         "Sys"),
+    (r"^atc\b",             "Sys"),
+    (r"^nsdi\b",            "Sys"),
     # SE1
-    (r"^icse\b(?!.*(?:seip|seis|nier|t&tb|jf\b|ict|ds\b|src|nfs|ip\b|ivr))", "SE1"),
-    (r"^fse\b(?!.*(?:ip\b|ivr|jf\b))",  "SE1"),
-    (r"^esec/fse\b",        "SE1"),
+    (r"^icse\b(?!.*(?:seip|seis|nier|t&tb|jf\b|ict|ds\b|src|nfs|ip\b|ivr))", "SE"),
+    (r"^fse\b(?!.*(?:ip\b|ivr|jf\b))",  "SE"),
+    (r"^esec/fse\b",        "SE"),
     # SE2
-    (r"^ase\b(?!.*(?:nier|td\b|jf\b|is\b|src|ds\b))", "SE2"),
+    (r"^ase\b(?!.*(?:nier|td\b|jf\b|is\b|src|ds\b))", "SE"),
     # AI1
-    (r"^ijcai\b",           "AI1"),
-    (r"^ijcai-ecai\b",      "AI1"),
-    (r"^aaai\b(?!\s+\d{4}\s+(?:spring|fall|winter|summer))", "AI1"),
-    (r"^www\b",             "AI1"),
+    (r"^ijcai\b",           "AI"),
+    (r"^ijcai-ecai\b",      "AI"),
+    (r"^aaai\b(?!\s+\d{4}\s+(?:spring|fall|winter|summer))", "AI"),
+    (r"^www\b",             "AI"),
     # Sec1
-    (r"^s&p\b",             "Sec1"),
-    (r"^ieee s&p\b",        "Sec1"),
-    (r"^ccs\b(?!.*(?:workshop|ccsw|\sw\b))", "Sec1"),
-    (r"^usenix sec",        "Sec1"),
-    (r"^ndss\b",            "Sec1"),
+    (r"^s&p\b",             "Sec"),
+    (r"^ieee s&p\b",        "Sec"),
+    (r"^ccs\b(?!.*(?:workshop|ccsw|\sw\b))", "Sec"),
+    (r"^usenix sec",        "Sec"),
+    (r"^ndss\b",            "Sec"),
     # Sec2
-    (r"^acsac\b",           "Sec2"),
-    (r"^raid\b",            "Sec2"),
-    (r"^asiaccs\b",         "Sec2"),
-    (r"^asia ccs\b",        "Sec2"),
-    (r"^esorics\b",         "Sec2"),
-    (r"^euro s&p\b",        "Sec2"),
-    (r"^eurosp\b",          "Sec2"),
-    (r"^dsn\b",             "Sec2"),
+    (r"^acsac\b",           "Sec"),
+    (r"^raid\b",            "Sec"),
+    (r"^asiaccs\b",         "Sec"),
+    (r"^asia ccs\b",        "Sec"),
+    (r"^esorics\b",         "Sec"),
+    (r"^euro s&p\b",        "Sec"),
+    (r"^eurosp\b",          "Sec"),
+    (r"^dsn\b",             "Sec"),
     # Sec3
-    (r"^codaspy\b",         "Sec3"),
-    (r"^dimva\b",           "Sec3"),
-    (r"^securecomm\b",      "Sec3"),
+    (r"^codaspy\b",         "Sec"),
+    (r"^dimva\b",           "Sec"),
+    (r"^securecomm\b",      "Sec"),
     # Sec4
-    (r"^sac\b(?!.*(?:mat|sec\b|net|ped|svt|dac|dlt|dsp))", "Sec4"),
-    (r"^ifip.?sec\b",       "Sec4"),
+    (r"^sac\b(?!.*(?:mat|sec\b|net|ped|svt|dac|dlt|dsp))", "Sec"),
+    (r"^ifip.?sec\b",       "Sec"),
 ]
 _COMPILED = [(re.compile(p, re.I), t) for p, t in WHITELIST]
 
