@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conference Deadline Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF8;--sf:#FFF;--sf2:#F4F3EE;
+  --bd:rgba(0,0,0,0.09);--bd2:rgba(0,0,0,0.16);
+  --tp:#1C1C1A;--ts:#6B6A65;--tm:#9E9D97;
+  --rsm:6px;--rmd:10px;--rlg:14px;
+  --fn:'Geist',system-ui,sans-serif;
+  --sys-bg:#E6F1FB;--sys-t:#185FA5;--sys-b:#85B7EB;
+  --se-bg:#EAF3DE; --se-t:#3B6D11; --se-b:#97C459;
+  --ai-bg:#FAEEDA; --ai-t:#854F0B; --ai-b:#EF9F27;
+  --s1-bg:#FAECE7; --s1-t:#993C1D; --s1-b:#F0997B;
+  --s2-bg:#FBEAF0; --s2-t:#993556; --s2-b:#ED93B1;
+  --s3-bg:#EEEDFE; --s3-t:#534AB7; --s3-b:#AFA9EC;
+  --s4-bg:#E1F5EE; --s4-t:#0F6E56; --s4-b:#5DCAA5;
+  --urg-bg:#FCEBEB;--urg-t:#A32D2D;
+  --soo-bg:#FAEEDA;--soo-t:#854F0B;
+  --ok-bg:#EAF3DE; --ok-t:#3B6D11;
+  --pas-bg:#F1EFE8;--pas-t:#888780;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#18181A;--sf:#222224;--sf2:#2C2C2E;
+  --bd:rgba(255,255,255,0.09);--bd2:rgba(255,255,255,0.18);
+  --tp:#EFEDEA;--ts:#9E9D97;--tm:#666662;
+  --sys-bg:#0C447C;--sys-t:#B5D4F4;--sys-b:#185FA5;
+  --se-bg:#27500A; --se-t:#C0DD97; --se-b:#3B6D11;
+  --ai-bg:#633806; --ai-t:#FAC775; --ai-b:#854F0B;
+  --s1-bg:#712B13; --s1-t:#F5C4B3; --s1-b:#993C1D;
+  --s2-bg:#72243E; --s2-t:#F4C0D1; --s2-b:#993556;
+  --s3-bg:#3C3489; --s3-t:#CECBF6; --s3-b:#534AB7;
+  --s4-bg:#085041; --s4-t:#9FE1CB; --s4-b:#0F6E56;
+  --urg-bg:#501313;--urg-t:#F7C1C1;
+  --soo-bg:#412402;--soo-t:#FAC775;
+  --ok-bg:#173404; --ok-t:#C0DD97;
+  --pas-bg:#2C2C2A;--pas-t:#888780;
+}}
+html{font-family:var(--fn);background:var(--bg);color:var(--tp);font-size:15px}
+body{min-height:100vh;padding:2rem 1rem 4rem}
+.page{max-width:1340px;margin:0 auto}
+
+/* header */
+.hdr{margin-bottom:1.75rem}
+.hdr h1{font-size:22px;font-weight:500;letter-spacing:-.3px;margin-bottom:5px}
+.hdr-meta{font-size:12px;color:var(--ts);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.upd{background:var(--sf2);border:0.5px solid var(--bd2);border-radius:12px;padding:2px 9px;font-size:11px;color:var(--tm)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.stat{background:var(--sf);border:0.5px solid var(--bd);border-radius:var(--rmd);padding:12px 16px}
+.stat .lbl{font-size:11px;color:var(--ts);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.stat .val{font-size:22px;font-weight:500}
+
+/* controls */
+.ctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:1rem}
+select{padding:8px 12px;border:0.5px solid var(--bd2);border-radius:var(--rsm);background:var(--sf);color:var(--tp);font-size:13px;font-family:var(--fn);outline:none;cursor:pointer}
+.hl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ts);cursor:pointer;white-space:nowrap}
+
+/* tag filters */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.tb{padding:5px 14px;border-radius:20px;border:0.5px solid var(--bd2);background:var(--sf);font-size:12px;font-weight:500;color:var(--ts);cursor:pointer;font-family:var(--fn);transition:all .12s}
+.tb:hover{background:var(--sf2)}
+.tb.a-all{background:var(--sf2);color:var(--tp)}
+.tb.a-Sys1{background:var(--sys-bg);color:var(--sys-t);border-color:var(--sys-b)}
+.tb.a-SE1,.tb.a-SE2{background:var(--se-bg);color:var(--se-t);border-color:var(--se-b)}
+.tb.a-AI1{background:var(--ai-bg);color:var(--ai-t);border-color:var(--ai-b)}
+.tb.a-Sec1{background:var(--s1-bg);color:var(--s1-t);border-color:var(--s1-b)}
+.tb.a-Sec2{background:var(--s2-bg);color:var(--s2-t);border-color:var(--s2-b)}
+.tb.a-Sec3{background:var(--s3-bg);color:var(--s3-t);border-color:var(--s3-b)}
+.tb.a-Sec4{background:var(--s4-bg);color:var(--s4-t);border-color:var(--s4-b)}
+
+/* table */
+.tw{overflow-x:auto;border:0.5px solid var(--bd);border-radius:var(--rlg)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--sf)}
+thead th{padding:9px 14px;text-align:left;font-size:11px;font-weight:500;color:var(--ts);background:var(--sf2);border-bottom:0.5px solid var(--bd);white-space:nowrap;text-transform:uppercase;letter-spacing:.3px}
+thead th:first-child{border-radius:var(--rlg) 0 0 0}
+thead th:last-child{border-radius:0 var(--rlg) 0 0}
+tbody tr{border-bottom:0.5px solid var(--bd)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover td{background:var(--sf2)}
+td{padding:9px 14px;vertical-align:top}
+
+.cl{font-weight:500;color:var(--tp);text-decoration:none}
+.cl:hover{color:var(--sys-t);text-decoration:underline}
+.cf{font-size:11px;color:var(--tm);margin-top:2px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-t{display:inline-block;margin-top:3px;font-size:10px;color:var(--tm);background:var(--sf2);border:0.5px solid var(--bd);border-radius:4px;padding:1px 5px}
+
+/* cycles */
+.cycles{display:flex;flex-direction:column;gap:4px}
+.cy-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ts)}
+.cy-lbl{font-size:10px;color:var(--tm);background:var(--sf2);border:0.5px solid var(--bd);border-radius:4px;padding:1px 5px;white-space:nowrap;flex-shrink:0}
+.cy-past{opacity:.38}
+
+/* tier badges */
+.tier{display:inline-block;padding:3px 8px;border-radius:12px;font-size:10px;font-weight:500;white-space:nowrap}
+.t-Sys1{background:var(--sys-bg);color:var(--sys-t);border:0.5px solid var(--sys-b)}
+.t-SE1,.t-SE2{background:var(--se-bg);color:var(--se-t);border:0.5px solid var(--se-b)}
+.t-AI1{background:var(--ai-bg);color:var(--ai-t);border:0.5px solid var(--ai-b)}
+.t-Sec1{background:var(--s1-bg);color:var(--s1-t);border:0.5px solid var(--s1-b)}
+.t-Sec2{background:var(--s2-bg);color:var(--s2-t);border:0.5px solid var(--s2-b)}
+.t-Sec3{background:var(--s3-bg);color:var(--s3-t);border:0.5px solid var(--s3-b)}
+.t-Sec4{background:var(--s4-bg);color:var(--s4-t);border:0.5px solid var(--s4-b)}
+
+/* days chips */
+.days{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:500;white-space:nowrap}
+.d-past{background:var(--pas-bg);color:var(--pas-t)}
+.d-urg{background:var(--urg-bg);color:var(--urg-t)}
+.d-soo{background:var(--soo-bg);color:var(--soo-t)}
+.d-ok{background:var(--ok-bg);color:var(--ok-t)}
+.d-tbd{color:var(--tm);font-size:12px}
+
+.vc{font-size:12px;color:var(--ts);min-width:110px}
+.dc{font-size:12px;color:var(--ts);white-space:nowrap}
+.empty{text-align:center;padding:3rem;color:var(--ts);font-size:14px}
+.loading{text-align:center;padding:3rem;color:var(--tm);font-size:14px}
+.footer{margin-top:2.5rem;text-align:center;font-size:12px;color:var(--tm);line-height:2.2}
+.footer a{color:var(--ts)}
+@media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}.hdr h1{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="hdr">
+  <h1>Conference Deadline Tracker</h1>
+  <div class="hdr-meta">
+    <span>오늘: <strong id="today-str"></strong></span>
+    <span id="upd-badge" class="upd" style="display:none"></span>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="lbl">전체</div><div class="val" id="s-tot">—</div></div>
+  <div class="stat"><div class="lbl">예정</div><div class="val" id="s-up" style="color:var(--sys-t)">—</div></div>
+  <div class="stat"><div class="lbl">30일 이내</div><div class="val" id="s-urg" style="color:var(--urg-t)">—</div></div>
+  <div class="stat"><div class="lbl" style="color:var(--tm)">날짜 미정</div><div class="val" id="s-tbd" style="color:var(--tm)">—</div></div>
+</div>
+
+<div class="ctrls">
+  <select id="sort" onchange="render()" aria-label="정렬">
+    <option value="days">다음 마감 순</option>
+    <option value="name">이름 순</option>
+    <option value="tier">카테고리 순</option>
+  </select>
+  <label class="hl">
+    <input type="checkbox" id="hide-past" onchange="render()"> 지난 마감 숨기기
+  </label>
+</div>
+
+<div class="tags" id="tag-filters" role="group" aria-label="카테고리 필터"></div>
+
+<div class="tw">
+  <table>
+    <thead>
+      <tr>
+        <th>컨퍼런스</th>
+        <th>카테고리</th>
+        <th>Abstract 마감</th>
+        <th>Paper 마감</th>
+        <th>남은 일수</th>
+        <th>장소</th>
+        <th>학회 날짜</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr><td colspan="7" class="loading">데이터 로딩 중…</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="footer">
+  <div>데드라인은 AoE(Anywhere on Earth) 기준 · 반드시 공식 CFP를 확인하세요</div>
+  <div>
+    <a href="https://casys-kaist.github.io/" target="_blank" rel="noopener">casys-kaist</a> ·
+    <a href="https://sec-deadlines.github.io/" target="_blank" rel="noopener">sec-deadlines</a> ·
+    <a href="https://se-deadlines.github.io/" target="_blank" rel="noopener">se-deadlines</a> ·
+    <a href="https://mlciv.com/ai-deadlines/" target="_blank" rel="noopener">mlciv</a>
+  </div>
+</footer>
+</div>
+
+<script>
+const TODAY = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
+const TIERS = ['Sys1','SE1','SE2','AI1','Sec1','Sec2','Sec3','Sec4'];
+const TORD  = Object.fromEntries(TIERS.map((t,i) => [t,i]));
+let ALL = [], active = new Set();
+
+function parseDt(s) {
+  if (!s) return null;
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function daysFrom(s) {
+  const dt = parseDt(s); if (!dt) return null;
+  return Math.round((dt - TODAY) / 86400000);
+}
+function fmt(s) {
+  if (!s) return '—';
+  return parseDt(s).toLocaleDateString('ko-KR',{month:'short',day:'numeric'});
+}
+function nextDl(dls) {
+  if (!dls || !dls.length) return null;
+  const f = dls.filter(d => daysFrom(d) >= 0);
+  return f.length ? f[0] : dls[dls.length-1];
+}
+function daysChip(dls) {
+  const n = nextDl(dls);
+  if (!n) return '<span class="d-tbd">TBD</span>';
+  const d = daysFrom(n);
+  if (d < 0)   return `<span class="days d-past">${Math.abs(d)}일 전</span>`;
+  if (d <= 14) return `<span class="days d-urg">D-${d}</span>`;
+  if (d <= 60) return `<span class="days d-soo">D-${d}</span>`;
+  return `<span class="days d-ok">D-${d}</span>`;
+}
+function cycleCell(dls) {
+  if (!dls || !dls.length) return '<span class="d-tbd">TBD</span>';
+  const multi = dls.length > 1;
+  return `<div class="cycles">${dls.map((dl,i) => {
+    const past = daysFrom(dl) < 0;
+    const lbl  = multi ? `<span class="cy-lbl">Cycle ${i+1}</span>` : '';
+    return `<div class="cy-row${past?' cy-past':''}">${lbl}<span>${fmt(dl)}</span></div>`;
+  }).join('')}</div>`;
+}
+function absCell(abs, dls) {
+  if (!abs || !abs.length) return '<span style="color:var(--tm);font-size:12px">—</span>';
+  const multi = abs.length > 1;
+  return `<div class="cycles">${abs.map((a,i) => {
+    const past = daysFrom(a) < 0;
+    const lbl  = multi ? `<span class="cy-lbl">Cycle ${i+1}</span>` : '';
+    return `<div class="cy-row${past?' cy-past':''}">${lbl}<span>${fmt(a)}</span></div>`;
+  }).join('')}</div>`;
+}
+
+function buildFilters() {
+  const w = document.getElementById('tag-filters');
+  w.innerHTML = '';
+  const mkBtn = (cls, text, fn) => {
+    const b = document.createElement('button');
+    b.className = `tb ${cls}`; b.textContent = text; b.onclick = fn;
+    return b;
+  };
+  w.appendChild(mkBtn('a-all', '전체', () => { active.clear(); buildFilters(); render(); }));
+  // Active state for 'all' only when nothing selected
+  if (active.size === 0) w.firstChild.classList.add('a-all');
+  else w.firstChild.classList.remove('a-all');
+  TIERS.forEach(t => {
+    const b = mkBtn(active.has(t) ? `a-${t}` : '', t, () => {
+      active.has(t) ? active.delete(t) : active.add(t);
+      buildFilters(); render();
+    });
+    w.appendChild(b);
+  });
+}
+
+function render() {
+  const sort     = document.getElementById('sort').value;
+  const hidePast = document.getElementById('hide-past').checked;
+
+  let data = [...ALL];
+  if (active.size) data = data.filter(c => active.has(c.tier));
+  if (hidePast) data = data.filter(c => {
+    const n = nextDl(c.deadlines); return !n || daysFrom(n) >= 0;
+  });
+
+  if (sort === 'days') {
+    data.sort((a,b) => {
+      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
+      if (da==null&&db==null) return 0; if (da==null) return 1; if (db==null) return -1;
+      return da - db;
+    });
+  } else if (sort === 'name') {
+    data.sort((a,b) => a.name.localeCompare(b.name));
+  } else {
+    data.sort((a,b) => {
+      const t = TORD[a.tier] - TORD[b.tier]; if (t) return t;
+      const da = daysFrom(nextDl(a.deadlines)), db = daysFrom(nextDl(b.deadlines));
+      if (da==null) return 1; if (db==null) return -1; return da - db;
+    });
+  }
+
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = data.length === 0
+    ? '<tr><td colspan="7" class="empty">표시할 컨퍼런스가 없습니다</td></tr>'
+    : data.map(c => {
+        const note = c.note ? `<span class="note-t">${c.note}</span>` : '';
+        return `<tr>
+          <td>
+            <a class="cl" href="${c.url||'#'}" target="_blank" rel="noopener">${c.name}</a>
+            <div class="cf" title="${c.full}">${c.full||''}</div>
+            ${note}
+          </td>
+          <td><span class="tier t-${c.tier}">${c.tier}</span></td>
+          <td>${absCell(c.abstracts, c.deadlines)}</td>
+          <td>${cycleCell(c.deadlines)}</td>
+          <td style="white-space:nowrap">${daysChip(c.deadlines)}</td>
+          <td class="vc">${c.venue||'—'}</td>
+          <td class="dc">${c.date||'—'}</td>
+        </tr>`;
+      }).join('');
+
+  // Stats (over full filtered, ignoring hidePast)
+  let base = [...ALL];
+  if (active.size) base = base.filter(c => active.has(c.tier));
+  const up  = base.filter(c => { const d=daysFrom(nextDl(c.deadlines)); return d!==null&&d>=0; }).length;
+  const urg = base.filter(c => { const d=daysFrom(nextDl(c.deadlines)); return d!==null&&d>=0&&d<=30; }).length;
+  const tbd = base.filter(c => !c.deadlines||!c.deadlines.length).length;
+  document.getElementById('s-tot').textContent = base.length;
+  document.getElementById('s-up').textContent  = up;
+  document.getElementById('s-urg').textContent = urg;
+  document.getElementById('s-tbd').textContent = tbd;
+}
+
+async function loadData() {
+  try {
+    const ts  = Math.floor(Date.now() / 3600000);
+    const res = await fetch(`data.json?v=${ts}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    ALL = json.conferences || [];
+    if (json.updated) {
+      const dt = new Date(json.updated);
+      const b  = document.getElementById('upd-badge');
+      b.textContent = `업데이트: ${dt.toLocaleDateString('ko-KR',{month:'short',day:'numeric'})} ${dt.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}`;
+      b.style.display = '';
+    }
+    buildFilters(); render();
+  } catch(e) {
+    document.getElementById('tbody').innerHTML =
+      `<tr><td colspan="7" class="empty">
+        데이터 로드 실패: ${e.message}<br>
+        <small style="color:var(--tm)">로컬에서는 <code>python3 -m http.server</code>로 실행하세요</small>
+      </td></tr>`;
+  }
+}
+
+document.getElementById('today-str').textContent =
+  TODAY.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+
+loadData();
+</script>
+</body>
+</html>

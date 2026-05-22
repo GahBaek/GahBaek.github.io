@@ -1,0 +1,2 @@
+# No external dependencies — crawler uses only Python stdlib
+# (urllib, json, re, pathlib, datetime)
