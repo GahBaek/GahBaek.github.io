@@ -13,7 +13,7 @@
 
 # ── Sec2: 자동 소스에 deadline이 없는 것들 ─────────────────────────────────
 - name: FSE
-  tier: Sec1
+  tier: SE
   year: 2027
   description: Foundations of Software Engineering
   link: https://conf.researchr.org/home/fse-2027
@@ -33,7 +33,7 @@
   place: Los Angeles, CA, USA
 
 - name: RAID
-  tier: Sec2
+  tier: Sec
   year: 2026
   description: International Symposium on Research in Attacks, Intrusions and Defenses
   link: https://raid2026.org/
@@ -43,7 +43,7 @@
   place: Lancaster, UK
 
 - name: DSN
-  tier: Sec2
+  tier: Sec
   year: 2026
   description: IEEE/IFIP International Conference on Dependable Systems and Networks
   link: https://dsn2026.github.io/
@@ -55,7 +55,7 @@
   place: Brisbane, Australia
 
 - name: Euro S&P
-  tier: Sec2
+  tier: Sec
   year: 2026
   description: IEEE European Symposium on Security and Privacy
   link: https://eurosp2026.ieee-security.org/
@@ -68,7 +68,7 @@
 
 # ── Sec3 ───────────────────────────────────────────────────────────────────
 - name: CODASPY
-  tier: Sec3
+  tier: Sec
   year: 2026
   description: ACM Conference on Data and Application Security and Privacy
   link: https://www.codaspy.org/2026/
@@ -80,7 +80,7 @@
   place: Frankfurt, Germany
 
 - name: SecureComm
-  tier: Sec3
+  tier: Sec
   year: 2026
   description: EAI International Conference on Security and Privacy in Communication Networks
   link: https://securecomm.eai-conferences.org/
@@ -91,7 +91,7 @@
 
 # ── Sec4 ───────────────────────────────────────────────────────────────────
 - name: IFIP-SEC
-  tier: Sec4
+  tier: Sec
   year: 2026
   description: IFIP International Information Security and Privacy Conference
   link: https://ifipsec.org/cfp.html
