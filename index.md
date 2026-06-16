@@ -25,10 +25,9 @@ permalink: /
 
   <aside class="profile-card">
     <h2 style="color:white; margin-top:0;">Contact</h2>
-    <p>Email: your.email@example.com</p>
-    <p>GitHub: <a href="https://github.com/yourusername">yourusername</a></p>
-    <p>Google Scholar: Add your profile link</p>
-    <p>LinkedIn: Add your profile link</p>
+    <p>Email: gusqorrk@gmail</p>
+    <p>GitHub: <a href="https://github.com/gahyunBaek">gahyunBaek</a></p>
+    <p>LinkedIn: https://www.linkedin.com/in/gahyun-baek/</p>
   </aside>
 </section>
 
