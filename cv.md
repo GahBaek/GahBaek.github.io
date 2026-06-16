@@ -3,42 +3,31 @@ title: CV
 permalink: /cv/
 ---
 
-# CV
+#### CV
 
-You can write your CV directly in Markdown here. If you want a downloadable PDF, upload it to `assets/files/cv.pdf` and add a link to it.
+##### Education
 
-## Education
+- MJU, Computer Engineering, B.S, 2022-2026
+- SKKU, Software, M.S, 2026-
 
-- University Name, Department, Degree, Year
+##### Research Experience
 
-## Research Experience
+- SecAI Lab
 
-- Lab or Project Name — Short description
-- Research Topic — Short description
+<!--##### Publications / Preprints-->
 
-## Publications / Preprints
+<!--- Author Name, "Paper Title," Venue, Year.-->
 
-- Author Name, "Paper Title," Venue, Year.
-
-## Paper Reviews
+##### Paper Reviews
 
 - Web Security Paper Review
 - Program Analysis Paper Review
 - Software Security Paper Review
 
-## Projects
+<!--##### Projects-->
 
-- Secure Board Web Application
-- Paper Review Archive
-- Network Packet Analysis Notes
+##### Technical Skills
 
-## Technical Skills
-
-- Languages: Python, Java, C/C++, JavaScript
-- Frameworks: Flask, Spring Boot, Jekyll
-- Security Tools: Burp Suite, Wireshark, Docker, Linux
-- Research Topics: Web Security, Program Analysis, Symbolic Execution
-
-## Awards / Activities
-
-- Award or activity name, Year
+- Programming: Python, Java, C/C++
+- Web: Spring Boot, REST APIs
+- Security: Linux
