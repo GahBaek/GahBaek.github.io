@@ -1,0 +1,28 @@
+title: Your Name
+description: Personal website for research, projects, paper reviews, CV, and blog
+url: "https://yourusername.github.io"
+baseurl: ""
+
+markdown: kramdown
+permalink: /blog/:categories/:year/:month/:day/:title/
+
+collections:
+  paper_reviews:
+    output: true
+    permalink: /paper-reviews/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+  - scope:
+      path: ""
+      type: "paper_reviews"
+    values:
+      layout: review
+  - scope:
+      path: ""
+    values:
+      layout: default

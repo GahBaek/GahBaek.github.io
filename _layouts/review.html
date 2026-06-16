@@ -1,0 +1,19 @@
+---
+layout: default
+---
+
+<article class="article">
+  <p class="eyebrow">Paper Review</p>
+  <h1>{{ page.title }}</h1>
+  {% if page.paper %}<p class="meta"><strong>Paper:</strong> {{ page.paper }}</p>{% endif %}
+  {% if page.venue %}<p class="meta"><strong>Venue:</strong> {{ page.venue }}</p>{% endif %}
+  {% if page.date %}<p class="meta"><strong>Date:</strong> {{ page.date | date: "%Y-%m-%d" }}</p>{% endif %}
+
+  <div class="tag-row">
+    {% for tag in page.tags %}
+      <span class="badge">{{ tag }}</span>
+    {% endfor %}
+  </div>
+
+  {{ content }}
+</article>

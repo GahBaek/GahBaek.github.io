@@ -1,0 +1,26 @@
+- title: Secure Board Web Application
+  description: A Flask or Spring Boot board service focusing on authentication, authorization, input validation, session management, and CAPTCHA.
+  tags:
+    - Web Security
+    - Authentication
+    - Secure Coding
+  github: https://github.com/yourusername/secure-board
+  demo:
+
+- title: Paper Review Archive
+  description: A structured archive for academic security paper reviews, including summaries, strengths, weaknesses, and questions for authors.
+  tags:
+    - Research
+    - Paper Review
+    - Security
+  github: https://github.com/yourusername/paper-reviews
+  demo:
+
+- title: Network Packet Analysis Notes
+  description: Notes and examples for analyzing packets with Wireshark, including ARP, DNS, TCP, HTTP, and suspicious traffic patterns.
+  tags:
+    - Network Security
+    - Wireshark
+    - Packet Analysis
+  github:
+  demo:
