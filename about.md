@@ -3,18 +3,16 @@ title: About
 permalink: /about/
 ---
 
-# About Me
+#### About Me
+I am a student interested in security, especially web security, software security, program analysis, and network security.
 
-Write a short introduction here.
+##### Education
 
-I am a student/researcher interested in security, especially web security, software security, program analysis, and network security. I use this website to organize my projects, paper reviews, CV, and technical blog posts.
+- B.S, Computer Engineering, Myongji Uni, 2022-2026
+- M.S, Software, Sungkyunkwan Uni, 2026-
+- Research area: AI for Security
 
-## Education
-
-- Degree, Department, University, Year
-- Research area: Web Security / Software Security / Program Analysis
-
-## Research Interests
+##### Research Interests
 
 - Web authentication and authorization
 - Static and dynamic analysis
@@ -22,9 +20,8 @@ I am a student/researcher interested in security, especially web security, softw
 - Secure software development
 - Network packet analysis
 
-## Skills
+##### Skills
 
-- Programming: Python, Java, C/C++, JavaScript
-- Web: Flask, Spring Boot, HTML/CSS, REST APIs
-- Security: Burp Suite, Wireshark, Linux, Docker
-- Research: Paper review, experiment design, technical writing
+- Programming: Python, Java, C/C++
+- Web: Spring Boot, REST APIs
+- Security: Linux
