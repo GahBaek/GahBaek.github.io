@@ -6,7 +6,7 @@ permalink: /
 <section class="hero">
   <div class="hero-card">
     <p class="eyebrow">Personal Website</p>
-    <h1>Your Name</h1>
+    <h3>Gahyun Baek</h3>
     <p class="lead">
       I am interested in web security, software security, program analysis,
       network security, and secure software engineering.
@@ -50,7 +50,4 @@ permalink: /
 ## Research Interests
 
 - Web authentication and authorization
-- URL-based authentication bypass
-- Static analysis and symbolic execution
 - Code watermarking and software ownership
-- Network traffic analysis and security monitoring
