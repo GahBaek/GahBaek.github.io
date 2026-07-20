@@ -3,22 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ site.description }}">
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/portfolio.css' | relative_url }}">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('theme');
+      const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-      <button class="menu-toggle" onclick="document.body.classList.toggle('nav-open')" aria-label="Toggle navigation">Menu</button>
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="{{ '/' | relative_url }}">
+        <span class="brand-mark" aria-hidden="true">GB</span>
+        <span>Gahyun Baek</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" onclick="const open=document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',open)">
+        <span></span><span></span>
+      </button>
       <div class="nav-links">
         <a href="{{ '/about/' | relative_url }}">About</a>
-        <a href="{{ '/paper-reviews/' | relative_url }}">Paper Reviews</a>
+        <a href="{{ '/paper-reviews/' | relative_url }}">Reviews</a>
         <a href="{{ '/projects/' | relative_url }}">Projects</a>
         <a href="{{ '/cv/' | relative_url }}">CV</a>
         <a href="{{ '/blog/' | relative_url }}">Blog</a>
       </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle dark mode">
+        <span class="theme-icon" aria-hidden="true">☾</span>
+      </button>
     </nav>
   </header>
 
@@ -27,7 +45,27 @@
   </main>
 
   <footer class="site-footer">
-    <p>© {{ site.time | date: '%Y' }} {{ site.title }}. Built with GitHub Pages and Jekyll.</p>
+    <div class="footer-inner">
+      <p>© {{ site.time | date: '%Y' }} Gahyun Baek</p>
+    </div>
   </footer>
+  <script>
+    (function () {
+      const button = document.querySelector('.theme-toggle');
+      const icon = button.querySelector('.theme-icon');
+      function sync() {
+        const dark = document.documentElement.dataset.theme === 'dark';
+        icon.textContent = dark ? '☀' : '☾';
+        button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+      button.addEventListener('click', function () {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('theme', next);
+        sync();
+      });
+      sync();
+    })();
+  </script>
 </body>
 </html>

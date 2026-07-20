@@ -3,31 +3,70 @@ title: CV
 permalink: /cv/
 ---
 
-#### CV
+<div class="card" markdown="1">
+  <p class="eyebrow" style="margin-bottom:4px;">Curriculum Vitae</p>
+  <h3 style="margin:0;">Gahyun Baek</h3>
+</div>
 
-##### Education
+<div class="card" markdown="1">
 
-- MJU, Computer Engineering, B.S, 2022-2026
-- SKKU, Software, M.S, 2026-
+#### Education
 
-##### Research Experience
+<ul class="timeline">
+  <li><strong>M.S, Software</strong> — Sungkyunkwan University, 2026–</li>
+  <li><strong>B.S, Computer Engineering</strong> — Myongji University, 2022–2026</li>
+</ul>
 
-- SecAI Lab
+</div>
+
+<div class="card" markdown="1">
+
+#### Research Experience
+
+<ul class="timeline">
+  <li><strong>SecAI Lab</strong></li>
+</ul>
 
 <!--##### Publications / Preprints-->
 
 <!--- Author Name, "Paper Title," Venue, Year.-->
 
-##### Paper Reviews
+</div>
 
-- Web Security Paper Review
-- Program Analysis Paper Review
-- Software Security Paper Review
+<div class="card" markdown="1">
+
+#### Paper Reviews
+
+<div class="tag-row">
+  <span class="badge">Web Security Paper Review</span>
+  <span class="badge">Program Analysis Paper Review</span>
+  <span class="badge">Software Security Paper Review</span>
+</div>
+
+</div>
 
 <!--##### Projects-->
 
-##### Technical Skills
+<div class="card" markdown="1">
 
-- Programming: Python, Java, C/C++
-- Web: Spring Boot, REST APIs
-- Security: Linux
+#### Technical Skills
+
+##### Programming
+<ul class="skill-list">
+  <li>Python</li>
+  <li>Java</li>
+  <li>C/C++</li>
+</ul>
+
+##### Web
+<ul class="skill-list">
+  <li>Spring Boot</li>
+  <li>REST APIs</li>
+</ul>
+
+##### Security
+<ul class="skill-list">
+  <li>Linux</li>
+</ul>
+
+</div>

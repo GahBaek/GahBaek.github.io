@@ -12,6 +12,17 @@
   --radius: 22px;
   --shadow: 0 22px 60px rgba(31, 35, 27, .08);
 }
+[data-theme="dark"] {
+  --ink: #f3f4ed;
+  --ink-soft: #d9ddd2;
+  --paper: #121411;
+  --surface: #1a1d18;
+  --text: #eef0e9;
+  --muted: #9da397;
+  --line: #343930;
+  --white: #10130f;
+  --shadow: 0 22px 60px rgba(0,0,0,.24);
+}
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -45,6 +56,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--acid-deep); out
   border-bottom: 1px solid rgba(16,19,15,.1);
   backdrop-filter: blur(18px);
 }
+[data-theme="dark"] .site-header { background: rgba(18,20,17,.9); }
 .nav, .footer-inner {
   width: min(1040px, calc(100% - 48px));
   margin: 0 auto;
@@ -67,6 +79,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--acid-deep); out
 .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -7px; height: 2px; background: var(--ink); transition: right .2s ease; }
 .nav-links a:hover { color: var(--ink); }
 .nav-links a:hover::after { right: 0; }
+.theme-toggle { display: grid; place-items: center; width: 34px; height: 34px; margin-left: 20px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 50%; cursor: pointer; font-size: 1rem; }
 .menu-toggle { display: none; border: 0; background: transparent; padding: 8px; }
 .menu-toggle span { display: block; width: 23px; height: 2px; margin: 5px 0; background: var(--ink); }
 
@@ -105,6 +118,13 @@ p { margin: 0 0 16px; }
 
 .section-block { margin: 0 0 72px; }
 .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
+.work-list { border-top: 1px solid var(--line); }
+.work-item { display: grid; grid-template-columns: 52px 1fr 1.2fr 24px; gap: 20px; align-items: center; padding: 22px 4px; border-bottom: 1px solid var(--line); transition: padding .2s ease, background .2s ease; }
+.work-item:hover { padding-left: 12px; padding-right: 12px; background: var(--surface); }
+.work-number { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: .68rem; }
+.work-name { font-size: 1.05rem; font-weight: 600; }
+.work-description { color: var(--muted); font-size: .88rem; }
+.work-arrow { text-align: right; }
 .feature-grid, .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
 .feature-card { position: relative; display: flex; min-height: 250px; flex-direction: column; justify-content: space-between; padding: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; transition: transform .25s ease, box-shadow .25s ease; }
 .feature-card:hover, .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
@@ -149,7 +169,7 @@ code, pre { font-family: "IBM Plex Mono", monospace; }
 pre { overflow-x: auto; padding: 20px; color: #e9ede4; background: var(--ink); border-radius: 14px; }
 
 .site-footer { border-top: 1px solid var(--line); }
-.footer-inner { display: flex; justify-content: space-between; gap: 24px; padding: 32px 0; color: var(--muted); font-size: .8rem; }
+.footer-inner { display: flex; justify-content: flex-end; gap: 24px; padding: 26px 0; color: var(--muted); font-size: .8rem; }
 .footer-inner p { margin: 0; }
 .status-dot { display: inline-block; width: 7px; height: 7px; margin-right: 7px; background: var(--acid-deep); border-radius: 50%; }
 
@@ -159,12 +179,15 @@ pre { overflow-x: auto; padding: 20px; color: #e9ede4; background: var(--ink); b
   .menu-toggle { display: block; }
   .nav-links { display: none; position: absolute; top: 68px; left: 16px; right: 16px; padding: 20px; flex-direction: column; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
   .nav-open .nav-links { display: flex; }
+  .theme-toggle { margin-left: auto; margin-right: 8px; }
   .container { padding-top: 42px; }
   .hero { grid-template-columns: 1fr; gap: 48px; min-height: 0; }
   h1 { font-size: clamp(3rem,14vw,5rem); }
   .profile-panel { width: 170px; justify-self: center; }
   .focus-strip { align-items: flex-start; flex-direction: column; margin: 70px 0 90px; }
   .section-heading { align-items: flex-start; flex-direction: column; }
+  .work-item { grid-template-columns: 36px 1fr 20px; gap: 12px; }
+  .work-description { grid-column: 2 / 4; }
   .feature-grid, .grid, .contact-band { grid-template-columns: 1fr; }
   .contact-band { gap: 35px; padding: 36px 26px; }
 }
