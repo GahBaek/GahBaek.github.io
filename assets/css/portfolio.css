@@ -13,6 +13,10 @@
   --shadow: 0 22px 60px rgba(31, 35, 27, .07);
   --badge-bg: #e6edf2;
   --badge-border: #cddbe4;
+  --code-bg: #1c2430;
+  --code-bg-soft: #2c3644;
+  --code-text: #e9ede4;
+  --code-muted: #8b95a3;
 }
 [data-theme="dark"] {
   --ink: #f3f4ed;
@@ -83,6 +87,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--acid-deep); out
 .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -7px; height: 2px; background: var(--ink); transition: right .2s ease; }
 .nav-links a:hover { color: var(--ink); }
 .nav-links a:hover::after { right: 0; }
+.nav-links a.active { color: var(--ink); font-weight: 800; }
+.nav-links a.active::after { right: 0; }
 .theme-toggle { display: grid; place-items: center; width: 34px; height: 34px; margin-left: 20px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 50%; cursor: pointer; font-size: 1rem; }
 .menu-toggle { display: none; border: 0; background: transparent; padding: 8px; }
 .menu-toggle span { display: block; width: 23px; height: 2px; margin: 5px 0; background: var(--ink); }
@@ -182,7 +188,14 @@ p { margin: 0 0 16px; }
 .timeline li { position: relative; padding: 0 0 24px 24px; border-left: 1px solid var(--line); }
 .timeline li::before { content: ""; position: absolute; left: -5px; top: 7px; width: 9px; height: 9px; background: var(--acid-deep); border-radius: 50%; }
 code, pre { font-family: "IBM Plex Mono", monospace; }
-pre { overflow-x: auto; padding: 20px; color: #e9ede4; background: var(--ink); border-radius: 14px; }
+pre { overflow-x: auto; padding: 20px; color: var(--code-text); background: var(--code-bg); border-radius: 14px; }
+
+.terminal { max-width: 560px; margin: 0 auto 8px; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.terminal-bar { display: flex; gap: 6px; padding: 10px 14px; background: var(--code-bg-soft); }
+.terminal-bar span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.2); }
+.terminal pre { margin: 0; border-radius: 0; }
+.terminal pre .prompt { color: var(--acid); }
+.terminal pre .muted-line { color: var(--code-muted); }
 
 .site-footer { border-top: 1px solid var(--line); }
 .footer-inner { display: flex; justify-content: flex-end; gap: 24px; padding: 26px 0; color: var(--muted); font-size: .8rem; }

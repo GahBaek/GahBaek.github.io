@@ -1,7 +1,10 @@
 ---
 title: Projects
 permalink: /projects/
+published: false
 ---
+<!-- Disabled: _data/projects.yml is still placeholder/mock content, not real projects.
+     Remove `published: false` above once real projects are added. -->
 
 # Projects
 

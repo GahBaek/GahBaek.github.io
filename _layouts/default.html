@@ -29,11 +29,13 @@
         <span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="{{ '/about/' | relative_url }}">About</a>
-        <a href="{{ '/paper-reviews/' | relative_url }}">Reviews</a>
-        <a href="{{ '/projects/' | relative_url }}">Projects</a>
-        <a href="{{ '/cv/' | relative_url }}">CV</a>
-        <a href="{{ '/blog/' | relative_url }}">Blog</a>
+        <a href="{{ '/about/' | relative_url }}"{% if page.url contains '/about' %} class="active" aria-current="page"{% endif %}>About</a>
+        <a href="{{ '/paper-reviews/' | relative_url }}"{% if page.url contains '/paper-reviews' %} class="active" aria-current="page"{% endif %}>Reviews</a>
+        {% comment %} Projects page disabled until real projects replace the mock data in _data/projects.yml.
+        <a href="{{ '/projects/' | relative_url }}"{% if page.url contains '/projects' %} class="active" aria-current="page"{% endif %}>Projects</a>
+        {% endcomment %}
+        <a href="{{ '/cv/' | relative_url }}"{% if page.url contains '/cv' %} class="active" aria-current="page"{% endif %}>CV</a>
+        <a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog' %} class="active" aria-current="page"{% endif %}>Blog</a>
       </div>
       <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle dark mode">
         <span class="theme-icon" aria-hidden="true">☾</span>

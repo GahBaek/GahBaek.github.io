@@ -25,3 +25,16 @@ permalink: /
     <a class="text-link" href="https://www.linkedin.com/in/gahyun-baek/" target="_blank" rel="noopener">LinkedIn ↗</a>
   </div>
 </section>
+
+<div class="terminal">
+  <div class="terminal-bar"><span></span><span></span><span></span></div>
+  <pre><code><span class="prompt">$</span> whoami
+Gahyun Baek — security researcher, software engineer
+
+<span class="prompt">$</span> cat focus.txt
+<span class="muted-line">web security · program analysis · software security · network security</span>
+
+<span class="prompt">$</span> cat status.txt
+<span class="muted-line">M.S. student @ Sungkyunkwan University</span>
+<span class="prompt">$</span> <span class="cursor-blink" aria-hidden="true">_</span></code></pre>
+</div>
