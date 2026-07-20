@@ -1,16 +1,16 @@
 :root {
-  --ink: #10130f;
-  --ink-soft: #242920;
-  --paper: #f4f2ea;
+  --ink: #1c2430;
+  --ink-soft: #2c3644;
+  --paper: #f3f1ea;
   --surface: #fbfaf6;
-  --acid: #c9ff4a;
-  --acid-deep: #9fdc16;
-  --text: #171a15;
-  --muted: #676c62;
+  --acid: #9db9cf;
+  --acid-deep: #5f83a0;
+  --text: #23282c;
+  --muted: #71766f;
   --line: #d8d8cf;
   --white: #fff;
   --radius: 22px;
-  --shadow: 0 22px 60px rgba(31, 35, 27, .08);
+  --shadow: 0 22px 60px rgba(31, 35, 27, .07);
 }
 
 * { box-sizing: border-box; }
@@ -30,7 +30,7 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: .22;
+  opacity: .14;
   background-image: radial-gradient(rgba(16,19,15,.18) .5px, transparent .5px);
   background-size: 5px 5px;
 }
@@ -131,7 +131,7 @@ p { margin: 0 0 16px; }
 .meta, .muted { color: var(--muted); }
 .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0 22px; }
 .badge, .badge-outline { display: inline-flex; margin: 0; }
-.badge { background: #e8f9bf; border-color: #d4ed9b; }
+.badge { background: #e6edf2; border-color: #cddbe4; }
 .list-clean, .skill-list, .timeline { list-style: none; padding: 0; }
 .list-clean li { padding: 15px 0; border-bottom: 1px solid var(--line); }
 .review-list { margin: 28px 0 0; border-top: 1px solid var(--line); }

@@ -1,7 +1,7 @@
 ---
 layout: posts
 title: "make shell"
-categories: ["ctf"]
+categories: ["CTF"]
 ---
 
 ## Shellcode 만들기

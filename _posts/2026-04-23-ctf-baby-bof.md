@@ -1,7 +1,7 @@
 ---
 layout: posts
 title: "baby-bof"
-categories: ["ctf"]
+categories: ["CTF"]
 ---
 
 

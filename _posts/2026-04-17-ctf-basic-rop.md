@@ -1,7 +1,7 @@
 ---
 layout: posts
 title: "basic rop"
-categories: ["ctf"]
+categories: ["CTF"]
 ---
 
 ## 문제
