@@ -18,11 +18,13 @@ Return Oriented Programming 공격 기법을 통해 셸을 획득한 후, "flag"
 
 ### **Environment**
 
-**`Arch:     amd64-64-little
+```
+Arch:     amd64-64-little
 RELRO:    Partial RELRO
 Stack:    No canary found
 NX:       NX enabled
-PIE:      No PIE (0x400000)`**
+PIE:      No PIE (0x400000)
+```
 
 ### **Reference**
 
