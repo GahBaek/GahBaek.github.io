@@ -35,16 +35,23 @@ permalink: /cv/
 
 <div class="card" markdown="1">
 
-#### Paper Reviews
+#### Paper
 
 <div class="tag-row">
-  <span class="badge">Web Security Paper Review</span>
-  <span class="badge">Program Analysis Paper Review</span>
-  <span class="badge">Software Security Paper Review</span>
+  <span class="badge">LLM 기반 멀티 에이전트 시스템에서 토폴로지 및 언어에 따른 정보 유출 분석 (26' KCC poster)</span>
 </div>
 
 </div>
 
+#### Award
+
+<div class="tag-row">
+  <span class="badge">Rank 2 in AI Prompt Challenge (26')</span>
+</div>
+
+</div>
+
+<div class="card" markdown="1">
 <!--##### Projects-->
 
 <div class="card" markdown="1">
