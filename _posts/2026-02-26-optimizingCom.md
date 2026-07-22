@@ -1,5 +1,4 @@
 ---
-published: false
 layout: posts
 title: "Optimizing Compiler"
 categories: ["Compiler"]

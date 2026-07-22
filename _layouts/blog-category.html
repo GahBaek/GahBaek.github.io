@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<header class="page-heading">
+  <p class="eyebrow">Blog</p>
+  <h1>{{ page.category_name }}</h1>
+</header>
+
+{% assign posts = site.posts | where_exp: "post", "post.categories contains page.category_name" | sort: "date" | reverse %}
+
+<div class="review-list">
+{% for post in posts %}
+  <a class="review-item" href="{{ post.url | relative_url }}">
+    <time class="review-date">{{ post.date | date: "%Y.%m.%d" }}</time>
+    <span class="review-title">{{ post.title }}</span>
+    <span class="review-arrow" aria-hidden="true">→</span>
+  </a>
+{% endfor %}
+</div>
+
+<p style="margin-top:28px;"><a class="text-link" href="{{ '/blog/' | relative_url }}">← All categories</a></p>

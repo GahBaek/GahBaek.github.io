@@ -5,6 +5,8 @@ baseurl: ""
 
 markdown: kramdown
 permalink: /blog/:categories/:year/:month/:day/:title/
+exclude:
+  - ".jekyll-serve.log"
 
 collections:
   paper_reviews:

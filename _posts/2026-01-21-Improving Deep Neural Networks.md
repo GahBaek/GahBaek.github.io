@@ -1,5 +1,4 @@
 ---
-published: false
 layout: posts
 title: "Improving Deep Neural Networks"
 categories: ["Andrew.Ng"]
