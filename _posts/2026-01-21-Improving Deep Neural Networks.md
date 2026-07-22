@@ -1,7 +1,7 @@
 ---
 layout: posts
 title: "Improving Deep Neural Networks"
-categories: ["Andrew.Ng"]
+categories: ["모두를 위한 머신러닝/딥러닝"]
 ---
 
 **Regularization**
