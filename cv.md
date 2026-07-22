@@ -13,8 +13,8 @@ permalink: /cv/
 #### Education
 
 <ul class="timeline">
-  <li><strong>M.S, Software</strong> — Sungkyunkwan University, 2026–</li>
-  <li><strong>B.S, Computer Engineering</strong> — Myongji University, 2022–2026</li>
+  <li><strong>M.S., Software</strong> — Sungkyunkwan University, 2026–</li>
+  <li><strong>B.S., Computer Engineering</strong> — Myongji University, 2022–2026</li>
 </ul>
 
 </div>
@@ -38,20 +38,21 @@ permalink: /cv/
 #### Paper
 
 <div class="tag-row">
-  <span class="badge">LLM 기반 멀티 에이전트 시스템에서 토폴로지 및 언어에 따른 정보 유출 분석 (26' KCC poster)</span>
-</div>
-
-</div>
-
-#### Award
-
-<div class="tag-row">
-  <span class="badge">Rank 2 in AI Prompt Challenge (26')</span>
+  <span class="badge">LLM 기반 멀티 에이전트 시스템에서 토폴로지 및 언어에 따른 정보 유출 분석 ('26 KCC Poster)</span>
 </div>
 
 </div>
 
 <div class="card" markdown="1">
+
+#### Award
+
+<div class="tag-row">
+  <span class="badge">Rank 2 in AI Prompt Challenge ('26)</span>
+</div>
+
+</div>
+
 <!--##### Projects-->
 
 <div class="card" markdown="1">
