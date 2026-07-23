@@ -5,7 +5,7 @@ permalink: /cv/
 
 <div class="card" markdown="1">
   <p class="eyebrow" style="margin-bottom:4px;">Curriculum Vitae</p>
-  <h3 style="margin:0;">Gahyun Baek</h3>
+  <h3 style="margin:0;">백가현</h3>
 </div>
 
 <div class="card" markdown="1">

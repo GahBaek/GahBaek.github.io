@@ -16,7 +16,7 @@ permalink: /
     </svg>
     <p class="eyebrow">Security · Software Engineering<span class="cursor-blink" aria-hidden="true">_</span></p>
   </div>
-  <h1>Gahyun Baek</h1>
+  <h1>백가현 (Gahyun Baek)</h1>
   <p class="lead">M.S. student at Sungkyunkwan University</p>
 
   <div class="contact-row">
