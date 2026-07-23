@@ -171,6 +171,7 @@ p { margin: 0 0 16px; }
 .card h2 { margin: 0 0 18px; font-size: 1.8rem; }
 .card h3 { margin-top: 0; }
 .meta, .muted { color: var(--muted); }
+.giscus-container { margin-top: 24px; }
 .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0 22px; }
 .badge, .badge-outline { display: inline-flex; margin: 0; }
 .badge { background: var(--badge-bg); border-color: var(--badge-border); }
