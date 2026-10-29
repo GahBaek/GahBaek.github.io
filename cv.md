@@ -39,7 +39,7 @@ permalink: /cv/
 
 <div class="tag-row">
   <span class="badge">LLM 기반 멀티 에이전트 시스템에서 토폴로지 및 언어에 따른 정보 유출 분석 ('26 KCC)</span>
-  <span class="badge">대규모 언어 모델 생성 텍스트 워터마킹 기법 비교 분석 (26'W CISC)<\span>
+  <span class="badge">대규모 언어 모델 생성 텍스트 워터마킹 기법 비교 분석 (26'W CISC)</span>
 </div>
 
 </div>
