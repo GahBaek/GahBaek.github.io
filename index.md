@@ -42,12 +42,14 @@ permalink: /
     <h2>Paper reviews</h2>
     <a href="{{ '/paper-reviews/' | relative_url }}">All reviews →</a>
   </div>
-  <ul class="entry-list">
+  <ul class="entry-list stacked">
   {% for review in reviews limit: 3 %}
     <li><a href="{{ review.url | relative_url }}">
-      <time datetime="{{ review.date | date_to_xmlschema }}">{{ review.date | date: "%Y.%m.%d" }}</time>
       <span class="title">{{ review.title }}</span>
-      <span class="tag"></span>
+      <span class="entry-meta">
+        <time datetime="{{ review.date | date_to_xmlschema }}">{{ review.date | date: "%Y.%m.%d" }}</time>
+        {% if review.pdf %}<span>Slides</span>{% endif %}
+      </span>
     </a></li>
   {% endfor %}
   </ul>

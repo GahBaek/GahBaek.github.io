@@ -84,12 +84,12 @@ p { margin: 0 0 16px; }
 .text-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- home ---------- */
-.intro { display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 40px; align-items: start; padding-bottom: 8px; }
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) 80px; gap: 32px; align-items: start; padding-bottom: 8px; }
 .intro h1 { margin-bottom: 6px; font-size: 2rem; }
 .intro h1 .en { margin-left: 8px; color: var(--muted); font-size: 1.1rem; font-weight: 500; letter-spacing: 0; }
 .intro .role { margin-bottom: 22px; color: var(--muted); font-size: .95rem; line-height: 1.6; }
 .intro .bio { margin-bottom: 22px; }
-.portrait { display: block; width: 132px; height: 160px; object-fit: cover; object-position: center top; filter: grayscale(.15); }
+.portrait { display: block; width: 80px; height: 80px; object-fit: cover; object-position: center top; filter: grayscale(.15); }
 .link-row { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 0; list-style: none; font-size: .92rem; }
 .link-row a { color: var(--accent); }
 .link-row a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -114,6 +114,12 @@ p { margin: 0 0 16px; }
 .entry-list .tag { color: var(--faint); font-size: .8rem; white-space: nowrap; }
 .entry-list a:hover .title { color: var(--accent); }
 .entry-empty { padding: 14px 0; color: var(--muted); }
+
+/* stacked variant: title on its own line, meta underneath (long paper titles) */
+.entry-list.stacked a { display: block; padding: 18px 0; }
+.entry-list.stacked .title { display: block; font-size: 1.02rem; font-weight: 600; line-height: 1.45; }
+.entry-list.stacked .entry-meta { display: flex; gap: 12px; margin-top: 4px; color: var(--faint); font-size: .8rem; }
+.entry-list.stacked .entry-meta time { font-size: .78rem; }
 
 .category-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 40px; padding: 0; list-style: none; font-size: .92rem; }
 .category-row a { color: var(--muted); }
@@ -190,7 +196,7 @@ pre code { padding: 0; background: none; font-size: inherit; }
   .container { padding-top: 36px; }
   .intro { grid-template-columns: 1fr; gap: 24px; }
   .intro .portrait-cell { order: -1; }
-  .portrait { width: 88px; height: 106px; }
+  .portrait { width: 64px; height: 64px; }
   .intro h1 .en { display: block; margin: 2px 0 0; }
   .entry-list a { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .entry-list time { order: 2; }
