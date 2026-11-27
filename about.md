@@ -3,63 +3,35 @@ title: About
 permalink: /about/
 ---
 
-<div class="card" markdown="1">
-  <div class="profile-header">
-    <img class="avatar" src="{{ '/assets/files/Gahyun_Baek.jpg' | relative_url }}" alt="Gahyun Baek">
-    <div>
-      <p class="eyebrow" style="margin-bottom:4px;">About Me</p>
-      <h3 style="margin:0;">Gahyun Baek</h3>
-    </div>
-  </div>
-  <p>
-    I am a student interested in security, especially web security, software security,
-    program analysis, and network security.
-  </p>
-</div>
+<header class="page-heading">
+  <h1>About</h1>
+  <p>I am a student interested in security, especially web security, software security, program analysis, and network security.</p>
+</header>
 
-<div class="card" markdown="1">
+<section class="section">
+  <div class="section-head"><h2>Education</h2></div>
+  <ul class="cv-list">
+    <li><span class="when">2026 –</span><div><strong>M.S., Software</strong> · Sungkyunkwan University<span class="sub">Research area: AI for Security</span></div></li>
+    <li><span class="when">2022 – 2026</span><div><strong>B.S., Computer Engineering</strong> · Myongji University</div></li>
+  </ul>
+</section>
 
-#### Education
+<section class="section">
+  <div class="section-head"><h2>Research interests</h2></div>
+  <ul class="plain-list">
+    <li>Web authentication and authorization</li>
+    <li>Static and dynamic analysis</li>
+    <li>Vulnerability discovery</li>
+    <li>Secure software development</li>
+    <li>Network packet analysis</li>
+  </ul>
+</section>
 
-<ul class="timeline">
-  <li><strong>M.S, Software</strong> — Sungkyunkwan University, 2026–<br><span class="meta">Research area: AI for Security</span></li>
-  <li><strong>B.S, Computer Engineering</strong> — Myongji University, 2022–2026</li>
-</ul>
-
-</div>
-
-<div class="card" markdown="1">
-
-#### Research Interests
-
-- Web authentication and authorization
-- Static and dynamic analysis
-- Vulnerability discovery
-- Secure software development
-- Network packet analysis
-
-</div>
-
-<div class="card" markdown="1">
-
-#### Skills
-
-##### Programming
-<ul class="skill-list">
-  <li>Python</li>
-  <li>Java</li>
-  <li>C/C++</li>
-</ul>
-
-##### Web
-<ul class="skill-list">
-  <li>Spring Boot</li>
-  <li>REST APIs</li>
-</ul>
-
-##### Security
-<ul class="skill-list">
-  <li>Linux</li>
-</ul>
-
-</div>
+<section class="section">
+  <div class="section-head"><h2>Skills</h2></div>
+  <ul class="cv-list">
+    <li><span class="when">Programming</span><div>Python, Java, C/C++</div></li>
+    <li><span class="when">Web</span><div>Spring Boot, REST APIs</div></li>
+    <li><span class="when">Security</span><div>Linux</div></li>
+  </ul>
+</section>

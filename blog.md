@@ -3,37 +3,36 @@ title: Blog
 permalink: /blog/
 ---
 
-#### Blog
+<header class="page-heading">
+  <h1>Blog</h1>
+</header>
 
-##### Categories
-
-<div class="tag-row">
+<ul class="category-row">
+  <li><a class="active" aria-current="page" href="{{ '/blog/' | relative_url }}">All<span class="count">{{ site.posts | size }}</span></a></li>
 {% for category in site.categories %}
-  <a class="badge" href="{{ '/blog/' | relative_url }}{{ category[0] }}/">{{ category[0] }}</a>
+  <li><a href="{{ '/blog/' | relative_url }}{{ category[0] }}/">{{ category[0] }}<span class="count">{{ category[1] | size }}</span></a></li>
 {% endfor %}
-</div>
+</ul>
 
-##### All Posts
-
-<ul class="list-clean" id="all-posts-list">
+<ul class="entry-list" id="all-posts-list">
 {% for post in site.posts %}
-  <li>
-    <a href="{{ post.url | relative_url }}"><strong>{{ post.title }}</strong></a>
-    <br>
-    <span class="meta">{{ post.date | date: "%Y-%m-%d" }} · {{ post.categories | join: ", " }}</span>
-  </li>
+  <li><a href="{{ post.url | relative_url }}">
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time>
+    <span class="title">{{ post.title }}</span>
+    <span class="tag">{{ post.categories | first }}</span>
+  </a></li>
 {% endfor %}
 </ul>
 
 <div class="pagination" id="all-posts-pagination">
-  <button type="button" class="pagination-btn" data-page-nav="prev">Prev</button>
+  <button type="button" class="pagination-btn" data-page-nav="prev">← Prev</button>
   <span class="pagination-status"></span>
-  <button type="button" class="pagination-btn" data-page-nav="next">Next</button>
+  <button type="button" class="pagination-btn" data-page-nav="next">Next →</button>
 </div>
 
 <script>
 (function () {
-  var PAGE_SIZE = 10;
+  var PAGE_SIZE = 15;
   var list = document.getElementById('all-posts-list');
   var pagination = document.getElementById('all-posts-pagination');
   if (!list || !pagination) return;

@@ -3,9 +3,10 @@ title: Guestbook
 permalink: /guestbook/
 ---
 
-#### Guestbook
-
-<p class="meta">방문 기록이나 하고 싶은 말을 자유롭게 남겨주세요. (GitHub 계정으로 로그인 후 작성할 수 있어요)</p>
+<header class="page-heading">
+  <h1>Guestbook</h1>
+  <p>방문 기록이나 하고 싶은 말을 자유롭게 남겨주세요. (GitHub 계정으로 로그인 후 작성할 수 있어요)</p>
+</header>
 
 <div id="giscus-container" class="giscus-container"></div>
 
